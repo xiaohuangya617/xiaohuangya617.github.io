@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.24</title>
+<title>来挂机鸭 v2.25</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.24 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
+   来挂机鸭 v2.25 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -972,7 +972,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.24</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.25</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1225,8 +1225,7 @@ body.light-mode .panel-header {
 <div class="modal-overlay" id="first-name-modal">
   <div class="modal-box" style="position:relative;max-width:320px;">
     <h2 style="color:var(--gold);">✏️ 取个名字吧</h2>
-    <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">输入你的勇者名字</p>
-    <input type="text" id="first-name-input" maxlength="8" value="小黄鸭" style="width:100%;padding:8px;font-size:16px;text-align:center;background:var(--card-bg);border:1px solid var(--purple);border-radius:4px;color:#fff;outline:none;" onkeydown="if(event.key==='Enter')saveFirstName()">
+    <input type="text" id="first-name-input" maxlength="8" value="小黄鸭" style="width:100%;padding:8px;font-size:16px;text-align:center;background:var(--card-bg);border:1px solid var(--purple);border-radius:4px;color:#fff;outline:none;margin-top:4px;" onkeydown="if(event.key==='Enter')saveFirstName()">
     <button class="btn btn-sm" style="width:100%;margin-top:8px;background:var(--purple);color:#fff;padding:6px;" onclick="saveFirstName()">💾 确认</button>
   </div>
 </div>
@@ -1353,7 +1352,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.24';
+const GAME_VERSION = '2.25';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -4125,7 +4124,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.24_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.25_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
