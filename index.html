@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.16</title>
+<title>来挂机鸭 v2.24</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.16 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景
+   来挂机鸭 v2.24 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -79,8 +79,8 @@ body {
   border: 1px solid var(--border-panel); border-radius: 6px; border-bottom: 2px solid var(--purple);
   min-height: 44px; gap: 6px;
 }
-.header-left { display: flex; align-items: center; gap: 5px; font-weight: bold; font-size: 15px; }
-.ver-badge { font-size: 11px; color: var(--purple); border: 1px solid var(--purple); padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
+.header-left { display: flex; align-items: center; gap: 5px; font-weight: bold; font-size: 16px; }
+.ver-badge { font-size: 12px; color: var(--purple); border: 1px solid var(--purple); padding: 1px 5px; border-radius: 3px; margin-left: 3px; }
 
 /* PANELS */
 .panel {
@@ -88,15 +88,15 @@ body {
   border-radius: 6px; padding: 8px;
 }
 .panel-header {
-  font-size: 12px; font-weight: bold; color: var(--purple);
+  font-size: 14px; font-weight: bold; color: var(--purple);
   text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
   border-bottom: 1px solid var(--border-divider); padding-bottom: 3px;
 }
 
 /* STATS */
 .stat-mini { display:flex; justify-content:space-between; padding:1px 0; }
-.sm-label { color:var(--text-dim); font-size:11px; }
-.sm-val { color:var(--gold); font-weight:bold; font-size:11px; }
+.sm-label { color:var(--text-dim); font-size:13px; }
+.sm-val { color:var(--gold); font-weight:bold; font-size:13px; }
 
 /* CENTER HP BARS */
 .hp-bar-wrap, .exp-bar-wrap {
@@ -125,13 +125,13 @@ body {
 #equipment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
 /* v2.10: Equip tab system */
 .equip-tabs { display: flex; gap: 2px; margin-bottom: 4px; }
-.equip-tab { flex:1; padding:4px 0; text-align:center; font-size:11px; cursor:pointer; border:1px solid #3a2a5e; border-radius:4px; background:var(--card-bg); color:var(--text-dim); transition:all 0.2s; }
+.equip-tab { flex:1; padding:4px 0; text-align:center; font-size:13px; cursor:pointer; border:1px solid #3a2a5e; border-radius:4px; background:var(--card-bg); color:var(--text-dim); transition:all 0.2s; }
 .equip-tab.active { border-color:var(--purple); color:var(--purple-light); background:var(--hover-bright); }
 .equip-tab:hover { border-color:var(--purple-light); }
 .gem-bag, .card-bag { margin-top:6px; max-height:120px; overflow-y:auto; }
-.gem-bag-item, .card-bag-item { display:flex; align-items:center; justify-content:space-between; padding:3px 5px; margin-bottom:2px; background:var(--card-bg); border:1px solid #2a1a4e; border-radius:4px; font-size:11px; cursor:default; }
+.gem-bag-item, .card-bag-item { display:flex; align-items:center; justify-content:space-between; padding:3px 5px; margin-bottom:2px; background:var(--card-bg); border:1px solid #2a1a4e; border-radius:4px; font-size:13px; cursor:default; }
 .gem-bag-item:hover, .card-bag-item:hover { border-color:var(--purple); }
-.gem-bag-item .gb-merge, .card-bag-item .cb-merge { font-size:10px; padding:1px 6px; background:#ffd70022; color:#ffd700; border:1px solid #ffd70044; border-radius:3px; cursor:pointer; }
+.gem-bag-item .gb-merge, .card-bag-item .cb-merge { font-size:13px; padding:1px 6px; background:#ffd70022; color:#ffd700; border:1px solid #ffd70044; border-radius:3px; cursor:pointer; }
 .gem-bag-item .gb-merge:hover, .card-bag-item .cb-merge:hover { background:#ffd70044; }
 /* v2.11: Click-to-edit player name */
 #char-name-display { cursor: pointer; padding: 0 3px; border-radius: 3px; transition: background 0.2s; }
@@ -149,7 +149,7 @@ body {
 /* v2.10: Merge modal checkboxes */
 .merge-check-row { display:flex; align-items:center; gap:4px; padding:2px 0; font-size:11px; cursor:pointer; }
 .merge-check-row input { accent-color:var(--purple); }
-.merge-count { color:var(--text-dim); font-size:10px; margin-left:auto; }
+.merge-count { color:var(--text-dim); font-size:12px; margin-left:auto; }
 .equip-slot-mini {
   width: 100%; background: var(--card-bg); border: 2px dashed #3a2a5e;
   border-radius: 5px; padding: 4px 6px; cursor: pointer; transition: all 0.2s;
@@ -164,8 +164,8 @@ body {
 .equip-slot-mini:hover { border-color: var(--purple); background: var(--hover-bright); }
 .equip-slot-mini .es-icon { font-size: 18px; flex-shrink: 0; }
 .equip-slot-mini .es-info { overflow: hidden; }
-.equip-slot-mini .es-name { font-size: 10px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.equip-slot-mini .es-stat { font-size: 9px; color: var(--text-dim); }
+.equip-slot-mini .es-name { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.equip-slot-mini .es-stat { font-size: 11px; color: var(--text-dim); }
 
 /* v1.18: 功能栏加大 */
 #func-bar {
@@ -175,7 +175,7 @@ body {
   margin-top: 4px;
 }
 .func-btn {
-  padding: 8px 6px; font-size: 13px; font-family: inherit;
+  padding: 8px 6px; font-size: 17px; font-weight: bold; font-family: inherit;
   background: var(--card-bg); border: 1px solid #2a1a4e;
   border-radius: 5px; color: var(--text-dim); cursor: pointer;
   transition: all 0.15s; display: flex; align-items: center;
@@ -271,6 +271,8 @@ body {
 #battle-arena[class*="arena-"] { background-size: cover; background-position: center; overflow: hidden; }
 #battle-arena[class*="arena-"]::before,
 #battle-arena[class*="arena-"]::after { content: ''; position: absolute; z-index: 0; pointer-events: none; inset: 0; }
+#battle-arena.no-effects::after,
+#battle-arena.no-effects::before { display: none; }
 
 /* ═══════ 1. 村庄: 手绘背景图 ═══════ */
 #battle-arena.arena-village {
@@ -428,7 +430,7 @@ body {
 .inv-slot .inv-enhance-lv { position: absolute; top: 0; right: 2px; font-size: 6px; color: #ffd700; font-weight: bold; text-shadow: 0 0 2px #000; }
 
 .inv-tab-btn {
-  padding:2px 3px; font-size:9px; 
+  padding:2px 3px; font-size:13px; 
   min-width:unset; flex:1;
   height:20px; display:flex; align-items:center; justify-content:center;
   background: #1a1040; border: 1px solid #2a1a4e;
@@ -443,6 +445,11 @@ body {
   border-radius: 5px; padding: 6px 8px; z-index: 9999; min-width: 140px;
   pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.6); font-size: 11px; display: none;
 }
+#item-tooltip.compare { display: flex; align-items: stretch; min-width: 310px; padding: 6px 2px; gap: 0; }
+#item-tooltip .tt-compare-panel { flex: 1; min-width: 0; padding: 0 5px; }
+#item-tooltip .tt-compare-panel.tt-equipped { border-right: 1px solid #333; }
+#item-tooltip .tt-compare-header { font-size: 10px; color: var(--text-dim); margin-bottom: 3px; text-align: center; font-weight: bold; }
+#item-tooltip .tt-compare-vs { display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 2px; font-size: 11px; color: var(--purple-light); font-weight: bold; }
 #item-tooltip .tt-name { color: var(--gold); font-weight: bold; font-size: 13px; }
 #item-tooltip .tt-quality { font-size: 11px; }
 #item-tooltip .tt-divider { border-top: 1px solid #333; margin: 3px 0; }
@@ -472,7 +479,6 @@ body {
   padding: 3px 5px; background: var(--card-bg); border: 1px solid #2a1a4e;
   border-radius: 3px; margin-bottom: 2px; font-size: 11px;
 }
-.unlock-node.unlocked { border-color: var(--green); }
 .unlock-node .un-info { display: flex; align-items: center; gap: 3px; flex:1; overflow:hidden; }
 .unlock-node .un-icon { font-size: 14px; }
 .unlock-node .un-name { font-weight: bold; white-space: nowrap; }
@@ -484,6 +490,7 @@ body {
 }
 .unlock-node .un-btn:hover { background: var(--purple-light); }
 .unlock-node .un-btn.locked { background: #333; color: #666; cursor: not-allowed; }
+.unlock-node.equipped { border-color: var(--green); }
 
 .skill-slot-row { display: flex; gap: 3px; margin-bottom: 3px; }
 
@@ -526,7 +533,7 @@ body {
 
 /* BUTTONS */
 .btn { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.2s; }
-.btn-sm { padding: 3px 8px; font-size: 11px; border: 1px solid var(--purple); border-radius: 3px; cursor: pointer; font-family: inherit; transition: all 0.2s; background: #1a1040; color: var(--purple-light); }
+.btn-sm { padding: 3px 8px; font-size: 12px; border: 1px solid var(--purple); border-radius: 3px; cursor: pointer; font-family: inherit; transition: all 0.2s; background: #1a1040; color: var(--purple-light); }
 .btn-sm:hover { background: var(--purple); color: #fff; }
 .btn-primary { background: var(--purple); color: #fff; }
 .btn-primary:hover { background: var(--purple-light); }
@@ -687,6 +694,277 @@ body {
 }
 #equip-fixed-detail.show { display: block; }
 #efd-content { font-size: 12px; }
+
+/* ==========================================
+   LIGHT MODE v2.16
+   ========================================== */
+body.light-mode {
+  /* --- 柔和纸张色板 --- */
+  --bg-deep: #f2ede6;
+  --bg-panel: #ffffff;
+  --bg-header: #efe8dc;
+  --border-panel: #d5ccc0;
+  --border-divider: #e8e0d5;
+  --text-primary: #1a1510;
+  --text-dim: #4a4238;
+  --text-header: #5a4a30;
+  --purple: #6a5acd;
+  --purple-light: #8b7bef;
+  --gold: #b8860b;
+  --gold-text: #8b6508;
+  --red: #cc3333;
+  --green: #0a8800;
+  --green-hp: #22aa22;
+  --battle-area: #ebe3d8;
+  --btn-bg: #f5f0e8;
+  --card-bg: #faf7f2;
+  --hover-bright: #ede5d8;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #d5c8b0aa 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, #e8dcc8 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 60%, #e0d4c0 0%, transparent 50%);
+}
+
+/* ===== 亮色模式元素覆写 ===== */
+
+/* Header */
+body.light-mode #header-bar {
+  background: linear-gradient(180deg, #f0e8d8, #e8dcc8);
+  border-bottom-color: var(--purple);
+}
+
+/* HP/EXP bars */
+body.light-mode .hp-bar-wrap,
+body.light-mode .exp-bar-wrap {
+  background: #e0d8c8;
+  border-color: #d0c8b8;
+}
+body.light-mode .bar-text,
+body.light-mode .exp-bar-text {
+  color: #3a3028;
+  text-shadow: none;
+}
+
+/* Monster stats */
+body.light-mode .hp-label-monster { color: #cc4444; }
+
+/* Equip slot mini */
+body.light-mode .equip-slot-mini {
+  border-color: #d5ccc0;
+}
+body.light-mode .equip-slot-mini.empty {
+  border-color: #ddd5c8;
+}
+
+/* Func buttons */
+body.light-mode .func-btn {
+  border-color: #d5ccc0;
+}
+
+/* Equip tabs */
+body.light-mode .equip-tab {
+  border-color: #d5ccc0;
+}
+body.light-mode .equip-tab.active {
+  color: #fff;
+}
+
+/* Gem/Card bag items */
+body.light-mode .gem-bag-item,
+body.light-mode .card-bag-item {
+  border-color: #ddd5c8;
+}
+
+/* Forge equip entry */
+body.light-mode .forge-equip-entry {
+  border-color: #d5ccc0;
+}
+
+/* Inventory section */
+body.light-mode #inventory-section {
+  border-color: var(--border-panel);
+}
+
+/* Inventory tabs - lighter bg */
+body.light-mode .inv-tab-btn {
+  background: #e8e0d0;
+  border-color: #d5c8b0;
+  color: #5a5040;
+}
+body.light-mode .inv-tab-btn.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+/* Inventory slots - WHITE background */
+body.light-mode .inv-slot {
+  background: #f0ede5;
+  border-color: #d5ccc0;
+}
+body.light-mode .inv-slot:hover {
+  background: #e8e0d0;
+  border-color: var(--purple);
+}
+body.light-mode .inv-slot.selected {
+  background: #e8dcc0;
+  border-color: var(--gold);
+  box-shadow: 0 0 4px rgba(184,134,11,0.3);
+}
+body.light-mode .inv-slot.empty {
+  border-color: #e0d8c8;
+  opacity: 0.5;
+}
+body.light-mode .inv-slot .inv-count {
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+body.light-mode .inv-slot .inv-enhance-lv {
+  text-shadow: 0 0 2px rgba(0,0,0,0.4);
+}
+
+/* Tooltip */
+body.light-mode #item-tooltip {
+  background: #ffffff;
+  border-color: var(--purple);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+body.light-mode #item-tooltip .tt-divider {
+  border-top-color: #e0d8c8;
+}
+body.light-mode #item-tooltip .tt-compare-panel.tt-equipped {
+  border-right-color: #e0d8c8;
+}
+body.light-mode #item-tooltip .tt-stat {
+  color: #2a2520;
+}
+
+/* Skill tree - unlock node */
+body.light-mode .unlock-node {
+  border-color: #d5ccc0;
+}
+body.light-mode .unlock-node .un-btn.locked {
+  background: #e0d8c8;
+  color: #999;
+}
+
+/* Class tabs */
+body.light-mode .class-tab {
+  border-color: #d5ccc0;
+}
+
+/* Battle arena */
+body.light-mode #battle-arena {
+  border-color: #d5ccc0;
+}
+
+/* Modal */
+body.light-mode .modal-overlay {
+  background: rgba(0,0,0,0.3);
+}
+body.light-mode .modal-box {
+  background: #faf8f5;
+  border-color: var(--purple);
+}
+body.light-mode .modal-close {
+  color: #999;
+}
+body.light-mode .modal-close:hover {
+  color: #333;
+}
+body.light-mode .dr-card {
+  background: #f0ede5;
+  border-color: #d5ccc0;
+  color: #5a5040;
+}
+
+/* Dmg floats - keep readable on light bg */
+body.light-mode .dmg-normal { color: #333; }
+body.light-mode .dmg-crit { color: #cc2222; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+body.light-mode .dmg-float { text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+/* Skill slots */
+body.light-mode .skill-slot-mini {
+  border-color: #d5ccc0;
+}
+body.light-mode .skill-slot-mini.on-cooldown {
+  border-color: #d0c8b8;
+}
+
+/* Entity filters on light bg */
+body.light-mode .entity-sprite.player-sprite {
+  filter: drop-shadow(0 0 14px rgba(106,90,205,0.35));
+}
+body.light-mode .entity-sprite.monster-sprite {
+  filter: drop-shadow(0 0 14px rgba(200,60,60,0.35));
+}
+body.light-mode .entity-sprite.boss-sprite {
+  filter: drop-shadow(0 0 22px rgba(180,30,30,0.45));
+}
+
+/* Death overlay */
+body.light-mode #death-overlay {
+  background: rgba(0,0,0,0.4);
+}
+
+/* Area nav buttons */
+body.light-mode .area-btn,
+body.light-mode .subarea-btn {
+  border-color: #d5ccc0;
+}
+
+/* Battle top bar & VS bar */
+body.light-mode #battle-top-bar,
+body.light-mode #battle-vs-bar {
+  background: #e8e0d0;
+  border-color: #d5ccc0;
+}
+body.light-mode .vs-name-left,
+body.light-mode .vs-name-right {
+  color: #2a2520;
+}
+body.light-mode .vs-hp-wrap {
+  background: #d8d0c0;
+}
+
+/* Forge equip selected */
+body.light-mode .forge-equip-entry.selected {
+  background: #ede5d8;
+}
+
+/* Buttons general */
+body.light-mode .btn {
+  border-color: #d5ccc0;
+}
+body.light-mode .btn-sm {
+  background: #e8e0d0;
+  color: var(--purple);
+  border-color: #c0b8a8;
+}
+body.light-mode .btn-sm:hover {
+  background: var(--purple);
+  color: #fff;
+}
+body.light-mode .btn-danger {
+  background: #f0e0e0;
+  color: #cc4444;
+  border-color: #d5b8b8;
+}
+body.light-mode .btn-danger:hover {
+  background: #cc4444;
+  color: #fff;
+}
+
+/* Stat values - darker for readability */
+body.light-mode .sm-val {
+  color: #705800;
+}
+body.light-mode .sm-label {
+  color: #3a3530;
+}
+body.light-mode .panel-header {
+  color: #5a4acd;
+}
 </style>
 </head>
 <body>
@@ -694,18 +972,12 @@ body {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left">🦆 来挂机鸭 <span class="ver-badge">v2.16</span> <span id="hdr-clock" style="font-size:10px;color:var(--text-dim);">--</span></div>
-    <div style="display:flex; gap:4px; flex:1; justify-content:center; align-items:center;" id="hdr-areas">
-      <button class="btn btn-sm" onclick="switchArea(-1)" title="上一区域">◀</button>
-      <span id="hdr-area-name" style="font-weight:bold;color:var(--purple-light);min-width:80px;text-align:center;">村庄</span>
-      <button class="btn btn-sm" onclick="switchArea(1)" title="下一区域">▶</button>
-      <span style="margin:0 8px;color:var(--text-dim);">|</span>
-      <button class="btn btn-sm" onclick="switchSubArea(-1)" title="上一关">◁</button>
-      <span id="hdr-sub-name" style="color:var(--text-dim);min-width:60px;text-align:center;">村庄1</span>
-      <button class="btn btn-sm" onclick="switchSubArea(1)" title="下一关">▷</button>
-    </div>
-    <div style="display:flex;gap:4px;">
-      <button class="btn btn-sm" onclick="toggleSettings()" title="测试设置" style="background:#2a1a50;">⚙️</button>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.24</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
+      <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
+      <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
+      <button class="btn btn-sm" id="toggle-dmg" onclick="toggleDmg()" title="伤害数字开关" style="color:#1eff00;">💥 伤害数字：开</button>
+      <button class="btn btn-sm" id="toggle-fx" onclick="toggleFx()" title="微动效开关" style="color:#1eff00;">✨ 微动效：开</button>
       <button class="btn btn-sm" onclick="exportSave()">📤 导出</button>
       <button class="btn btn-sm" onclick="document.getElementById('import-input').click()">📥 导入</button>
       <input type="file" id="import-input" style="display:none;" accept=".json" onchange="importSave(event)">
@@ -734,17 +1006,17 @@ body {
 
       <div class="panel">
         <div class="panel-header">📊 攻击属性</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:10px;margin-top:2px;" id="atk-stats-grid"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:12px;margin-top:2px;" id="atk-stats-grid"></div>
       </div>
 
       <div class="panel">
         <div class="panel-header">🛡️ 防御属性</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:10px;" id="def-stats-grid"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:12px;" id="def-stats-grid"></div>
       </div>
 
       <div class="panel">
         <div class="panel-header">✨ 特殊属性</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:10px;" id="rare-stats-grid"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px 6px;font-size:12px;" id="rare-stats-grid"></div>
       </div>
 
       <!-- v1.18: 装备面板+功能栏充满左侧 -->
@@ -755,7 +1027,7 @@ body {
           <div class="equip-tab" id="equip-tab-card" onclick="GameState.equipTab='card';renderAll();">🃏 卡片</div>
         </div>
         <div id="equipment-grid"></div>
-        <div style="font-size:11px;color:var(--text-dim);margin-top:6px;">🔧 功能栏</div>
+        <div style="font-size:14px;font-weight:bold;color:var(--purple);margin-top:6px;">🔧 功能栏</div>
         <div id="func-bar">
           <button class="func-btn" onclick="openShopModal()">🏪 商店</button>
           <button class="func-btn" onclick="openForgeModal()">🔧 打造</button>
@@ -764,7 +1036,7 @@ body {
           <button class="func-btn" onclick="showNotification('图鉴开发中...')" style="opacity:0.5;">📖 图鉴</button>
           <button class="func-btn" onclick="showNotification('统计开发中...')" style="opacity:0.5;">📊 统计</button>
           <button class="func-btn" onclick="showNotification('帮助开发中...')" style="opacity:0.5;">❓ 帮助</button>
-          <button class="func-btn" onclick="showNotification('设置开发中...')" style="opacity:0.5;">⚙️ 设置</button>
+          <button class="func-btn" onclick="startTowerMode()">🗼 爬塔</button>
         </div>
       </div>
     </div>
@@ -774,7 +1046,15 @@ body {
       <div class="panel" id="battle-panel">
         <!-- TOP BAR -->
         <div id="battle-top-bar">
-          <span class="battle-region-name" id="battle-region-name">📍 村庄1-1</span>
+          <div style="display:flex; gap:4px; align-items:center;" id="battle-nav">
+            <button class="btn btn-sm" onclick="switchArea(-1)" title="上一区域">◀</button>
+            <span id="battle-area-name" style="font-weight:bold;color:var(--purple-light);min-width:60px;text-align:center;">村庄</span>
+            <button class="btn btn-sm" onclick="switchArea(1)" title="下一区域">▶</button>
+            <span style="margin:0 6px;color:var(--text-dim);">|</span>
+            <button class="btn btn-sm" onclick="switchSubArea(-1)" title="上一关">◁</button>
+            <span id="battle-sub-name" style="color:var(--text-dim);min-width:50px;text-align:center;">1-1</span>
+            <button class="btn btn-sm" onclick="switchSubArea(1)" title="下一关">▷</button>
+          </div>
           <div id="battle-top-actions">
             <button class="btn btn-sm btn-boss" id="btn-boss" disabled onclick="challengeBoss()">🗡️ 挑战BOSS</button>
             <button class="btn btn-sm btn-next" id="btn-next" disabled onclick="goToNextSubArea()">➡️ 下一关卡</button>
@@ -803,16 +1083,16 @@ body {
 
       <div id="inventory-section">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:2px 5px;border-bottom:1px solid var(--border-divider);flex-wrap:wrap;gap:2px;">
-          <span style="font-weight:bold;color:var(--purple);font-size:12px;">🎒 背包 (<span id="inv-count-text">0</span>)</span>
-          <div style="display:flex;align-items:center;gap:3px;font-size:10px;">
+          <span style="font-weight:bold;color:var(--purple);font-size:15px;">🎒 背包 (<span id="inv-count-text">0</span>)</span>
+          <div style="display:flex;align-items:center;gap:3px;font-size:14px;">
             <label style="color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="chk-copper" checked onchange="saveCheckState()">铜</label>
             <label style="color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="chk-silver" checked onchange="saveCheckState()">银</label>
             <label style="color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="chk-gold" checked onchange="saveCheckState()">金</label>
-            <button class="btn btn-sm" onclick="batchOpen()" style="font-size:10px;padding:2px 7px;">📦开箱</button>
+            <button class="btn btn-sm" onclick="batchOpen()" style="font-size:14px;padding:2px 7px;font-weight:bold;background:var(--purple);color:#fff;border-color:var(--purple-light);">📦开箱</button>
             <span id="break-qs" style="display:flex;gap:1px;"></span>
-            <button class="btn btn-sm" onclick="batchBreak()" style="font-size:10px;padding:2px 7px;">🗑️分解</button>
-            <button class="btn btn-sm" onclick="openMergeModal()" style="font-size:10px;padding:2px 7px;">🔀合成</button>
-            <button class="btn btn-sm" onclick="sortInventory()" style="font-size:10px;padding:2px 7px;">📋整理</button>
+            <button class="btn btn-sm" onclick="batchBreak()" style="font-size:14px;padding:2px 7px;">🗑️分解</button>
+            <button class="btn btn-sm" onclick="openMergeModal()" style="font-size:14px;padding:2px 7px;">🔀合成</button>
+            <button class="btn btn-sm" onclick="sortInventory()" style="font-size:14px;padding:2px 7px;">📋整理</button>
           </div>
         </div>
         <div id="inv-tabs-wrap">
@@ -884,6 +1164,12 @@ body {
   </div>
 </div>
 
+<div class="modal-overlay" id="tower-result-modal">
+  <div class="modal-box" style="max-width:340px;">
+    <div id="tower-result-body"></div>
+  </div>
+</div>
+
 <!-- Shop Modal -->
 <div class="modal-overlay" id="shop-modal">
   <div class="modal-box" style="position:relative;">
@@ -925,6 +1211,26 @@ body {
   </div>
 </div>
 
+<!-- v2.24: 首次欢迎弹窗 -->
+<div class="modal-overlay" id="welcome-modal">
+  <div class="modal-box" style="position:relative;max-width:380px;text-align:center;">
+    <h2 style="color:var(--gold);margin-bottom:6px;">🐤 欢迎游玩来挂机鸭</h2>
+    <p style="font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:12px;">
+      这是一款放置挂机游戏，巴拉巴拉巴拉。
+    </p>
+    <button class="btn btn-sm" style="background:var(--purple);color:#fff;padding:6px 24px;" onclick="closeWelcomeModal()">开始冒险</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="first-name-modal">
+  <div class="modal-box" style="position:relative;max-width:320px;">
+    <h2 style="color:var(--gold);">✏️ 取个名字吧</h2>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">输入你的勇者名字</p>
+    <input type="text" id="first-name-input" maxlength="8" value="小黄鸭" style="width:100%;padding:8px;font-size:16px;text-align:center;background:var(--card-bg);border:1px solid var(--purple);border-radius:4px;color:#fff;outline:none;" onkeydown="if(event.key==='Enter')saveFirstName()">
+    <button class="btn btn-sm" style="width:100%;margin-top:8px;background:var(--purple);color:#fff;padding:6px;" onclick="saveFirstName()">💾 确认</button>
+  </div>
+</div>
+
 <!-- v2.11: Forge Modal -->
 <div class="modal-overlay" id="forge-modal">
   <div class="modal-box" style="position:relative;max-width:620px;width:95%;padding:12px;">
@@ -940,9 +1246,9 @@ body {
     </div>
     <div style="border-top:1px solid var(--border-divider);margin-top:8px;padding-top:6px;display:flex;align-items:center;gap:6px;font-size:11px;">
       <button class="btn btn-sm" id="forge-enhance-btn" onclick="forgeEnhance()" style="font-size:11px;padding:3px 10px;">🔨 强化</button>
-      <span id="forge-enhance-info" style="color:var(--text-dim);font-size:10px;"></span>
+      <span id="forge-enhance-info" style="color:var(--text-dim);font-size:12px;"></span>
       <button class="btn btn-sm" id="forge-reforge-btn" onclick="forgeReforge()" disabled style="font-size:11px;padding:3px 10px;opacity:0.4;">🔮 洗练</button>
-      <span id="forge-reforge-info" style="color:var(--text-dim);font-size:10px;"></span>
+      <span id="forge-reforge-info" style="color:var(--text-dim);font-size:12px;"></span>
       <span style="color:var(--text-dim);margin-left:auto;">
         💠<span id="forge-stones">0</span> 💰<span id="forge-gold">0</span>
       </span>
@@ -968,7 +1274,7 @@ body {
         <button class="btn btn-sm" style="width:100%;margin-top:6px;background:var(--purple);" onclick="batchMergeCards()">🔀 一键合成卡片</button>
       </div>
     </div>
-    <div id="merge-result" style="margin-top:6px;font-size:10px;color:var(--gold);text-align:center;"></div>
+    <div id="merge-result" style="margin-top:6px;font-size:12px;color:var(--gold);text-align:center;"></div>
   </div>
 </div>
 
@@ -1005,7 +1311,7 @@ body {
     <div class="settings-row" onclick="toggleChestBoost()" style="cursor:pointer;">
       <div style="flex:1;">
         <div style="font-size:13px;font-weight:bold;">📦 宝箱爆率 ×100</div>
-        <div style="font-size:10px;color:var(--text-dim);">每次击杀必掉大量宝箱，方便测试装备系统</div>
+        <div style="font-size:12px;color:var(--text-dim);">每次击杀必掉大量宝箱，方便测试装备系统</div>
       </div>
       <div class="settings-toggle" id="toggle-chest-boost">
         <div class="toggle-knob"></div>
@@ -1014,7 +1320,7 @@ body {
     <div class="settings-row" onclick="toggleExpBoost()" style="cursor:pointer;margin-top:6px;">
       <div style="flex:1;">
         <div style="font-size:13px;font-weight:bold;">⭐ 经验 ×100</div>
-        <div style="font-size:10px;color:var(--text-dim);">快速升级，测试高等级数值曲线</div>
+        <div style="font-size:12px;color:var(--text-dim);">快速升级，测试高等级数值曲线</div>
       </div>
       <div class="settings-toggle" id="toggle-exp-boost">
         <div class="toggle-knob"></div>
@@ -1023,7 +1329,7 @@ body {
     <div class="settings-row" onclick="toggleGoldBoost()" style="cursor:pointer;margin-top:6px;">
       <div style="flex:1;">
         <div style="font-size:13px;font-weight:bold;">💰 金币 ×100</div>
-        <div style="font-size:10px;color:var(--text-dim);">快速攒钱，测试商店和强化系统</div>
+        <div style="font-size:12px;color:var(--text-dim);">快速攒钱，测试商店和强化系统</div>
       </div>
       <div class="settings-toggle" id="toggle-gold-boost">
         <div class="toggle-knob"></div>
@@ -1047,7 +1353,7 @@ body {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.14';
+const GAME_VERSION = '2.24';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -1217,7 +1523,7 @@ const EQUIP_SLOTS = {
   gloves:   { name:'手套',  icons:['🧤','🤲','🥊'], baseAttr:'spd',  baseValue:8 },
   shoes:    { name:'鞋子',  icons:['👟','👢','🥾'], baseAttr:'spd',  baseValue:8 },
   necklace: { name:'项链',  icons:['📿','💫','🔗'], baseAttr:'crit', baseValue:2 },
-  ring:     { name:'戒指',  icons:['💍','💎','🔘'], baseAttr:'cdmg', baseValue:3 },
+  ring:     { name:'戒指',  icons:['💍','🎐','🔘'], baseAttr:'cdmg', baseValue:3 },
 };
 
 // --- A6 - Weapon Types ---
@@ -1343,7 +1649,7 @@ const CLASSES = {
     actives:[{name:'暗杀',icon:'🗡️',cd:8,effect:'damage',value:2.0,desc:'200%ATK'},{name:'影杀连击',icon:'💀',cd:8,effect:'critRepeat',value:5.0,desc:'500%ATK 暴击再放一次'},{name:'绝命一击',icon:'☠️',cd:50,effect:'critSkill',value:8.0,threshold:0.20,desc:'800%ATK必暴 HP<20%翻倍'}]},
   ninja:{id:'ninja',name:'忍者',icon:'🗡️',trait:{name:'急速修炼',desc:'每次普攻 +1%SPD (持续本场战斗)',trigger:'always',effects:{spdPerHit:0.01}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
     passives:[{name:'忍术精通',icon:'⚡',desc:'连击+15% SPD+10%',effect:{multiHit:0.15,spdPercent:0.10}},{name:'暗劲',icon:'👊',desc:'普攻附带50%ATK伤害',effect:{atkBonusDmg:0.50}}],
-    actives:[{name:'手里剑',icon:'🪃',cd:5,effect:'damage',value:2.0,desc:'200%ATK'},{name:'影分身之术',icon:'🔥',cd:15,effect:'buff',value:'ninja_buff',duration:10,desc:'连击+30% ATK+20% 10s'},{name:'实体分身',icon:'👤',cd:60,effect:'summonClone',duration:10,desc:'召唤分身 普攻10s'}]},
+    actives:[{name:'手里剑',icon:'⚔️',cd:5,effect:'damage',value:2.0,desc:'200%ATK'},{name:'影分身之术',icon:'🔥',cd:15,effect:'buff',value:'ninja_buff',duration:10,desc:'连击+30% ATK+20% 10s'},{name:'实体分身',icon:'👤',cd:60,effect:'summonClone',duration:10,desc:'召唤分身 普攻10s'}]},
 };
 
 // --- Combined Class Names (36 combos from 2 equipped traits) ---
@@ -1468,6 +1774,11 @@ const GameState = {
   dummyStartTime: 0,      // 木桩开始时间
   dummyStats: null,       // {skill1,skill2,skill3,normal,reflect}
   savedArea: null,        // 进入木桩前的区域
+  inTowerMode: false,     // 爬塔模式
+  towerCounter: 0,        // 爬塔击杀计数
+  towerStartTime: 0,      // 爬塔开始时间
+  towerStats: null,       // 爬塔伤害统计
+  jefferyInvincibleUntil: 0, // 杰弗里无敌结束时间戳
   ninjaSpdStacks: 0,     // 忍者: 普攻+1%速度叠层
   dodgeFirstAttack: true,// 盗贼 trait: 闪避首次攻击
   combatStartTime: 0,    // 战斗开始时间(用于8秒buff判定)
@@ -1482,7 +1793,8 @@ const GameState = {
   gemInventory: [],    // 宝石背包 [{id,type,level,name,icon,stat,statVal}]
   cardInventory: [],   // 卡片背包
   equipTab: 'equip',   // 'equip'|'gem'|'card'
-  playerName: '主角',   // v2.11: editable name
+  playerName: '小黄鸭',   // v2.24: default name 小黄鸭
+  welcomed: false,         // v2.24: 欢迎画面标记
 };
 
 let _nextEquipId = 1;
@@ -1810,8 +2122,8 @@ function calcDamageToMonster(eStats) {
     GameState.ninjaSpdStacks = (GameState.ninjaSpdStacks || 0) + 1;
   }
 
-  // Dummy tracking: split damage by source
-  if (GameState.inDummyMode && GameState.dummyStats) {
+  // Dummy/Tower tracking: split damage by source
+  if ((GameState.inDummyMode && GameState.dummyStats) || (GameState.inTowerMode && GameState.towerStats)) {
     // Base attack: pure ATK damage (crit/multi-hit applied)
     addDummyStat('normal', '普攻', Math.floor(baseDmgBeforeExecute));
     // Execute portion (斩杀)
@@ -1827,6 +2139,21 @@ function calcDamageToMonster(eStats) {
   // 越战越勇: 普攻伤害触发 (仅神技生效)
   const hasRampUp = (GameState._godSkillPts && GameState._godSkillPts['rampUp'] >= 4);
   if (hasRampUp) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1;
+
+  // Jeffery tower: 无敌时间(复活后2秒)
+  if (GameState.inTowerMode && Date.now() < GameState.jefferyInvincibleUntil) {
+    showDmgFloat(0, 'reflect', 'monster-entity');
+    return 0;
+  }
+
+  // Jeffery tower: 10% 免疫普攻伤害(降为1)
+  if (GameState.inTowerMode && GameState.towerCounter >= 800) {
+    if (Math.random() < 0.10) {
+      addLog('杰弗里净化了本次普攻!', 'info');
+      showDmgFloat(1, 'reflect', 'monster-entity');
+      return 1;
+    }
+  }
 
   return finalDmg;
 }
@@ -1854,7 +2181,7 @@ function calcMonsterDamage(eStats) {
   if ((eStats.reflect || 0) > 0) {
     const rDmg = Math.ceil(Math.max(1, GameState.monsterStats.atk - eStats.def) * Math.min(eStats.reflect, 99) * 0.05);
     GameState.monsterHP -= rDmg;
-    if (rDmg > 0) { addLog('反伤 ' + rDmg + ' 点', 'damage'); showDmgFloat(rDmg, 'reflect', 'monster-entity'); if (GameState.inDummyMode && GameState.dummyStats) { GameState.dummyStats.reflect.dmg += rDmg; GameState.dummyStats.reflect.count++; } }
+    if (rDmg > 0) { addLog('反伤 ' + rDmg + ' 点', 'damage'); showDmgFloat(rDmg, 'reflect', 'monster-entity'); addDummyStat('reflect', '反伤', rDmg); }
   }
 
   if (dmg > 0 && (eStats.counter || 0) > 0 && Math.random() < Math.min(eStats.counter, 1.0)) {
@@ -1922,7 +2249,7 @@ function startCombat() {
 
 // Spawn monster without fanfare (for mid-tick respawns)
 function spawnMonster() {
-  if (GameState.inDummyMode) return; // Dummy doesn't respawn
+  if (GameState.inDummyMode || GameState.inTowerMode) return; // Dummy/tower doesn't respawn
   const monster = getCurrentMonster();
   const stats = getMonsterStats(GameState.currentArea, GameState.currentSubArea, monster.isBoss);
   GameState.monsterName = monster.name;
@@ -1995,7 +2322,9 @@ function tick() {
     if (!skillId) continue;
     if ((GameState.skillCooldowns[skillId] || 0) <= 0) castSkill(skillId);
   }
-  if (GameState.monsterHP <= 0 && GameState.monsterMaxHP > 0) { triggerMonsterDeathAnimation(); monsterKilled(); spawnMonster(); }
+  if (GameState.monsterHP <= 0 && GameState.monsterMaxHP > 0) {
+    if (GameState.inTowerMode) { towerReviveJeffery(); } else { triggerMonsterDeathAnimation(); monsterKilled(); spawnMonster(); }
+  }
 
   // === PROGRESS-BAR COMBAT (multi-kill support) ===
   const pSpd = Math.max(eStats.spd, SPD_MIN);
@@ -2016,11 +2345,13 @@ function tick() {
     if (ls > 0) { const h = Math.floor(atkDmg * ls * 0.007); if (h > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + h); showDmgFloat(h, 'heal', 'player-entity'); } }
 
     if (GameState.monsterHP <= 0) {
-      triggerMonsterDeathAnimation();
-      monsterKilled();
-      killsThisTick++;
-      spawnMonster();
-      GameState.monsterAtkProgress = 0;
+      if (GameState.inTowerMode) { towerReviveJeffery(); } else {
+        triggerMonsterDeathAnimation();
+        monsterKilled();
+        killsThisTick++;
+        spawnMonster();
+        GameState.monsterAtkProgress = 0;
+      }
     }
   }
 
@@ -2047,11 +2378,9 @@ function tick() {
       cDmg = Math.max(1, Math.floor(cDmg + cDefB + cHpB));
       GameState.monsterHP -= cDmg;
       showDmgFloat(cDmg, 'normal', 'monster-entity');
-      if (GameState.monsterHP <= 0) { triggerMonsterDeathAnimation(); monsterKilled(); killsThisTick++; spawnMonster(); GameState.monsterAtkProgress = 0; }
+      if (GameState.monsterHP <= 0) { if (GameState.inTowerMode) { towerReviveJeffery(); } else { triggerMonsterDeathAnimation(); monsterKilled(); killsThisTick++; spawnMonster(); GameState.monsterAtkProgress = 0; } }
     }
   }
-  const mSpd2 = Math.max(GameState.monsterStats.spd, SPD_MIN);
-  GameState.monsterAtkProgress += mSpd2;
   while (GameState.monsterAtkProgress >= ATK_THRESHOLD && GameState.playerHP > 0) {
     GameState.monsterAtkProgress -= ATK_THRESHOLD;
     const md = calcMonsterDamage(eStats);
@@ -2082,13 +2411,34 @@ function tick() {
 
   if (GameState.playerHP <= 0) {
     GameState.playerHP = 0;
+    if (GameState.inTowerMode) {
+      addLog('你被杰弗里击败了!', 'info');
+      endTowerModeShowResult(false);
+      return;
+    }
     GameState.isDead = true;
     GameState.deathCountdown = Math.ceil(DEATH_RESPAWN_DELAY / 1000);
     addLog('你被击败了!', 'info');
+    if (GameState.autoBattle) { GameState.autoBattle = false; updateAutoToggle(); addLog('自动连战已关闭', 'info'); }
     startDeathCountdown();
     saveGame();
     renderAll();
     return;
+  }
+
+  // Auto-battle: challenge boss or advance
+  if (GameState.autoBattle && !GameState.inDummyMode && !GameState.inTowerMode) {
+    if (GameState.fightingBoss) {
+      // Boss was just killed — advance to next sub-area
+      const subKey = GameState.currentArea + '_' + GameState.currentSubArea;
+      if (GameState.subBossKilled[subKey]) {
+        goToNextSubArea();
+        return;
+      }
+    } else if (GameState.bossUnlocked && GameState.areaKills >= KILLS_TO_UNLOCK_BOSS) {
+      challengeBoss();
+      return;
+    }
   }
 
   saveGame();
@@ -2116,7 +2466,7 @@ function castSkill(skillId) {
       // 术士真伤: 每层100
       let trueDmgSkill = 0;
       if (GameState.equippedTraits.includes('warlock') && GameState.trueDmgStacks > 0) { trueDmgSkill = GameState.trueDmgStacks * 100; dmg += trueDmgSkill; addLog('咒术叠加! +' + trueDmgSkill + ' 真伤', 'skill'); }
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
       // Dummy tracking
@@ -2128,7 +2478,7 @@ function castSkill(skillId) {
       // 法师: 造成伤害+设置下次伤害标记
       dmg = Math.floor(eStats.atk * skill.value);
       if (clsId === 'mage' && GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       GameState.nextSkillMult = skill.mult || 1.5;
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点 下次伤害×' + (skill.mult || 1.5), 'skill');
@@ -2141,7 +2491,7 @@ function castSkill(skillId) {
       const mHpPct = GameState.monsterMaxHP > 0 ? GameState.monsterHP / GameState.monsterMaxHP : 1;
       if (mHpPct < (skill.threshold || 0.30)) { dmg = dmg * 2; addLog('目标HP<30% 伤害翻倍!', 'rare'); }
       if (clsId === 'mage' && GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
       addDummyStat('skill', skill.name, dmg);
@@ -2176,7 +2526,7 @@ function castSkill(skillId) {
             // 叠层: 下一发+100真伤
             GameState.trueDmgStacks = (GameState.trueDmgStacks || 0) + 1;
           }
-          GameState.monsterHP -= totalDmg;
+          applySkillDamage(totalDmg);
           showDmgFloat(totalDmg, 'skill', 'monster-entity');
           addLog(skill.icon + ' ' + skill.name + '! ' + copies + '连发=' + totalDmg + ' 点伤害', 'skill');
           addDummyStat('skill', skill.name, totalDmg - totalTrueDmg);
@@ -2205,7 +2555,7 @@ function castSkill(skillId) {
     case 'ignoreDef':
       dmg = Math.floor(eStats.atk * skill.value * (1 + (eStats.dmgInc || 0)));
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害(无视防御)', 'skill');
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addDummyStat('skill', skill.name, dmg);
       break;
@@ -2214,7 +2564,7 @@ function castSkill(skillId) {
       const cost = Math.floor(GameState.playerHP * skill.costHpPct);
       GameState.playerHP = Math.max(1, GameState.playerHP - cost);
       dmg = Math.floor(eStats.atk * skill.value);
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 消耗 ' + cost + ' HP 造成 ' + dmg + ' 点伤害', 'skill');
       addDummyStat('skill', skill.name, dmg);
@@ -2222,7 +2572,7 @@ function castSkill(skillId) {
 
     case 'defDamage':
       dmg = Math.floor(eStats.def * skill.value);
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害(基于DEF)', 'skill');
       if (skill.buffDef) GameState.activeBuffs['def_double'] = skill.buffDur;
@@ -2252,7 +2602,7 @@ function castSkill(skillId) {
       const hits = (typeof mv === 'object' && mv.count) ? mv.count : (mv || 3);
       const mult = (typeof mv === 'object' && mv.mult) ? mv.mult : 1.2;
       dmg = Math.floor(eStats.atk * mult * hits);
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! ' + hits + '连击 ×' + mult + ' = ' + dmg + ' 点伤害', 'skill');
       addDummyStat('skill', skill.name, dmg);
@@ -2262,7 +2612,7 @@ function castSkill(skillId) {
       const hpPctMon = GameState.monsterHP / GameState.monsterMaxHP;
       if (hpPctMon < (skill.threshold || 0.2)) {
         dmg = Math.floor(eStats.atk * skill.value);
-        GameState.monsterHP -= dmg;
+        applySkillDamage(dmg);
         addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
         addDummyStat('skill', skill.name, dmg);
       }
@@ -2278,7 +2628,7 @@ function castSkill(skillId) {
     case 'spdDamage':
       // 盗贼绝招: SPD伤害
       dmg = Math.floor(eStats.spd * skill.value);
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害(基于SPD)', 'skill');
       addDummyStat('skill', skill.name, dmg);
@@ -2287,7 +2637,7 @@ function castSkill(skillId) {
     case 'stealChest':
       // 盗贼: 300%ATK伤害 + 概率金宝箱
       dmg = Math.floor(eStats.atk * skill.value);
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addDummyStat('skill', skill.name, dmg);
       if (Math.random() < (skill.chestChance || 0.30)) {
@@ -2307,14 +2657,14 @@ function castSkill(skillId) {
         dmg = Math.floor(dmg * (1 + (eStats.cdmg || 50) / 100));
         crit2 = true;
       }
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addDummyStat('skill', skill.name, dmg);
       if (crit2) {
         addLog(skill.icon + ' ' + skill.name + '! 暴击! ' + dmg + ' 点', 'skill');
         // 再放一次
         const dmg2 = Math.floor(eStats.atk * skill.value);
-        GameState.monsterHP -= dmg2;
+        applySkillDamage(dmg2);
         showDmgFloat(dmg2, 'skill', 'monster-entity');
         addDummyStat('skill', skill.name, dmg2);
         addLog(skill.icon + ' ' + skill.name + '! 连击! ' + dmg2 + ' 点', 'skill');
@@ -2330,7 +2680,7 @@ function castSkill(skillId) {
       addLog(skill.icon + ' ' + skill.name + '! 暴击!', 'rare');
       const killerHpPct = GameState.monsterMaxHP > 0 ? GameState.monsterHP / GameState.monsterMaxHP : 1;
       if (killerHpPct < (skill.threshold || 0.20)) { dmg = dmg * 2; addLog('目标HP<20% 伤害翻倍!', 'rare'); }
-      GameState.monsterHP -= dmg;
+      applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
       addDummyStat('skill', skill.name, dmg);
@@ -2455,7 +2805,7 @@ function rollLoot(isBoss) {
     GameState.materials.stones += 20 + Math.floor(Math.random() * 30);
     for (let i = 0; i < 5; i++) addGemToBag(2);
     for (let i = 0; i < 3; i++) addCardToBag(2);
-    GameState.materials.runes = (GameState.materials.runes || 0) + 5;
+    GameState.materials.runes = (GameState.materials.runes || 0) + 5; capRunes();
     return;
   }
 
@@ -2466,7 +2816,7 @@ function rollLoot(isBoss) {
     if (Math.random() < DROP_RATES.boss.gem) addGemToBag(2); // boss drops Lv2 gems
     if (Math.random() < DROP_RATES.boss.card) addCardToBag(1); // boss drops Lv1 cards
     if (Math.random() < DROP_RATES.boss.rune) {
-      GameState.materials.runes = (GameState.materials.runes || 0) + 1;
+      GameState.materials.runes = (GameState.materials.runes || 0) + 1; capRunes();
       addLog('获得 神秘符文!', 'loot');
     }
   } else {
@@ -2481,6 +2831,9 @@ function rollLoot(isBoss) {
 const GEM_STATS = ['atk','spd','hp','def','critDmg'];
 const GEM_NAMES = { atk:'攻击宝石', spd:'速度宝石', hp:'生命宝石', def:'防御宝石', critDmg:'爆伤宝石' };
 const GEM_ICONS = { atk:'🔴', spd:'🟡', hp:'🟢', def:'🔵', critDmg:'⚪' };
+const GEM_COLORS = { atk:'#ff4444', spd:'#ffdd44', hp:'#44ff44', def:'#4488ff', critDmg:'#cccccc' };
+const GEM_SHAPES = { 1:'●', 2:'◆', 3:'▲', 4:'■', 5:'★' };
+function getGemIcon(type, level) { return '<span style="color:' + (GEM_COLORS[type]||'#ccc') + ';font-size:14px;">' + (GEM_SHAPES[level]||'●') + '</span>'; }
 const GEM_BASE_VALUES = { atk:2, spd:4, hp:10, def:1, critDmg:0.02 }; // per level
 const GEM_VALUE_KEYS = { atk:'atk', spd:'spd', hp:'hp', def:'def', critDmg:'cdmgExtra' }; // maps to effectiveStats
 
@@ -2490,31 +2843,36 @@ const CARD_ICONS = { dmgInc:'💢', multiHit:'👊', reflect:'🌀', block:'🏰
 const CARD_BASE_VALUES = { dmgInc:0.01, multiHit:0.005, reflect:0.005, block:0.005, counter:0.005 }; // per level
 const ROMAN = ['','Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ'];
 
-function makeGem(type, level) { return { id:'gem_'+type+'_'+level+'_'+Date.now()+'_'+Math.random(), type, level, name:GEM_NAMES[type]+ROMAN[level], icon:GEM_ICONS[type], stat:GEM_VALUE_KEYS[type], statVal:GEM_BASE_VALUES[type]*level }; }
+function makeGem(type, level) { return { id:'gem_'+type+'_'+level+'_'+Date.now()+'_'+Math.random(), type, level, name:GEM_NAMES[type]+ROMAN[level], icon:getGemIcon(type, level), stat:GEM_VALUE_KEYS[type], statVal:GEM_BASE_VALUES[type]*level }; }
 function makeCard(type, level) { return { id:'card_'+type+'_'+level+'_'+Date.now()+'_'+Math.random(), type, level, name:CARD_NAMES[type]+ROMAN[level], icon:CARD_ICONS[type], stat:type, statVal:CARD_BASE_VALUES[type]*level }; }
 
 function addGemToBag(lv, forceType) {
   const t = forceType || GEM_STATS[Math.floor(Math.random()*GEM_STATS.length)];
+  const count = (GameState.gemInventory || []).filter(g => g.type === t).length;
+  if (count >= 999) return;
   const gem = makeGem(t, lv);
   GameState.gemInventory.push(gem);
   addLog('获得 💎 '+gem.name,'loot');
 }
 function addCardToBag(lv, forceType) {
   const t = forceType || CARD_STATS[Math.floor(Math.random()*CARD_STATS.length)];
+  const count = (GameState.cardInventory || []).filter(c => c.type === t).length;
+  if (count >= 999) return;
   const card = makeCard(t, lv);
   GameState.cardInventory.push(card);
   addLog('获得 🃏 '+card.name,'loot');
 }
 
 function addChest(chestType) {
-  const existing = GameState.chestInventory.find(c => c.type === chestType);
+  const areaIdx = GameState.currentArea;
+  const areaName = AREAS[areaIdx].name;
+  const existing = GameState.chestInventory.find(c => c.type === chestType && (c.area ?? 0) === areaIdx);
   if (existing) {
-    existing.count = (existing.count || 1) + 1;
+    existing.count = Math.min(999, (existing.count || 1) + 1);
   } else {
-    GameState.chestInventory.push({ type: chestType, id: 'chest_' + Date.now(), count: 1 });
+    GameState.chestInventory.push({ type: chestType, id: 'chest_' + Date.now(), count: 1, area: areaIdx });
   }
   const ct = CHEST_TYPES[chestType];
-  const areaName = AREAS[GameState.currentArea].name;
   addLog('获得 ' + ct.icon + ' ' + areaName + ct.name, 'loot');
 }
 
@@ -2632,16 +2990,12 @@ function shuffleArray(arr) {
 
 // --- Inventory Management ---
 function capStones() { GameState.materials.stones = Math.min(GameState.materials.stones, 9999); }
+function capRunes() { GameState.materials.runes = Math.min(GameState.materials.runes || 0, 999); }
 
 function addToInventory(equipment) {
   if (shouldAutoBreak(equipment)) {
     GameState.gold += 5;
     GameState.materials.stones += 1; capStones();
-    return;
-  }
-  if (GameState.inventory.length >= 999) {
-    const sellPrice = Math.floor(getSellPrice(equipment) * 0.5);
-    GameState.gold = (GameState.gold || 0) + Math.max(1, sellPrice);
     return;
   }
   GameState.inventory.push(equipment);
@@ -2652,31 +3006,32 @@ function openChest(chestId) {
   const idx = GameState.chestInventory.findIndex(c => c.id === chestId);
   if (idx === -1) return;
   const chest = GameState.chestInventory[idx];
+  const chestArea = (chest.area !== undefined ? chest.area : 0); // fallback for old saves
   if (chest.count > 1) { chest.count--; }
   else { GameState.chestInventory.splice(idx, 1); }
 
   const chestType = CHEST_TYPES[chest.type];
   for (let i = 0; i < chestType.tries; i++) {
     if (Math.random() < chestType.goldChance) {
-      const goldBase = Math.floor((50 + GameState.currentArea * 30) * (0.8 + Math.random() * 0.4));
+      const goldBase = Math.floor((50 + chestArea * 30) * (0.8 + Math.random() * 0.4));
       const goldReward = Math.floor(goldBase * (chestType.goldMult || 1));
       GameState.gold += goldReward;
       addLog('宝箱开出 ' + goldReward + ' 金币', 'gold');
     } else {
-      const qualityKey = rollQuality(GameState.currentArea);
-      const equipment = rollEquipment(GameState.currentArea, GameState.currentSubArea, qualityKey);
+      const qualityKey = rollQuality(chestArea);
+      const equipment = rollEquipment(chestArea, 0, qualityKey);
       if (equipment) {
-        const enhLv = rollChestEnhanceLevel(GameState.currentArea, chest.type);
+        const enhLv = rollChestEnhanceLevel(chestArea, chest.type);
         if (enhLv > 0) { GameState.enhanceLevels = GameState.enhanceLevels || {}; GameState.enhanceLevels[equipment.id] = enhLv; }
         addToInventory(equipment);
       }
     }
   }
   if (chestType.doubleChance && Math.random() < chestType.doubleChance) {
-    const qualityKey = rollQuality(GameState.currentArea);
-    const eq2 = rollEquipment(GameState.currentArea, GameState.currentSubArea, qualityKey);
+    const qualityKey = rollQuality(chestArea);
+    const eq2 = rollEquipment(chestArea, 0, qualityKey);
     if (eq2) {
-      const enhLv2 = rollChestEnhanceLevel(GameState.currentArea, chest.type);
+      const enhLv2 = rollChestEnhanceLevel(chestArea, chest.type);
       if (enhLv2 > 0) { GameState.enhanceLevels = GameState.enhanceLevels || {}; GameState.enhanceLevels[eq2.id] = enhLv2; }
       addToInventory(eq2); addLog('幸运! 开出额外装备', 'loot');
     }
@@ -2692,17 +3047,18 @@ function bulkOpenChests() {
   let total = 0;
   for (const chest of chestList) {
     const chestType = CHEST_TYPES[chest.type];
+    const chestArea = (chest.area !== undefined ? chest.area : 0);
     const count = chest.count || 1;
     for (let n = 0; n < count; n++) {
       for (let i = 0; i < chestType.tries; i++) {
         if (Math.random() < chestType.goldChance) {
-          const goldReward = Math.floor((50 + GameState.currentArea * 30) * (0.8 + Math.random() * 0.4));
+          const goldReward = Math.floor((50 + chestArea * 30) * (0.8 + Math.random() * 0.4));
           GameState.gold += goldReward;
         } else {
-          const qualityKey = rollQuality(GameState.currentArea);
-          const equipment = rollEquipment(GameState.currentArea, GameState.currentSubArea, qualityKey);
+          const qualityKey = rollQuality(chestArea);
+          const equipment = rollEquipment(chestArea, 0, qualityKey);
           if (equipment) {
-            const enhLv = rollChestEnhanceLevel(GameState.currentArea, chest.type);
+            const enhLv = rollChestEnhanceLevel(chestArea, chest.type);
             if (enhLv > 0) { GameState.enhanceLevels = GameState.enhanceLevels || {}; GameState.enhanceLevels[equipment.id] = enhLv; }
             addToInventory(equipment); total++;
           }
@@ -2921,21 +3277,22 @@ function batchOpen() {
   }
   for (const chest of toOpen) {
     const ct = CHEST_TYPES[chest.type];
+    const chestArea = (chest.area !== undefined ? chest.area : 0);
     const count = chest.count || 1;
     for (let n = 0; n < count; n++) {
       for (let i = 0; i < ct.tries; i++) {
         if (Math.random() < ct.goldChance) {
-          const gr = Math.floor((50 + GameState.currentArea * 30) * (0.8 + Math.random() * 0.4) * (ct.goldMult || 1));
+          const gr = Math.floor((50 + chestArea * 30) * (0.8 + Math.random() * 0.4) * (ct.goldMult || 1));
           GameState.gold += gr; goldTotal += gr;
         } else {
-          const qk = rollQuality(GameState.currentArea);
-          const eq = rollEquipment(GameState.currentArea, GameState.currentSubArea, qk);
+          const qk = rollQuality(chestArea);
+          const eq = rollEquipment(chestArea, 0, qk);
           if (eq) { addToInventory(eq); total++; }
         }
       }
       if (ct.doubleChance && Math.random() < ct.doubleChance) {
-        const qk = rollQuality(GameState.currentArea);
-        const eq2 = rollEquipment(GameState.currentArea, GameState.currentSubArea, qk);
+        const qk = rollQuality(chestArea);
+        const eq2 = rollEquipment(chestArea, 0, qk);
         if (eq2) { addToInventory(eq2); total++; }
       }
     }
@@ -3217,7 +3574,7 @@ function buyShopItem(itemId) {
   else if(item.type==='gem'){ GameState.gemInventory.push(makeGem(item.gemType, item.level)); }
   else if(item.type==='stone'){ GameState.materials.stones+=item.qty; capStones(); }
   else if(item.type==='chest'){ addChest(item.chestType); }
-  else if(item.type==='rune'){ GameState.materials.runes=(GameState.materials.runes||0)+1; }
+  else if(item.type==='rune'){ GameState.materials.runes=(GameState.materials.runes||0)+1; capRunes(); }
   if(!GameState._purchased) GameState._purchased = {};
   GameState._purchased[itemId] = true;
   showNotification('购买成功!'); saveGame(); renderAll(); renderShopModal();
@@ -3491,7 +3848,7 @@ function shouldAutoBreak(equip) {
 // --- Save/Load (v1.16) ---
 // v2.11: Editable player name
 function editPlayerName() {
-  document.getElementById('name-input').value = GameState.playerName || '主角';
+  document.getElementById('name-input').value = GameState.playerName || '小黄鸭';
   document.getElementById('name-modal').classList.add('show');
   setTimeout(() => document.getElementById('name-input').select(), 50);
 }
@@ -3504,6 +3861,20 @@ function saveName() {
     saveGame(); renderAll();
   }
   closeNameModal();
+}
+
+// v2.24: 首次欢迎
+function closeWelcomeModal() {
+  document.getElementById('welcome-modal').classList.remove('show');
+  document.getElementById('first-name-modal').classList.add('show');
+  setTimeout(() => document.getElementById('first-name-input').select(), 50);
+}
+function saveFirstName() {
+  const name = (document.getElementById('first-name-input').value || '').trim() || '小黄鸭';
+  GameState.playerName = name;
+  GameState.welcomed = true;
+  document.getElementById('first-name-modal').classList.remove('show');
+  saveGame(); renderAll();
 }
 
 function saveGame() {
@@ -3560,6 +3931,7 @@ function saveGame() {
     cloneAtkProgress: GameState.cloneAtkProgress,
     warlockCdStacks: GameState.warlockCdStacks,
     playerName: GameState.playerName,
+    welcomed: GameState.welcomed,
     // v2.10
     gems: GameState.gems,
     cards: GameState.cards,
@@ -3631,7 +4003,8 @@ function loadGame() {
     GameState.cloneTimer = data.cloneTimer || 0;
     GameState.cloneAtkProgress = data.cloneAtkProgress || 0;
     GameState.warlockCdStacks = data.warlockCdStacks || 0;
-    GameState.playerName = data.playerName || '主角';
+    GameState.playerName = data.playerName || '小黄鸭';
+    GameState.welcomed = data.welcomed !== undefined ? data.welcomed : false;
     // v2.10
     GameState.gems = data.gems || { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
     GameState.cards = data.cards || { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
@@ -3641,7 +4014,7 @@ function loadGame() {
     GameState.gemInventory = GameState.gemInventory.filter(g => g && g.type && GEM_STATS.includes(g.type)).map(g => {
       if (!g.name || !g.icon) return makeGem(g.type, Math.min(g.level || 1, 5));
       g.level = Math.min(g.level || 1, 5);
-      g.icon = GEM_ICONS[g.type] || g.icon; // v2.10: force update icon
+      g.icon = getGemIcon(g.type, g.level) || g.icon; // v2.10: force update icon
       return g;
     });
     GameState.cardInventory = GameState.cardInventory.filter(c => c && c.type && CARD_STATS.includes(c.type)).map(c => {
@@ -3654,7 +4027,7 @@ function loadGame() {
     for (const sk of ['s1','s2','s3','s4','s5','s6','s7','s8']) {
       const g = GameState.gems[sk];
       if (g && (!g.name || !g.icon || !GEM_STATS.includes(g.type))) GameState.gems[sk] = makeGem(g.type || 'atk', Math.min(g.level || 1, 5));
-      else if (g) g.icon = GEM_ICONS[g.type] || g.icon;
+      else if (g) g.icon = getGemIcon(g.type, g.level) || g.icon;
       const c = GameState.cards[sk];
       if (c && (!c.name || !c.icon || !CARD_STATS.includes(c.type))) GameState.cards[sk] = makeCard(c.type || 'dmgInc', Math.min(c.level || 1, 5));
       else if (c) c.icon = CARD_ICONS[c.type] || c.icon;
@@ -3669,6 +4042,7 @@ function loadGame() {
 
     // Materials with migration for old format
     GameState.materials = data.materials || { stones: 0, gems: {}, cards: {} };
+    capStones(); capRunes();
     // v2.10: migrate old gems/cards to new inventory (filter invalid types)
     if (data.materials && (data.materials.gems || data.materials.cards)) {
       if (!data.gemInventory) {
@@ -3751,7 +4125,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.16_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.24_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -3851,6 +4225,70 @@ function updateGoldBoostToggle() {
   else toggle.classList.remove('on');
 }
 
+// v2.16: Header toggle buttons + triple-click settings
+GameState.autoBattle = false;
+GameState.showDmgNums = true;
+GameState.showEffects = true;
+
+function toggleAuto() {
+  GameState.autoBattle = !GameState.autoBattle;
+  updateAutoToggle();
+  showNotification(GameState.autoBattle ? '⚡ 自动连战 已开启' : '⚡ 自动连战 已关闭');
+}
+function toggleLight() {
+  document.body.classList.toggle('light-mode');
+  updateLightToggle();
+  const isLight = document.body.classList.contains('light-mode');
+  showNotification(isLight ? '☀️ 已切换为亮色模式' : '🌙 已切换为暗色模式');
+}
+function toggleDmg() {
+  GameState.showDmgNums = !GameState.showDmgNums;
+  updateDmgToggle();
+  showNotification(GameState.showDmgNums ? '💥 伤害数字 已开启' : '💥 伤害数字 已关闭');
+}
+function toggleFx() {
+  GameState.showEffects = !GameState.showEffects;
+  updateFxToggle();
+  const arena = document.getElementById('battle-arena');
+  if (arena) arena.classList.toggle('no-effects', !GameState.showEffects);
+  showNotification(GameState.showEffects ? '✨ 微动效 已开启' : '✨ 微动效 已关闭');
+}
+function updateAutoToggle() {
+  const el = document.getElementById('toggle-auto');
+  if (el) { el.style.color = GameState.autoBattle ? '#1eff00' : ''; el.textContent = '⚡ 自动连战：' + (GameState.autoBattle ? '开' : '关'); }
+}
+function updateLightToggle() {
+  const el = document.getElementById('toggle-light');
+  if (el) {
+    const isLight = document.body.classList.contains('light-mode');
+    el.textContent = isLight ? '☀️ 亮色模式' : '🌙 暗色模式';
+    el.style.color = isLight ? '#ffaa00' : '';
+  }
+}
+function updateDmgToggle() {
+  const el = document.getElementById('toggle-dmg');
+  if (el) { el.style.color = GameState.showDmgNums ? '#1eff00' : ''; el.textContent = '💥 伤害数字：' + (GameState.showDmgNums ? '开' : '关'); }
+}
+function updateFxToggle() {
+  const el = document.getElementById('toggle-fx');
+  if (el) { el.style.color = GameState.showEffects ? '#1eff00' : ''; el.textContent = '✨ 微动效：' + (GameState.showEffects ? '开' : '关'); }
+}
+
+// Triple-click logo → open settings
+let _logoClickCount = 0;
+let _logoClickTimer = null;
+function onLogoClick() {
+  _logoClickCount++;
+  if (_logoClickCount === 1) {
+    _logoClickTimer = setTimeout(() => { _logoClickCount = 0; }, 2000);
+  }
+  if (_logoClickCount >= 3) {
+    clearTimeout(_logoClickTimer);
+    _logoClickCount = 0;
+    toggleSettings();
+  }
+}
+
 function resetGame() {
   localStorage.removeItem(SAVE_KEY);
 
@@ -3918,6 +4356,7 @@ function resetGame() {
   GameState.cloneTimer = 0;
   GameState.cloneAtkProgress = 0;
   GameState.warlockCdStacks = 0;
+  GameState.welcomed = false;
   GameState._shopItems = null;
   GameState._purchased = {};
   GameState._shopAreaIdx = -1;
@@ -4054,12 +4493,34 @@ function buildEquipTooltip(equip) {
   return html;
 }
 
-// showTooltip — inventory click/hover
+// showTooltip — inventory click/hover (v2.18: comparison)
 function showTooltip(equip, event) {
   const tooltip = document.getElementById('item-tooltip');
   if (!equip || !event) return;
-  tooltip.innerHTML = buildEquipTooltip(equip);
-  tooltip.style.display = 'block';
+
+  const equippedItem = equip.slot ? GameState.equipment[equip.slot] : null;
+
+  if (equippedItem) {
+    tooltip.classList.add('compare');
+    tooltip.innerHTML =
+      '<div class="tt-compare-panel tt-equipped">' +
+        '<div class="tt-compare-header">已装备</div>' +
+        buildEquipTooltip(equippedItem) +
+      '</div>' +
+      '<div class="tt-compare-vs">VS</div>' +
+      '<div class="tt-compare-panel tt-selected">' +
+        '<div class="tt-compare-header">选择中</div>' +
+        buildEquipTooltip(equip) +
+      '</div>';
+  } else {
+    tooltip.classList.remove('compare');
+    tooltip.innerHTML = buildEquipTooltip(equip);
+    tooltip.style.display = 'block';
+  }
+
+  if (equippedItem) {
+    tooltip.style.display = 'flex';
+  }
   positionTooltip(event);
 }
 
@@ -4118,14 +4579,14 @@ function showGemCardTooltip(isGem, slotKey, event) {
 function renderGemBag() {
   const bag = GameState.gemInventory || [];
   if (bag.length === 0) {
-    document.getElementById('gem-bag').innerHTML = '<div style="font-size:10px;color:var(--text-dim);text-align:center;padding:5px;">宝石背包空</div>';
+    document.getElementById('gem-bag').innerHTML = '<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:5px;">宝石背包空</div>';
     return;
   }
   // Group by type+level
   const groups = {};
   bag.forEach(g => {
     const k = g.type + '_' + g.level;
-    if (!groups[k]) groups[k] = { type:g.type, level:g.level, count:0, ids:[], name:g.name||GEM_NAMES[g.type]||'宝石', icon:GEM_ICONS[g.type]||g.icon||'💎' };
+    if (!groups[k]) groups[k] = { type:g.type, level:g.level, count:0, ids:[], name:g.name||GEM_NAMES[g.type]||'宝石', icon:g.icon||getGemIcon(g.type, g.level)||'💎' };
     groups[k].count++;
     groups[k].ids.push(g.id);
   });
@@ -4142,7 +4603,7 @@ function renderGemBag() {
 function renderCardBag() {
   const bag = GameState.cardInventory || [];
   if (bag.length === 0) {
-    document.getElementById('card-bag').innerHTML = '<div style="font-size:10px;color:var(--text-dim);text-align:center;padding:5px;">卡片册空</div>';
+    document.getElementById('card-bag').innerHTML = '<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:5px;">卡片册空</div>';
     return;
   }
   const groups = {};
@@ -4163,9 +4624,14 @@ function renderCardBag() {
 
 function positionTooltip(event) {
   const tooltip = document.getElementById('item-tooltip');
-  let left = event.clientX + 15, top = event.clientY + 10;
-  if (left + 150 > window.innerWidth) left = event.clientX - 150;
-  if (top + 220 > window.innerHeight) top = event.clientY - 220;
+  const isCompare = tooltip.classList.contains('compare');
+  const tooltipW = isCompare ? 320 : 150;
+  const tooltipH = isCompare ? 280 : 220;
+  let left = event.clientX - tooltipW / 2, top = event.clientY + 10;
+  if (left + tooltipW > window.innerWidth - 5) left = window.innerWidth - tooltipW - 5;
+  if (left < 5) left = 5;
+  if (top + tooltipH > window.innerHeight - 5) top = window.innerHeight - tooltipH - 5;
+  if (top < 5) top = 5;
   tooltip.style.left = left + 'px';
   tooltip.style.top = top + 'px';
 }
@@ -4183,13 +4649,7 @@ function renderAll() {
 
 // --- Header ---
 function renderHeader() {
-  const area = AREAS[GameState.currentArea];
-  const elName = document.getElementById('hdr-area-name');
-  const areaNum = GameState.currentArea + 1;
-  if (elName) { elName.textContent = area.name + areaNum; elName.style.color = area.color || 'var(--purple-light)'; }
-  const subNum = GameState.currentSubArea + 1;
-  const elSub = document.getElementById('hdr-sub-name');
-  if (elSub) elSub.textContent = areaNum + '-' + subNum;
+  // Header area/sub-area names moved to battle panel
 }
 
 // v2.10: 区域背景切换
@@ -4216,7 +4676,7 @@ function renderLeftPanel() {
   const fmtVal = (v) => typeof v === 'number' ? Math.floor(v) : v;
   const fmtPct = (v) => ((v || 0) * 100).toFixed(1) + '%';
 
-  document.getElementById('char-name-display').textContent = GameState.playerName || '主角';
+  document.getElementById('char-name-display').textContent = GameState.playerName || '小黄鸭';
   document.getElementById('lvl-display').textContent = GameState.playerLevel;
   const cInfo = getClassName();
   document.getElementById('class-display').textContent = cInfo.name;
@@ -4259,11 +4719,11 @@ function renderLeftPanel() {
     '<div class="stat-mini" title="减少受到的物理伤害，通过减伤公式计算"><span class="sm-label">防御</span><span class="sm-val">' + fmtVal(eStats.def) + '</span></div>' +
     '<div class="stat-mini" title="格挡成功时伤害减半，上限75%"><span class="sm-label">格挡</span><span class="sm-val">' + fmtPct(eStats.block) + '</span></div>' +
     '<div class="stat-mini" title="最终受到的伤害减少一定比例，上限75%"><span class="sm-label">减伤</span><span class="sm-val">' + fmtPct(eStats.dmgReduc) + '</span></div>' +
-    '<div class="stat-mini" title="造成的伤害按比例恢复自身HP，上限25%"><span class="sm-label">吸血</span><span class="sm-val">' + fmtPct(eStats.lifeSteal) + '</span></div>' +
-    '<div class="stat-mini" title="概率完全闪避本次攻击，上限60%"><span class="sm-label">闪避</span><span class="sm-val">' + fmtPct(eStats.dodge) + '</span></div>' +
-    '<div class="stat-mini" title="受到伤害的百分比反弹给攻击者，上限50%"><span class="sm-label">反伤</span><span class="sm-val">' + fmtPct(eStats.reflect) + '</span></div>';
+    '<div class="stat-mini" title="概率完全闪避本次攻击，上限60%"><span class="sm-label">闪避</span><span class="sm-val">' + fmtPct(eStats.dodge) + '</span></div>';
 
   document.getElementById('rare-stats-grid').innerHTML =
+    '<div class="stat-mini" title="造成的伤害按比例恢复自身HP，上限25%"><span class="sm-label">吸血</span><span class="sm-val">' + fmtPct(eStats.lifeSteal) + '</span></div>' +
+    '<div class="stat-mini" title="受到伤害的百分比反弹给攻击者，上限50%"><span class="sm-label">反伤</span><span class="sm-val">' + fmtPct(eStats.reflect) + '</span></div>' +
     '<div class="stat-mini" title="击杀怪物获得的经验增加"><span class="sm-label">经验加成</span><span class="sm-val">' + fmtPct(eStats.expBonus) + '</span></div>' +
     '<div class="stat-mini" title="击杀怪物获得的金币增加"><span class="sm-label">金币加成</span><span class="sm-val">' + fmtPct(eStats.goldBonus) + '</span></div>' +
     '<div class="stat-mini" title="宝箱和材料掉落概率增加（与基础掉率加算）"><span class="sm-label">掉落加成</span><span class="sm-val">' + fmtPct(eStats.dropBonus) + '</span></div>';
@@ -4307,14 +4767,14 @@ function renderLeftPanel() {
     slotsHtml = SLOT_ORDER.map((sk, i) => {
       const gem = GameState.gems[sk];
       if (gem) {
-        return '<div class="equip-slot-mini filled" style="border-color:' + GEM_ICONS[gem.type] + ';" ' +
+        return '<div class="equip-slot-mini filled" style="border-color:' + (GEM_COLORS[gem.type]||'#ccc') + ';" ' +
           'onclick="unequipGem(\'' + sk + '\')" ' +
           'onmouseenter="showGemCardTooltip(true,\'' + sk + '\',event)" onmouseleave="hideEquipTooltip()">' +
-          '<span class="es-icon">' + (GEM_ICONS[gem.type] || gem.icon || '💎') + '</span>' +
+          '<span class="es-icon">' + (gem.icon || getGemIcon(gem.type, gem.level) || '💎') + '</span>' +
           '<div class="es-info"><div class="es-name">' + (gem.name || GEM_NAMES[gem.type] || '宝石') + '</div>' +
           '<div class="es-stat">' + (gem.type==='critDmg'?'+'+(gem.statVal*100).toFixed(1)+'%':'+'+Math.floor(gem.statVal)) + '</div></div></div>';
       }
-      return '<div class="equip-slot-mini" style="font-size:10px;color:#5a4a7e;justify-content:center;">💎 空槽位' + SLOT_ICONS[i] + '</div>';
+      return '<div class="equip-slot-mini" style="font-size:12px;color:#5a4a7e;justify-content:center;">💎 空槽位' + SLOT_ICONS[i] + '</div>';
     }).join('');
   } else if (tab === 'card') {
     slotsHtml = SLOT_ORDER.map((sk, i) => {
@@ -4327,7 +4787,7 @@ function renderLeftPanel() {
           '<div class="es-info"><div class="es-name">' + (card.name || CARD_NAMES[card.type] || '卡片') + '</div>' +
           '<div class="es-stat">+' + (card.statVal*100).toFixed(1) + '%</div></div></div>';
       }
-      return '<div class="equip-slot-mini" style="font-size:10px;color:#5a4a7e;justify-content:center;">🃏 空槽位' + SLOT_ICONS[i] + '</div>';
+      return '<div class="equip-slot-mini" style="font-size:12px;color:#5a4a7e;justify-content:center;">🃏 空槽位' + SLOT_ICONS[i] + '</div>';
     }).join('');
   }
 
@@ -4354,9 +4814,10 @@ function renderBattlePanel() {
 
   // Dummy mode UI
   if (GameState.inDummyMode) {
-    document.getElementById('battle-region-name').textContent = '🎯 训练场';
+    document.getElementById('battle-area-name').textContent = '🎯 训练场';
+    document.getElementById('battle-sub-name').textContent = '木桩';
     document.getElementById('kill-info').textContent = '木桩';
-    document.getElementById('vs-player-name').textContent = GameState.playerName || '主角';
+    document.getElementById('vs-player-name').textContent = GameState.playerName || '小黄鸭';
     document.getElementById('vs-player-hp-fill').style.width = '100%';
     document.getElementById('vs-player-hp-text').textContent = Math.floor(GameState.playerHP).toLocaleString() + '/' + GameState.playerMaxHP.toLocaleString();
     document.getElementById('vs-monster-hp-fill').style.width = (GameState.monsterHP / GameState.monsterMaxHP * 100) + '%';
@@ -4378,13 +4839,46 @@ function renderBattlePanel() {
     return;
   }
 
+  // Tower mode UI
+  if (GameState.inTowerMode) {
+    document.getElementById('battle-area-name').textContent = '🗼 无尽之塔';
+    document.getElementById('battle-area-name').style.color = '#ffd700';
+    document.getElementById('battle-sub-name').textContent = '杰弗里 ×' + GameState.towerCounter;
+    document.getElementById('kill-info').textContent = '杰弗里';
+    document.getElementById('vs-player-name').textContent = GameState.playerName || '小黄鸭';
+    document.getElementById('vs-player-hp-fill').style.width = (GameState.playerHP / GameState.playerMaxHP * 100) + '%';
+    document.getElementById('vs-player-hp-text').textContent = Math.floor(GameState.playerHP).toLocaleString() + '/' + GameState.playerMaxHP.toLocaleString();
+    document.getElementById('vs-monster-hp-fill').style.width = (GameState.monsterHP / GameState.monsterMaxHP * 100) + '%';
+    document.getElementById('vs-monster-hp-text').textContent = Math.floor(GameState.monsterHP).toLocaleString() + '/' + Math.floor(GameState.monsterMaxHP).toLocaleString();
+    document.getElementById('vs-monster-name').textContent = '杰弗里';
+    document.getElementById('monster-sprite').textContent = '🐢';
+    document.getElementById('monster-sprite').className = 'entity-sprite boss-sprite';
+    document.getElementById('player-sprite').textContent = '🐤';
+    document.getElementById('clone-entity').style.display = GameState.cloneActive ? 'flex' : 'none';
+    if (GameState.cloneActive && GameState.cloneTimer > 0) {
+      document.getElementById('clone-sprite').textContent = '👥';
+    }
+    document.getElementById('btn-boss').style.display = 'inline-block';
+    document.getElementById('btn-boss').textContent = '↩️ 退出';
+    document.getElementById('btn-boss').disabled = false;
+    document.getElementById('btn-boss').style.opacity = '1';
+    document.getElementById('btn-boss').onclick = function(){ endTowerMode(); };
+    document.getElementById('btn-next').style.display = 'none';
+    return;
+  }
+
   const region = getCurrentRegion();
   const monster = getCurrentMonster();
   const eStats = getEffectiveStats();
 
-  document.getElementById('battle-region-name').textContent = '📍 ' + AREAS[GameState.currentArea].name + (GameState.currentArea+1) + '-' + (GameState.currentSubArea+1);
+  const area = AREAS[GameState.currentArea];
+  const areaNum = GameState.currentArea + 1;
+  const subNum = GameState.currentSubArea + 1;
+  document.getElementById('battle-area-name').textContent = area.name + areaNum;
+  document.getElementById('battle-area-name').style.color = area.color || 'var(--purple-light)';
+  document.getElementById('battle-sub-name').textContent = areaNum + '-' + subNum;
   document.getElementById('kill-info').textContent = GameState.areaKills + '/' + KILLS_TO_UNLOCK_BOSS;
-  document.getElementById('vs-player-name').textContent = GameState.playerName || '主角';
+  document.getElementById('vs-player-name').textContent = GameState.playerName || '小黄鸭';
 
   const mSprite = document.getElementById('monster-sprite');
   mSprite.classList.remove('boss-sprite', 'monster-sprite');
@@ -4453,12 +4947,17 @@ function switchRightTab(tab) {
 }
 // --- Dummy Training ---
 function addDummyStat(category, name, amount) {
-  if (!GameState.inDummyMode || !GameState.dummyStats || amount <= 0) return;
-  const bucket = GameState.dummyStats[category];
-  if (typeof bucket === 'object' && bucket !== null) {
-    const entry = bucket[name] || (bucket[name] = { dmg: 0, count: 0 });
-    entry.dmg += amount;
-    entry.count++;
+  // Dummy mode tracking
+  if (GameState.inDummyMode && GameState.dummyStats && amount > 0) {
+    const bucket = GameState.dummyStats[category];
+    if (typeof bucket === 'object' && bucket !== null) {
+      if (category === 'reflect') { bucket.dmg += amount; bucket.count++; }
+      else { const entry = bucket[name] || (bucket[name] = { dmg: 0, count: 0 }); entry.dmg += amount; entry.count++; }
+    }
+  }
+  // Tower mode tracking
+  if (GameState.inTowerMode && GameState.towerStats && amount > 0) {
+    addTowerStat(category, name, amount);
   }
 }
 
@@ -4620,6 +5119,258 @@ function showDummyResult() {
   document.getElementById('dummy-result-body').innerHTML = html;
   document.getElementById('dummy-result-modal').classList.add('show');
 }
+/* ===== 🗼 无尽之塔 v2.21 ===== */
+function applySkillDamage(amount) {
+  if (GameState.inTowerMode && Date.now() < GameState.jefferyInvincibleUntil) return;
+  if (GameState.inTowerMode && GameState.towerCounter >= 900 && Math.random() < 0.10) {
+    addLog('杰弗里净化了技能伤害!', 'info');
+    showDmgFloat(1, 'reflect', 'monster-entity');
+    GameState.monsterHP -= 1;
+    return;
+  }
+  GameState.monsterHP -= amount;
+}
+const TOWER_BASE_STATS = (() => { const raw = 660 * (1 + 4 * 0.15); return { hp: Math.floor(raw * 5), atk: Math.floor(raw * 1.6), def: Math.floor(raw * 0.45), spd: 108, gold: 0, exp: 0, isBoss: true }; })();
+const TOWER_MILESTONES = {
+  100: { key:'reflect', pct:0.10, name:'反伤' },
+  200: { key:'dmgReduc', pct:0.10, name:'减伤' },
+  300: { key:'multiHit', pct:0.10, name:'连击' },
+  400: { key:'lifeSteal', pct:0.10, name:'吸血' },
+  500: { key:'counter', pct:0.10, name:'反击' },
+  600: { key:'block', pct:0.10, name:'格挡' },
+  700: { key:'dodge', pct:0.10, name:'闪避' },
+  800: { key:'immuneNormalPct', pct:0.10, name:'普攻净化' },
+  900: { key:'immuneSkillPct', pct:0.10, name:'技能净化' },
+};
+
+function startTowerMode() {
+  if (GameState.inDummyMode) return;
+  if (GameState.inTowerMode) return;
+  GameState.inTowerMode = true;
+  GameState.savedArea = {
+    area: GameState.currentArea, subArea: GameState.currentSubArea, fightingBoss: GameState.fightingBoss,
+    areaKills: GameState.areaKills, bossUnlocked: GameState.bossUnlocked
+  };
+  GameState.towerCounter = 0;
+  GameState.jefferyInvincibleUntil = 0;
+  GameState.towerStartTime = Date.now();
+  GameState.towerStats = {
+    normal: {}, reflect: {dmg:0,count:0}, trait: {}, skill: {}, passive: {}, godSkill: {}
+  };
+  // Spawn Jeffery
+  const s = TOWER_BASE_STATS;
+  GameState.monsterName = '杰弗里';
+  GameState.monsterStats = { hp: s.hp, atk: s.atk, def: s.def, spd: s.spd, gold: 0, exp: 0, isBoss: true };
+  GameState.monsterHP = s.hp;
+  GameState.monsterMaxHP = s.hp;
+  GameState.isBossMonster = true;
+  GameState.fightingBoss = true;
+  GameState.playerHP = getEffectiveStats().hp;
+  GameState.playerMaxHP = getEffectiveStats().hp;
+  GameState.monsterAtkProgress = 0;
+  GameState.playerAtkProgress = 0;
+  // Reset per-fight state
+  GameState.trueDmgStacks = 0; GameState.nextSkillMult = 0; GameState.mageDmgIncStacks = 0;
+  GameState.dodgeFirstAttack = true; GameState.ninjaSpdStacks = 0;
+  GameState.counterStacks = 0; GameState.pierceStacks = 0;
+  GameState.warlockCdStacks = 0; GameState.rampUpStacks = 0;
+  // God skill activation
+  const skillPoints = {};
+  for (const slot of Object.keys(GameState.equipment)) {
+    const eq = GameState.equipment[slot];
+    if (eq && eq.godSkill) { const n = eq.godSkill.name; skillPoints[n] = (skillPoints[n]||0) + (eq.godSkill.points||1); }
+  }
+  const eStats2 = getEffectiveStats();
+  GameState.immortalReady = false;
+  for (const [name, pts] of Object.entries(skillPoints)) {
+    if (pts >= 4) {
+      if (name === '岿然不动') { GameState.playerShield = eStats2.hp; }
+      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); GameState.monsterHP -= od; showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
+      if (name === '不死金身') { GameState.immortalReady = true; }
+    }
+  }
+  addLog('进入无尽之塔! 杰弗里出现了! 🐢', 'boss');
+  renderAll();
+}
+
+function endTowerMode() {
+  if (!GameState.inTowerMode) return;
+  GameState.inTowerMode = false;
+  // Restore area
+  if (GameState.savedArea) {
+    GameState.currentArea = GameState.savedArea.area;
+    GameState.currentSubArea = GameState.savedArea.subArea;
+    GameState.fightingBoss = GameState.savedArea.fightingBoss || false;
+    GameState.areaKills = GameState.savedArea.areaKills || 0;
+    GameState.bossUnlocked = GameState.savedArea.bossUnlocked || false;
+    GameState.savedArea = null;
+  }
+  GameState.towerCounter = 0;
+  GameState.jefferyInvincibleUntil = 0;
+  GameState.towerStats = null;
+  GameState.skillCooldowns = {};
+  startCombat();
+  renderAll();
+}
+
+function applyTowerMilestones(counter) {
+  const stats = GameState.monsterStats;
+  for (const [level, info] of Object.entries(TOWER_MILESTONES)) {
+    if (counter >= parseInt(level)) {
+      if (!stats._milestones) stats._milestones = {};
+      if (!stats._milestones[info.key]) {
+        stats._milestones[info.key] = true;
+        addLog('杰弗里获得 ' + info.name + ' +' + (info.pct*100) + '%!', 'boss');
+      }
+    }
+  }
+}
+
+function getTowerJefferyStats() {
+  const s = TOWER_BASE_STATS;
+  const c = GameState.towerCounter;
+  const mult = 1 + c * 0.03;
+  const stats = {
+    hp: Math.floor(s.hp * mult),
+    atk: Math.floor(s.atk * mult),
+    def: Math.floor(s.def * mult),
+    spd: Math.floor(s.spd * mult),
+    gold: 0, exp: 0, isBoss: true
+  };
+  // Milestone bonuses
+  if (c >= 100) stats.reflect = 0.10;
+  if (c >= 200) stats.dmgReduc = 0.10;
+  if (c >= 300) stats.multiHit = 0.10;
+  if (c >= 400) stats.lifeSteal = 0.10;
+  if (c >= 500) stats.counter = 0.10;
+  if (c >= 600) stats.block = 0.10;
+  if (c >= 700) stats.dodge = 0.10;
+  if (c >= 800) stats.immuneNormalPct = 0.10;
+  if (c >= 900) stats.immuneSkillPct = 0.10;
+  return stats;
+}
+
+function towerReviveJeffery() {
+  GameState.towerCounter++;
+  if (GameState.towerCounter >= 1000) {
+    // Jeffery truly dies at 1000
+    addLog('杰弗里被击败了! 共击杀 ' + GameState.towerCounter + ' 次!', 'boss');
+    endTowerModeShowResult(true);
+    return;
+  }
+  const newStats = getTowerJefferyStats();
+  GameState.monsterStats = newStats;
+  GameState.monsterHP = newStats.hp;
+  GameState.monsterMaxHP = newStats.hp;
+  GameState.jefferyInvincibleUntil = Date.now() + 1000;
+  GameState.monsterAtkProgress = 0;
+  applyTowerMilestones(GameState.towerCounter);
+  triggerMonsterDeathAnimation();
+  addLog('杰弗里倒下第 ' + GameState.towerCounter + ' 次，进入无敌状态1秒!', 'boss');
+  showNotification('杰弗里 ×' + GameState.towerCounter);
+}
+
+function endTowerModeShowResult(won) {
+  GameState.inTowerMode = false;
+  showTowerResult(won);
+  // Restore area
+  if (GameState.savedArea) {
+    GameState.currentArea = GameState.savedArea.area;
+    GameState.currentSubArea = GameState.savedArea.subArea;
+    GameState.fightingBoss = GameState.savedArea.fightingBoss || false;
+    GameState.areaKills = GameState.savedArea.areaKills || 0;
+    GameState.bossUnlocked = GameState.savedArea.bossUnlocked || false;
+    GameState.savedArea = null;
+  }
+  GameState.skillCooldowns = {};
+  GameState.playerHP = getEffectiveStats().hp;
+  GameState.playerMaxHP = GameState.playerHP;
+  startCombat();
+  renderAll();
+}
+
+function addTowerStat(category, name, amount) {
+  if (!GameState.inTowerMode || !GameState.towerStats || amount <= 0) return;
+  const bucket = GameState.towerStats[category];
+  if (!bucket) return;
+  if (bucket === GameState.towerStats.reflect) { bucket.dmg += amount; bucket.count++; }
+  else { if (!bucket[name]) bucket[name] = { dmg: 0, count: 0 }; bucket[name].dmg += amount; bucket[name].count++; }
+}
+
+function showTowerResult(won) {
+  const s = GameState.towerStats;
+  const elapsed = (Date.now() - GameState.towerStartTime) / 1000;
+  const counter = GameState.towerCounter;
+
+  const sumObj = (obj) => Object.values(obj || {}).reduce((a, v) => a + (v.dmg || 0), 0);
+  const normalTotal = sumObj(s.normal);
+  const reflectTotal = (s.reflect && s.reflect.dmg) || 0;
+  const traitTotal = sumObj(s.trait);
+  const skillTotal = sumObj(s.skill);
+  const passiveTotal = sumObj(s.passive);
+  const godSkillTotal = sumObj(s.godSkill);
+  const total = normalTotal + reflectTotal + traitTotal + skillTotal + passiveTotal + godSkillTotal;
+  const dps = elapsed > 0 ? Math.floor(total / elapsed) : 0;
+  const mins = Math.floor(elapsed / 60);
+  const secs = Math.floor(elapsed % 60);
+  const timeStr = mins > 0 ? mins + '分' + secs + '秒' : secs + '秒';
+  const fmt = (n) => n ? Math.floor(n).toLocaleString() : '0';
+
+  const catRow = (color, label, total) =>
+    '<div class="dr-row dr-main" style="color:' + color + '">' +
+    '<span>' + label + '</span><span>' + fmt(total) + '</span></div>';
+
+  const subRow = (color, name, entry) =>
+    '<div class="dr-sub">' +
+    '<span class="dr-sub-col1">' + name + '</span>' +
+    '<span class="dr-sub-col2">' + fmt(entry.count) + '次</span>' +
+    '<span class="dr-sub-col3" style="color:' + color + '">' + fmt(entry.dmg) + '</span></div>';
+
+  const subRows = (color, entries) => {
+    if (!entries) return '';
+    let h = '';
+    for (const [name, v] of Object.entries(entries)) {
+      if (v && v.dmg > 0) h += subRow(color, name, v);
+    }
+    return h;
+  };
+
+  const refl = s.reflect; const reflDmg = refl ? (refl.dmg || 0) : 0; const reflCt = refl ? (refl.count || 0) : 0;
+
+  // Colors matching combat float (match dummy)
+  const C = { n:'#ffffff', r:'#fb923c', t:'#f97316', s:'#60a5fa', p:'#c084fc', g:'#ffd700' };
+
+  const playerName = GameState.playerName || '小黄鸭';
+  const titleText = won ? '超级龟龟，不过如此' : playerName + '，不过如此';
+  const titleColor = won ? '#ffd700' : '#ff6666';
+
+  const html = '<div class="dr-card">' +
+    '<div class="dr-title" style="color:' + titleColor + ';">' + titleText + '</div>' +
+    '<div class="dr-meta">共击杀' + counter + '次 · ' + timeStr + ' · DPS ' + fmt(dps) + '</div>' +
+    catRow(C.n, '普攻伤害合计', normalTotal) +
+    subRows(C.n, s.normal) +
+    catRow(C.r, '反伤伤害合计', reflDmg) +
+    (reflDmg > 0 ? subRow(C.r, '反伤', { dmg: reflDmg, count: reflCt }) : '') +
+    '<div class="dr-sep"></div>' +
+    catRow(C.t, '特性伤害合计', traitTotal) +
+    subRows(C.t, s.trait) +
+    '<div class="dr-sep"></div>' +
+    catRow(C.s, '技能伤害合计', skillTotal) +
+    subRows(C.s, s.skill) +
+    '<div class="dr-sep"></div>' +
+    catRow(C.p, '被动伤害合计', passiveTotal) +
+    subRows(C.p, s.passive) +
+    '<div class="dr-sep"></div>' +
+    catRow(C.g, '神技伤害合计', godSkillTotal) +
+    subRows(C.g, s.godSkill) +
+    '<div class="dr-sep"></div>' +
+    '<div class="dr-row dr-total"><span>伤害总计</span><span>' + fmt(total) + '</span></div>' +
+    '</div>' +
+    '<button class="btn btn-sm" style="margin-top:10px;" onclick="document.getElementById(\'tower-result-modal\').classList.remove(\'show\')">关闭</button>';
+
+  document.getElementById('tower-result-body').innerHTML = html;
+  document.getElementById('tower-result-modal').classList.add('show');
+}
 
 function renderClassPanel() {
   const tabsContainer = document.getElementById('class-tabs');
@@ -4731,9 +5482,34 @@ function renderClassTree() {
     let canUnlock = true;
     if (i > 0 && !unlocks[i - 1]) canUnlock = false;
 
-    treeHtml += '<div class="unlock-node' + (unlocked ? ' unlocked' : '') + '">';
+    // compute equipped status for green border
+    let equipped = false;
+    if (ni.type === 'trait') {
+      equipped = GameState.equippedTraits.includes(GameState.selectedClass);
+    } else if (ni.type === 'active') {
+      const aIdx = getActiveIdxFromNode(i);
+      if (aIdx !== null) equipped = GameState.equippedActives.includes(GameState.selectedClass + '_a_' + aIdx);
+    } else if (ni.type === 'passive') {
+      const pIdx = getPassiveIdxFromNode(i);
+      if (pIdx !== null) equipped = GameState.equippedPassives.includes(GameState.selectedClass + '_p_' + pIdx);
+    }
+
+    treeHtml += '<div class="unlock-node' + (unlocked ? ' unlocked' : '') + (equipped ? ' equipped' : '') + '">';
     treeHtml += '<div class="un-info"><span class="un-icon">' + ni.icon + '</span>';
-    treeHtml += '<div><div class="un-name">' + ni.name + '</div><div class="un-desc">' + ni.desc + '</div></div></div>';
+    let prefix = '';
+    let nameStyle = '';
+    if (ni.type === 'active') {
+      const skill = clsData.actives[ni.skillIdx];
+      const dmgEffects = ['damage','multi','ignoreDef','hpCost','defDamage','executeSkill','critRepeat','critSkill','spdDamage','mark','stealChest'];
+      prefix = (skill && dmgEffects.includes(skill.effect)) ? '伤害技能：' : '状态技能：';
+    } else if (ni.type === 'passive') {
+      prefix = '被动技能：';
+      nameStyle = 'font-style:italic;';
+    } else if (ni.type === 'trait') {
+      prefix = '职业特性：';
+      nameStyle = 'background:linear-gradient(90deg, #ff4444, #ff8800, #ffdd00, #44ff44, #4488ff, #8844ff, #ff44ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;';
+    }
+    treeHtml += '<div><div class="un-name"' + (nameStyle ? ' style="' + nameStyle + '"' : '') + '>' + prefix + ni.name + '</div><div class="un-desc">' + ni.desc + '</div></div></div>';
     if (!unlocked) {
       const costStr = typeof cost === 'number' ? cost.toLocaleString() + '金' : (cost === 'rune2' ? '2🔷' : '3🔷');
       treeHtml += '<span class="un-cost">' + costStr + '</span>';
@@ -4742,27 +5518,27 @@ function renderClassTree() {
       treeHtml += '<span style="color:var(--green);">✓</span>';
       if (ni.type === 'trait') {
         const equipped = GameState.equippedTraits.includes(GameState.selectedClass);
-        treeHtml += '<button class="un-btn" style="font-size:8px;" onclick="equipTrait(\'' + GameState.selectedClass + '\')">' + (equipped ? '卸下' : '装备') + '</button>';
+        treeHtml += '<button class="un-btn" style="font-size:8px;' + (equipped ? 'background:#555;color:#aaa;' : '') + '" onclick="equipTrait(\'' + GameState.selectedClass + '\')">' + (equipped ? '卸下' : '装备') + '</button>';
       } else if (ni.type === 'active') {
         const aIdx = getActiveIdxFromNode(i);
         if (aIdx !== null) {
           const skillId = GameState.selectedClass + '_a_' + aIdx;
           const equipped = GameState.equippedActives.includes(skillId);
-          treeHtml += '<button class="un-btn" style="font-size:8px;" onclick="equipActive(\'' + GameState.selectedClass + '\',' + aIdx + ')">' + (equipped ? '卸下' : '装备') + '</button>';
+          treeHtml += '<button class="un-btn" style="font-size:8px;' + (equipped ? 'background:#555;color:#aaa;' : '') + '" onclick="equipActive(\'' + GameState.selectedClass + '\',' + aIdx + ')">' + (equipped ? '卸下' : '装备') + '</button>';
         }
       } else if (ni.type === 'passive') {
         const pIdx = getPassiveIdxFromNode(i);
         if (pIdx !== null) {
           const passId = GameState.selectedClass + '_p_' + pIdx;
           const equipped = GameState.equippedPassives.includes(passId);
-          treeHtml += '<button class="un-btn" style="font-size:8px;" onclick="equipPassive(\'' + GameState.selectedClass + '\',' + pIdx + ')">' + (equipped ? '卸下' : '装备') + '</button>';
+          treeHtml += '<button class="un-btn" style="font-size:8px;' + (equipped ? 'background:#555;color:#aaa;' : '') + '" onclick="equipPassive(\'' + GameState.selectedClass + '\',' + pIdx + ')">' + (equipped ? '卸下' : '装备') + '</button>';
         }
       }
     }
     treeHtml += '</div>';
   }
 
-  treeHtml += '<div style="border-top:1px solid var(--border-divider);margin:4px 0;padding-top:4px;font-size:10px;color:var(--text-dim);">已装备: 特性 ' + GameState.equippedTraits.length + '/2 | 主动 ' + GameState.equippedActives.length + '/4 | 被动 ' + GameState.equippedPassives.length + '/4</div>';
+  treeHtml += '<div style="border-top:1px solid var(--border-divider);margin:4px 0;padding-top:4px;font-size:12px;color:var(--text-dim);">已装备: 特性 ' + GameState.equippedTraits.length + '/2 | 主动 ' + GameState.equippedActives.length + '/4 | 被动 ' + GameState.equippedPassives.length + '/4</div>';
   treeArea.innerHTML = treeHtml;
 }
 
@@ -4828,7 +5604,7 @@ function renderMergeModal() {
     const count = (GameState.gemInventory || []).filter(g => g.type === t).length;
     const checked = MERGE_CHECKS.gems[t] !== false; // default true
     gemHtml += '<label class="merge-check-row"><input type="checkbox" ' + (checked ? 'checked' : '') + ' onchange="MERGE_CHECKS.gems[\'' + t + '\']=this.checked">' +
-      GEM_ICONS[t] + ' ' + GEM_NAMES[t] + '<span class="merge-count">×' + count + '</span></label>';
+      getGemIcon(t, 1) + ' ' + GEM_NAMES[t] + '<span class="merge-count">×' + count + '</span></label>';
   }
   document.getElementById('merge-gem-checks').innerHTML = gemHtml;
   // Card checks
@@ -4929,13 +5705,13 @@ function renderEnhanceModal() {
     html += '<div style="display:flex;align-items:center;gap:4px;">';
     html += '<span>' + eq.icon + '</span>';
     html += '<span style="color:' + quality.color + ';font-weight:bold;">' + (lv > 0 ? '+' + lv + ' ' : '') + eq.name + '</span>';
-    html += '<span style="color:#aaa;font-size:10px;">+' + lv + '</span>';
+    html += '<span style="color:#aaa;font-size:12px;">+' + lv + '</span>';
     html += '</div>';
     html += '<div style="display:flex;align-items:center;gap:4px;">';
     html += '<span style="color:var(--text-dim);">' + nextCost.stones + ' 石</span>';
     html += '<span style="color:' + (rate >= 1 ? '#1eff00' : rate >= 0.5 ? '#ffaa00' : '#ff4444') + ';">' + Math.floor(rate*100) + '%</span>';
     html += '<button class="btn btn-sm" style="background:var(--purple);color:#fff;padding:1px 8px;" onclick="doEnhance(\'' + eq.id + '\')">强化</button>';
-    if (eq.quality === 'mythic' && eq.godSkill) html += '<button class="btn btn-sm" style="background:#ffd700;color:#000;padding:1px 4px;font-size:9px;" onclick="rerollGodSkill(\'' + eq.id + '\')" title="消耗1符文重随机神技">🔷</button>';
+    if (eq.quality === 'mythic' && eq.godSkill) html += '<button class="btn btn-sm" style="background:#ffd700;color:#000;padding:1px 4px;font-size:12px;" onclick="rerollGodSkill(\'' + eq.id + '\')" title="消耗1符文重随机神技">🔷</button>';
     html += '</div></div>';
   }
   document.getElementById('enhance-list').innerHTML = html;
@@ -4948,7 +5724,7 @@ function renderInventoryGrid() {
     const el = document.getElementById(containerId);
     if (!el) return;
     const qs = [{k:'common',n:'白'},{k:'fine',n:'绿'},{k:'rare',n:'蓝'},{k:'epic',n:'紫'},{k:'legendary',n:'橙'},{k:'ancient',n:'红'},{k:'mythic',n:'彩'}];
-    el.innerHTML = qs.map(q => '<label style="color:' + QUALITIES[q.k].color + ';cursor:pointer;font-size:9px;"><input type="checkbox" ' + (stateObj[q.k]?'checked':'') + ' onchange="this.blur();' + (containerId==='sell-qs'?'SELL_CHECKS':'BREAK_CHECKS') + '[\'' + q.k + '\']=this.checked;">' + q.n + '</label>').join('');
+    el.innerHTML = qs.map(q => '<label style="color:' + QUALITIES[q.k].color + ';cursor:pointer;font-size:13px;"><input type="checkbox" ' + (stateObj[q.k]?'checked':'') + ' onchange="this.blur();' + (containerId==='sell-qs'?'SELL_CHECKS':'BREAK_CHECKS') + '[\'' + q.k + '\']=this.checked;">' + q.n + '</label>').join('');
   }
   renderQCheckboxes('break-qs', BREAK_CHECKS);
 
@@ -4985,11 +5761,12 @@ function renderInventoryGrid() {
     for (const chest of GameState.chestInventory) {
       const chestType = CHEST_TYPES[chest.type];
       const count = chest.count || 1;
-      const areaName = AREAS[GameState.currentArea].name;
+      const areaIdx = (chest.area !== undefined ? chest.area : 0);
+      const areaName = AREAS[areaIdx] ? AREAS[areaIdx].name : '村庄';
       slotItems.push({
         html: '<div class="inv-slot" style="border:2px solid ' + (chestType.borderColor || chestType.color) + ';" ' +
           'oncontextmenu="event.preventDefault(); openChest(\'' + chest.id + '\');" ' +
-          'onclick="event.preventDefault();" title="右键打开: ' + areaName + chestType.name + ' ×' + count + '">' +
+          'onclick="event.preventDefault();" title="右键打开: ' + areaName + '·' + chestType.name + ' ×' + count + '">' +
           '<div class="inv-quality-line" style="background:' + chestType.color + ';"></div>' +
           '<div class="inv-icon">' + chestType.icon + '</div>' +
           '<div class="inv-count">×' + count + '</div></div>'
@@ -5002,7 +5779,7 @@ function renderInventoryGrid() {
     const gemGroups = {};
     (GameState.gemInventory || []).forEach(g => {
       const k = g.type + '_' + g.level;
-      if (!gemGroups[k]) gemGroups[k] = { type:g.type, level:g.level, count:0, ids:[], name:g.name||GEM_NAMES[g.type]||'宝石', icon:GEM_ICONS[g.type]||g.icon||'💎' };
+      if (!gemGroups[k]) gemGroups[k] = { type:g.type, level:g.level, count:0, ids:[], name:g.name||GEM_NAMES[g.type]||'宝石', icon:g.icon||getGemIcon(g.type, g.level)||'💎' };
       gemGroups[k].count++;
       gemGroups[k].ids.push(g.id);
     });
@@ -5148,7 +5925,7 @@ function showEquipFixedDetail(equipId) {
     const statLabels = { atk:'攻击力', hp:'生命值', def:'防御力', spd:'速度', crit:'暴击率', cdmg:'暴击伤害' };
     const enhanceMulti = 1 + lv * 0.02;
     const val = Math.floor(equip.baseStatValue * enhanceMulti);
-    html += '<div style="font-size:11px;color:var(--purple-light);">' + (statLabels[equip.baseStatName] || equip.baseStatName) + ' +' + val + (lv > 0 ? ' <span style="color:#ffd700;font-size:9px;">(强化+' + lv + ')</span>' : '') + '</div>';
+    html += '<div style="font-size:11px;color:var(--purple-light);">' + (statLabels[equip.baseStatName] || equip.baseStatName) + ' +' + val + (lv > 0 ? ' <span style="color:#ffd700;font-size:12px;">(强化+' + lv + ')</span>' : '') + '</div>';
   }
   if (equip.subStatKey && equip.subStatValue) {
     const subLabels = { atk:'攻击力', spd:'速度', def:'防御力', hp:'生命值', crit:'暴击率', cdmg:'暴击伤害' };
@@ -5240,7 +6017,7 @@ function refreshLogPanel() {
   const lastSz = panel.scrollHeight - panel.scrollTop;
   panel.innerHTML = allLogs.map(e => {
     const cls = { damage:'log-damage', gold:'log-gold', level:'log-level', loot:'log-loot', rare:'log-rare', info:'log-info', heal:'log-heal', boss:'log-boss', skill:'log-skill' }[e.type] || 'log-info';
-    return '<div class="log-line ' + cls + '"><span style="color:#666;font-size:9px;">' + new Date(e.time).toLocaleTimeString() + '</span> ' + e.msg + '</div>';
+    return '<div class="log-line ' + cls + '"><span style="color:#666;font-size:12px;">' + new Date(e.time).toLocaleTimeString() + '</span> ' + e.msg + '</div>';
   }).join('');
   panel.scrollTop = panel.scrollHeight;
 }
@@ -5294,6 +6071,7 @@ const DMG_COLORS = {
 // v2.11: Active float positions for anti-overlap
 const activeFloats = [];
 function showDmgFloat(value, type, targetElId) {
+  if (!GameState.showDmgNums) return;
   const container = document.getElementById('dmg-float-container');
   const target = document.getElementById(targetElId);
   if (!container || !target || value <= 0) return;
@@ -5373,6 +6151,11 @@ function init() {
 
   startCombat();
   renderAll();
+
+  // v2.24: 首次欢迎
+  if (!GameState.welcomed) {
+    document.getElementById('welcome-modal').classList.add('show');
+  }
 
   // Offline modal click-to-close
   document.getElementById('offline-modal').addEventListener('click', function(e) {
