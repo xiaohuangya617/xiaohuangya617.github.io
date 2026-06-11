@@ -4004,7 +4004,7 @@ function loadGame() {
     GameState.cloneAtkProgress = data.cloneAtkProgress || 0;
     GameState.warlockCdStacks = data.warlockCdStacks || 0;
     GameState.playerName = data.playerName || '小黄鸭';
-    GameState.welcomed = data.welcomed !== undefined ? data.welcomed : false;
+    GameState.welcomed = data.welcomed !== undefined ? data.welcomed : true; // 旧存档默认已看过欢迎
     // v2.10
     GameState.gems = data.gems || { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
     GameState.cards = data.cards || { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
@@ -4370,7 +4370,11 @@ function resetGame() {
   saveGame();
   startCombat();
   renderAll();
-  showNotification('数据已重置!');
+  if (!GameState.welcomed) {
+    document.getElementById('welcome-modal').classList.add('show');
+  } else {
+    showNotification('数据已重置!');
+  }
 }
 
 
