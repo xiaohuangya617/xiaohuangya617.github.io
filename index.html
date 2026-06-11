@@ -138,11 +138,11 @@ body {
 #char-name-display:hover { background: rgba(255,255,255,0.08); }
 
 /* v2.11: Forge modal */
-.forge-equip-entry { display:flex; align-items:center; gap:4px; padding:5px 6px; border:1px solid #2a1a4e; border-radius:4px; cursor:pointer; font-size:11px; background:var(--card-bg); transition:all 0.15s; flex:1; min-height:28px; }
+.forge-equip-entry { display:flex; align-items:center; gap:4px; padding:5px 6px; border:1px solid #2a1a4e; border-radius:4px; cursor:pointer; font-size:15px; background:var(--card-bg); transition:all 0.15s; flex:1; min-height:28px; }
 .forge-equip-entry:hover { border-color:var(--purple); }
 .forge-equip-entry.selected { border-color:var(--purple-light); background:var(--hover-bright); }
-.forge-attr-row { display:flex; justify-content:space-between; align-items:center; padding:2px 6px; margin:1px 0; border-radius:3px; font-size:11px; }
-.forge-attr-row.locked { color:var(--text-dim); cursor:default; }
+.forge-attr-row { display:flex; justify-content:space-between; align-items:center; padding:2px 6px; margin:1px 0; border-radius:3px; font-size:16px; }
+.forge-attr-row.locked { cursor:default; }
 .forge-attr-row.selectable { cursor:pointer; transition:all 0.15s; }
 .forge-attr-row.selectable:hover { background:var(--hover-bright); }
 .forge-attr-row.selected { background:var(--purple); color:#fff; }
@@ -1234,20 +1234,20 @@ body.light-mode .panel-header {
 <div class="modal-overlay" id="forge-modal">
   <div class="modal-box" style="position:relative;max-width:620px;width:95%;padding:12px;">
     <button class="modal-close" onclick="closeForgeModal()">✕</button>
-    <h2 style="font-size:16px;margin-bottom:6px;">🔧 打造</h2>
+    <h2 style="font-size:20px;margin-bottom:6px;">🔧 打造</h2>
     <div style="display:flex;gap:8px;min-height:320px;">
       <!-- Left: 8 equip slots -->
       <div style="flex:1;display:flex;flex-direction:column;gap:3px;" id="forge-equip-list"></div>
       <!-- Right: detail panel -->
-      <div style="flex:2;overflow-y:auto;font-size:11px;" id="forge-detail-panel">
+      <div style="flex:2;overflow-y:auto;font-size:15px;" id="forge-detail-panel">
         <div style="color:var(--text-dim);text-align:center;padding:30px 0;">← 点击左侧装备查看属性</div>
       </div>
     </div>
-    <div style="border-top:1px solid var(--border-divider);margin-top:8px;padding-top:6px;display:flex;align-items:center;gap:6px;font-size:11px;">
-      <button class="btn btn-sm" id="forge-enhance-btn" onclick="forgeEnhance()" style="font-size:11px;padding:3px 10px;">🔨 强化</button>
-      <span id="forge-enhance-info" style="color:var(--text-dim);font-size:12px;"></span>
-      <button class="btn btn-sm" id="forge-reforge-btn" onclick="forgeReforge()" disabled style="font-size:11px;padding:3px 10px;opacity:0.4;">🔮 洗练</button>
-      <span id="forge-reforge-info" style="color:var(--text-dim);font-size:12px;"></span>
+    <div style="border-top:1px solid var(--border-divider);margin-top:8px;padding-top:6px;display:flex;align-items:center;gap:6px;font-size:15px;">
+      <button class="btn btn-sm" id="forge-enhance-btn" onclick="forgeEnhance()" style="font-size:15px;padding:3px 10px;">🔨 强化</button>
+      <span id="forge-enhance-info" style="color:var(--text-dim);font-size:16px;"></span>
+      <button class="btn btn-sm" id="forge-reforge-btn" onclick="forgeReforge()" disabled style="font-size:15px;padding:3px 10px;opacity:0.4;">🔮 洗练</button>
+      <span id="forge-reforge-info" style="color:var(--text-dim);font-size:16px;"></span>
       <span style="color:var(--text-dim);margin-left:auto;">
         💠<span id="forge-stones">0</span> 💰<span id="forge-gold">0</span>
       </span>
@@ -3722,21 +3722,21 @@ function renderForgeModal() {
 
   // Header
   const isMythDetail = eq.quality === 'mythic';
-  let detailHtml = '<div style="margin-bottom:6px;font-size:14px;">' + eq.icon + ' <b style="' + (isMythDetail ? 'background:linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#ff6b6b);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:rainbowText 2s linear infinite;' : 'color:' + q.color + ';') + '">' + (lv>0?'+'+lv+' ':'') + eq.name + '</b></div>';
+  let detailHtml = '<div style="margin-bottom:6px;font-size:15px;">' + eq.icon + ' <b style="' + (isMythDetail ? 'background:linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#ff6b6b);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:rainbowText 2s linear infinite;' : 'color:' + q.color + ';') + '">' + (lv>0?'+'+lv+' ':'') + eq.name + '</b></div>';
 
   // Main stats (locked - base+sub+offhand)
   const statLabels = { atk:'攻击力', spd:'速度', hp:'生命值', def:'防御力', crit:'暴击率', cdmg:'爆伤', dodge:'闪避', block:'格挡', cdReduc:'冷缩', multiHit:'连击', counter:'反击' };
   if (eq.baseStatName && eq.baseStatValue) {
-    detailHtml += '<div class="forge-attr-row locked"><span>🔒 ' + (statLabels[eq.baseStatName]||eq.baseStatName) + '</span><span>+' + Math.floor(eq.baseStatValue*(1+boost)) + '</span></div>';
+    detailHtml += '<div class="forge-attr-row locked" style="color:#ffffff"><span>🔒 ' + (statLabels[eq.baseStatName]||eq.baseStatName) + '</span><span>+' + Math.floor(eq.baseStatValue*(1+boost)) + '</span></div>';
   }
   if (eq.subStatKey && eq.subStatValue) {
-    detailHtml += '<div class="forge-attr-row locked"><span>🔒 ' + (statLabels[eq.subStatKey]||eq.subStatKey) + '</span><span>+' + eq.subStatValue + '</span></div>';
+    detailHtml += '<div class="forge-attr-row locked" style="color:#ffffff"><span>🔒 ' + (statLabels[eq.subStatKey]||eq.subStatKey) + '</span><span>+' + eq.subStatValue + '</span></div>';
   }
   if (eq.offhandMain) {
-    detailHtml += '<div class="forge-attr-row locked"><span>🔒 ' + (statLabels[eq.offhandMain.key]||eq.offhandMain.key) + '</span><span>+' + eq.offhandMain.value + '%</span></div>';
+    detailHtml += '<div class="forge-attr-row locked" style="color:#ffffff"><span>🔒 ' + (statLabels[eq.offhandMain.key]||eq.offhandMain.key) + '</span><span>+' + eq.offhandMain.value + '%</span></div>';
   }
   if (eq.offhandSub) {
-    detailHtml += '<div class="forge-attr-row locked"><span>🔒 ' + (statLabels[eq.offhandSub.key]||eq.offhandSub.key) + '</span><span>+' + eq.offhandSub.value + '%</span></div>';
+    detailHtml += '<div class="forge-attr-row locked" style="color:#ffffff"><span>🔒 ' + (statLabels[eq.offhandSub.key]||eq.offhandSub.key) + '</span><span>+' + eq.offhandSub.value + '%</span></div>';
   }
 
   // Attack attrs
@@ -3745,7 +3745,7 @@ function renderForgeModal() {
     eq.atkAttrs.forEach((a, i) => {
       const sel = ForgeState.attrGroup === 'atk' && ForgeState.attrIdx === i ? ' selected' : '';
       const cls = canReforge ? 'selectable' : 'locked';
-      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'atk\',' + i + ')"' : '') + '>' +
+      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'atk\',' + i + ')"' : '') + ' style="color:#4CAF50">' +
         '<span>' + (canReforge ? '' : '🔒 ') + ATK_ATTR_LABELS[a.key] + '</span><span>+' + a.value + '%</span></div>';
     });
   }
@@ -3755,7 +3755,7 @@ function renderForgeModal() {
     eq.defAttrs.forEach((a, i) => {
       const sel = ForgeState.attrGroup === 'def' && ForgeState.attrIdx === i ? ' selected' : '';
       const cls = canReforge ? 'selectable' : 'locked';
-      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'def\',' + i + ')"' : '') + '>' +
+      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'def\',' + i + ')"' : '') + ' style="color:#2196F3">' +
         '<span>' + (canReforge ? '' : '🔒 ') + DEF_ATTR_LABELS[a.key] + '</span><span>+' + a.value + '%</span></div>';
     });
   }
@@ -3765,13 +3765,13 @@ function renderForgeModal() {
     eq.rareAttrs.forEach((a, i) => {
       const sel = ForgeState.attrGroup === 'rare' && ForgeState.attrIdx === i ? ' selected' : '';
       const cls = canReforge ? 'selectable' : 'locked';
-      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'rare\',' + i + ')"' : '') + '>' +
+      detailHtml += '<div class="forge-attr-row ' + cls + sel + '" ' + (canReforge ? 'onclick="selectForgeAttr(\'rare\',' + i + ')"' : '') + ' style="color:#FFD700">' +
         '<span>' + (canReforge ? '' : '🔒 ') + RARE_ATTR_LABELS[a.key] + '</span><span>+' + a.value + '%</span></div>';
     });
   }
   if (eq.godSkill) {
     detailHtml += '<div style="border-top:1px dashed var(--border-divider);margin:4px 0;"></div>';
-    detailHtml += '<div class="forge-attr-row locked"><span>🌟 ' + eq.godSkill.name + ' (' + eq.godSkill.points + '/' + eq.godSkill.required + ')</span><span></span></div>';
+    detailHtml += '<div class="forge-attr-row locked" style="color:#FFD700"><span>🌟 ' + eq.godSkill.name + ' (' + eq.godSkill.points + '/' + eq.godSkill.required + ')</span><span></span></div>';
   }
   document.getElementById('forge-detail-panel').innerHTML = detailHtml;
 
