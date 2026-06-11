@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.15</title>
+<title>来挂机鸭 v2.16</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.15 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分
+   来挂机鸭 v2.16 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -265,7 +265,7 @@ body {
 .monster-dying .monster-sprite { transform: scale(0.8); }
 
 /* ==========================================
-   v2.15: 木桩报告伤害细分(普攻/反伤/特性/技能/被动/神技)
+   v2.16: 手绘背景(background/文件夹)+物品999上限+强化石9999上限+v2.15木桩报告伤害细分
    v2.14: 9区域2.5x约束盒渐变背景
    ========================================== */
 #battle-arena[class*="arena-"] { background-size: cover; background-position: center; overflow: hidden; }
@@ -694,7 +694,7 @@ body {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left">🦆 来挂机鸭 <span class="ver-badge">v2.15</span> <span id="hdr-clock" style="font-size:10px;color:var(--text-dim);">--</span></div>
+    <div class="header-left">🦆 来挂机鸭 <span class="ver-badge">v2.16</span> <span id="hdr-clock" style="font-size:10px;color:var(--text-dim);">--</span></div>
     <div style="display:flex; gap:4px; flex:1; justify-content:center; align-items:center;" id="hdr-areas">
       <button class="btn btn-sm" onclick="switchArea(-1)" title="上一区域">◀</button>
       <span id="hdr-area-name" style="font-weight:bold;color:var(--purple-light);min-width:80px;text-align:center;">村庄</span>
@@ -3751,7 +3751,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.15_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.16_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -5459,7 +5459,7 @@ function init() {
   window.addEventListener('resize', () => alignBattleEntities());
 
   // Preload all background images to avoid lag on area switch
-  const bgNames = ['bg_village.png','bg_forest.png','bg_mine.png','bg_desert.png','bg_volcano.png','bg_plain.png','bg_snow.png','bg_graveyard.png','bg_abyss.png'];
+  const bgNames = ['background/bg_village.png','background/bg_forest.png','background/bg_mine.png','background/bg_desert.png','background/bg_volcano.png','background/bg_plain.png','background/bg_snow.png','background/bg_graveyard.png','background/bg_abyss.png'];
   bgNames.forEach(src => { const img = new Image(); img.src = src; });
 }
 
