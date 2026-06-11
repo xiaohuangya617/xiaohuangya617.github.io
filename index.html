@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.25</title>
+<title>来挂机鸭 v2.28</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.25 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
+   来挂机鸭 v2.28 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -972,7 +972,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.25</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.28</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1031,10 +1031,10 @@ body.light-mode .panel-header {
         <div id="func-bar">
           <button class="func-btn" onclick="openShopModal()">🏪 商店</button>
           <button class="func-btn" onclick="openForgeModal()">🔧 打造</button>
-          <button class="func-btn" onclick="showNotification('副本开发中...')" style="opacity:0.5;">🏰 副本</button>
+          <button class="func-btn" onclick="showNotification('副本开发中...')" style="opacity:0.5;">📊 统计</button>
           <button class="func-btn" onclick="startDummyMode()">🎯 木桩</button>
           <button class="func-btn" onclick="showNotification('图鉴开发中...')" style="opacity:0.5;">📖 图鉴</button>
-          <button class="func-btn" onclick="showNotification('统计开发中...')" style="opacity:0.5;">📊 统计</button>
+          <button class="func-btn" onclick="showNotification('副本开发中...')" style="opacity:0.5;">🏰 副本</button>
           <button class="func-btn" onclick="showNotification('帮助开发中...')" style="opacity:0.5;">❓ 帮助</button>
           <button class="func-btn" onclick="startTowerMode()">🗼 爬塔</button>
         </div>
@@ -1352,7 +1352,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.25';
+const GAME_VERSION = '2.28';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -2154,6 +2154,19 @@ function calcDamageToMonster(eStats) {
     }
   }
 
+  // Jeffery tower dodge (700)
+  if (GameState.inTowerMode && GameState.towerCounter >= 700 && Math.random() < 0.10) {
+    addLog('杰弗里闪避了!', 'info'); return 0;
+  }
+  // Jeffery tower block (600): halve damage
+  if (GameState.inTowerMode && GameState.towerCounter >= 600 && Math.random() < 0.10) {
+    finalDmg = Math.floor(finalDmg * 0.5); addLog('杰弗里格挡!', 'info');
+  }
+  // Jeffery tower dmg reduction (200): always active
+  if (GameState.inTowerMode && GameState.towerCounter >= 200) {
+    finalDmg = Math.floor(finalDmg * 0.90);
+  }
+
   return finalDmg;
 }
 
@@ -2342,6 +2355,19 @@ function tick() {
     playerAtks++;
     const ls = eStats.lifeSteal || 0;
     if (ls > 0) { const h = Math.floor(atkDmg * ls * 0.007); if (h > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + h); showDmgFloat(h, 'heal', 'player-entity'); } }
+    // Jeffery reflect (100): reflect 5% of damage back to player
+    if (GameState.inTowerMode && GameState.towerCounter >= 100 && GameState.monsterStats.reflect) {
+      const rDmg = Math.ceil(atkDmg * GameState.monsterStats.reflect * 0.5);
+      if (rDmg > 0) { GameState.playerHP -= rDmg; showDmgFloat(rDmg, 'reflect', 'player-entity'); }
+    }
+    // Jeffery counter (500): chance to counter when hit
+    if (GameState.inTowerMode && GameState.towerCounter >= 500 && GameState.monsterStats.counter && Math.random() < 0.10) {
+      const cDmg = calcMonsterDamage(eStats);
+      if (!(Date.now() < (GameState.invincibleUntil || 0))) {
+        GameState.playerHP -= cDmg; showDmgFloat(cDmg, 'monster', 'player-entity');
+      }
+      addLog('杰弗里反击!', 'info');
+    }
 
     if (GameState.monsterHP <= 0) {
       if (GameState.inTowerMode) { towerReviveJeffery(); } else {
@@ -2396,6 +2422,20 @@ function tick() {
     }
     totalMonsterDmg += md;
     monsterAtks++;
+    // Jeffery lifeSteal (400)
+    if (GameState.inTowerMode && GameState.towerCounter >= 400 && GameState.monsterStats.lifeSteal) {
+      const heal = Math.floor(md * GameState.monsterStats.lifeSteal * 0.07);
+      if (heal > 0) GameState.monsterHP = Math.min(GameState.monsterMaxHP, GameState.monsterHP + heal);
+    }
+    // Jeffery multiHit (300): extra attack
+    if (GameState.inTowerMode && GameState.towerCounter >= 300 && GameState.monsterStats.multiHit && Math.random() < 0.10) {
+      const md2 = calcMonsterDamage(eStats);
+      if (!(Date.now() < (GameState.invincibleUntil || 0))) {
+        GameState.playerHP -= md2;
+      }
+      totalMonsterDmg += md2;
+      addLog('杰弗里连击!', 'info');
+    }
   }
 
   if (playerAtks > 0) {
@@ -3350,6 +3390,7 @@ function challengeBoss() {
 }
 
 function switchArea(dir) {
+  if (GameState.inDummyMode || GameState.inTowerMode) return;
   const newIdx = GameState.currentArea + dir;
   if (newIdx < 0 || newIdx >= AREAS.length) {
     // Demo complete: trying to go beyond final area
@@ -3359,6 +3400,7 @@ function switchArea(dir) {
   goToArea(newIdx);
 }
 function switchSubArea(dir) {
+  if (GameState.inDummyMode || GameState.inTowerMode) return;
   const newIdx = GameState.currentSubArea + dir;
   if (newIdx < 0 || newIdx >= AREAS[GameState.currentArea].regions.length) {
     // Demo complete: at last sub-area of final area, can't go further
@@ -4124,7 +4166,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.25_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.28_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4641,6 +4683,7 @@ function positionTooltip(event) {
 
 // --- Render All ---
 function renderAll() {
+  if (window.getSelection()?.toString().length > 0) return; // 选字中跳过刷新
   renderHeader();
   renderLeftPanel();
   renderBattlePanel();
