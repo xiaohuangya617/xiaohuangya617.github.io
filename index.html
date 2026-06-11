@@ -220,12 +220,25 @@ body {
 .vs-hp-fill { height: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); border-radius: 4px; transition: width 0.3s; display: flex; align-items: center; padding-left: 6px; }
 .vs-hp-text { font-size: 11px; color: #fff; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.5); white-space: nowrap; }
 
+#death-overlay {
+  display: none; position: absolute; inset: 0; z-index: 20;
+  flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.6); border-radius: 6px;
+}
+#death-overlay.show { display: flex; }
+.death-icon { font-size: 48px; margin-bottom: 8px; }
+.death-msg { font-size: 18px; color: #ff6666; font-weight: bold; margin-bottom: 4px; }
+.death-countdown { font-size: 14px; color: #aaa; }
+
 #battle-arena {
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px 12px; gap: 720px; background: var(--battle-area);
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 20px 40px 36px; background: var(--battle-area);
   border-radius: 6px; border: 1px solid #2a1a4e; min-height: 220px; position: relative;
 }
-.battle-entity { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+.battle-entity { display: flex; flex-direction: column; align-items: center; position: absolute; bottom: 36px; z-index: 1; }
+#player-entity { left: 0; }
+#monster-entity { right: 0; }
+#clone-entity { left: 50%; transform: translateX(-50%); }
 /* FIX 8: Speed-based animation timing */
 .entity-sprite {
   font-size: 64px; line-height: 1.1; text-align: center;
@@ -255,385 +268,121 @@ body {
    v2.15: 木桩报告伤害细分(普攻/反伤/特性/技能/被动/神技)
    v2.14: 9区域2.5x约束盒渐变背景
    ========================================== */
-#battle-arena[class*="arena-"] { background-size: 100% 100%; overflow: hidden; }
+#battle-arena[class*="arena-"] { background-size: cover; background-position: center; overflow: hidden; }
 #battle-arena[class*="arena-"]::before,
 #battle-arena[class*="arena-"]::after { content: ''; position: absolute; z-index: 0; pointer-events: none; inset: 0; }
 
-/* ═══════ 1. 村庄: 房子(150×160)+灌木(左)+栅栏(底) ═══════ */
+/* ═══════ 1. 村庄: 手绘背景图 ═══════ */
 #battle-arena.arena-village {
-  background: linear-gradient(180deg, #5BA0D0 0%, #87CEEB 30%, #B5E0D0 54%, #4CAF50 56%, #388E3C 100%);
+  background-color: #4CAF50;
+  background-image: url('background/bg_village.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
-#battle-arena.arena-village::before {
-  background:
-    radial-gradient(circle at 78% 10%, #FFF9C4 5%, #FFD54F 7%, transparent 15%),
-    radial-gradient(ellipse 100px 28px at 22% 20%, rgba(255,255,255,0.38) 0%, transparent 55%),
-    radial-gradient(ellipse 80px 24px at 55% 16%, rgba(255,255,255,0.32) 0%, transparent 50%),
-    /* 烟囱身(20×70) */
-    linear-gradient(#6D4C41,#6D4C41) 535px 28px/20px 70px no-repeat,
-    /* 烟囱帽(32×14) */
-    linear-gradient(#4E342E,#4E342E) 529px 22px/32px 14px no-repeat,
-    /* 烟雾 */
-    radial-gradient(ellipse 25px 40px at 545px 10px, rgba(160,160,160,0.3) 0%, transparent 70%),
-    /* 屋顶左三角(75×60约束盒) */
-    linear-gradient(to bottom right, transparent 47%, #5D4037 50%) 420px 70px/75px 60px no-repeat,
-    /* 屋顶右三角(75×60) */
-    linear-gradient(to bottom left, transparent 47%, #4E342E 50%) 495px 70px/75px 60px no-repeat,
-    /* 墙壁(150×70) */
-    linear-gradient(#A1887F,#A1887F) 420px 130px/150px 70px no-repeat,
-    /* 窗户左：黄底+框 */
-    linear-gradient(#FFF9C4,#FFF9C4) 440px 148px/30px 30px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 438px 146px/34px 3px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 438px 179px/34px 3px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 438px 146px/3px 36px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 473px 146px/3px 36px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 440px 162px/30px 3px no-repeat,
-    /* 窗户右：黄底+框 */
-    linear-gradient(#FFF9C4,#FFF9C4) 520px 148px/30px 30px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 518px 146px/34px 3px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 518px 179px/34px 3px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 518px 146px/3px 36px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 553px 146px/3px 36px no-repeat,
-    linear-gradient(#8D6E63,#8D6E63) 520px 162px/30px 3px no-repeat,
-    /* 门(50×60) */
-    linear-gradient(#4E342E,#4E342E) 470px 140px/50px 60px no-repeat,
-    /* 灌木(左，2.5x) */
-    linear-gradient(#388E3C,#388E3C) 36px 158px/56px 16px no-repeat,
-    linear-gradient(#43A047,#43A047) 8px 138px/100px 20px no-repeat,
-    linear-gradient(#2E7D32,#2E7D32) 44px 118px/36px 20px no-repeat,
-    linear-gradient(#4CAF50,#4CAF50) 0px 158px/120px 16px no-repeat,
-    linear-gradient(#2E7D32,#2E7D32) 20px 128px/70px 10px no-repeat,
-    /* 栅栏(底) */
-    repeating-linear-gradient(90deg, transparent 0, transparent 10px, #8D6E63 10px, #8D6E63 14px, transparent 14px, transparent 100px) 50% 180px/85% 12px no-repeat;
-}
+#battle-arena.arena-village::before { background: none; }
 #battle-arena.arena-village::after {
   width:4px;height:4px;border-radius:50%;background:#C8E6C9;
-  box-shadow:50px 50px 0 #FFF9C4,150px 65px 0 #C8E6C9,260px 45px 0 #FFF9C4,360px 60px 0 #C8E6C9,460px 52px 0 #FFF9C4,550px 70px 0 #C8E6C9,100px 95px 0 #C8E6C9,300px 88px 0 #FFF9C4,400px 100px 0 #C8E6C9,500px 90px 0 #FFF9C4;
+  box-shadow:50px 45px 0 #FFF9C4,140px 58px 0 #C8E6C9,240px 40px 0 #FFF9C4,340px 55px 0 #C8E6C9,440px 48px 0 #FFF9C4,520px 62px 0 #C8E6C9,90px 85px 0 #C8E6C9,280px 78px 0 #FFF9C4,380px 90px 0 #C8E6C9,480px 82px 0 #FFF9C4;
   animation:fireflyBlink 2.5s ease-in-out infinite;
 }
 
-/* ═══════ 2. 森林: 大树(左,190×180)+灌木(右)+萤火虫 ═══════ */
+/* ═══════ 2. 森林: 手绘背景图 ═══════ */
 #battle-arena.arena-forest {
-  background: linear-gradient(180deg, #0D1F0D 0%, #1A3A1A 28%, #0D2B0D 55%, #1B5E20 80%, #0A1F0A 100%);
+  background-color: #1A3A1A;
+  background-image: url('background/bg_forest.png');
 }
-#battle-arena.arena-forest::before {
-  background:
-    /* 树干(左, 30×110) */
-    linear-gradient(#5D4037,#5D4037) 80px 60px/30px 110px no-repeat,
-    /* 树冠(逐层扩大，5层) */
-    linear-gradient(#1B5E20,#1B5E20) 55px 40px/80px 25px no-repeat,
-    linear-gradient(#2E7D32,#2E7D32) 35px 18px/120px 24px no-repeat,
-    linear-gradient(#388E3C,#388E3C) 15px -2px/160px 22px no-repeat,
-    linear-gradient(#2E7D32,#2E7D32) 45px 65px/60px 20px no-repeat,
-    linear-gradient(#1B5E20,#1B5E20) 65px -8px/60px 12px no-repeat,
-    /* 灌木(右，2.5x) */
-    linear-gradient(#2E7D32,#2E7D32) 500px 150px/90px 20px no-repeat,
-    linear-gradient(#388E3C,#388E3C) 480px 135px/110px 18px no-repeat,
-    linear-gradient(#1B5E20,#1B5E20) 520px 162px/60px 14px no-repeat,
-    linear-gradient(180deg, transparent 72%, #1B5E20 74%, #0D3B0D 90%, #0A1F0A 100%);
-}
+#battle-arena.arena-forest::before { background: none; }
 #battle-arena.arena-forest::after {
-  width:5px;height:5px;border-radius:50%;background:#76FF03;
-  box-shadow:50px 40px 0 #76FF03,170px 62px 0 #AEEA00,290px 35px 0 #76FF03,420px 55px 0 #AEEA00,100px 82px 0 #76FF03,250px 75px 0 #AEEA00,360px 92px 0 #76FF03,480px 65px 0 #AEEA00,140px 105px 0 #76FF03,390px 100px 0 #AEEA00,530px 82px 0 #76FF03;
+  width:4px;height:4px;border-radius:50%;background:#76FF03;
+  box-shadow:45px 35px 0 #76FF03,150px 55px 0 #AEEA00,270px 30px 0 #76FF03,400px 48px 0 #AEEA00,90px 72px 0 #76FF03,230px 65px 0 #AEEA00,340px 82px 0 #76FF03,460px 58px 0 #AEEA00,125px 92px 0 #76FF03,370px 90px 0 #AEEA00,510px 72px 0 #76FF03;
   animation:fireflyBlink 3.5s ease-in-out .5s infinite;
 }
 
-/* ═══════ 3. 矿洞: 矿车(右,150×85)+水晶(左)+铁轨(底) ═══════ */
+/* ═══════ 3. 矿洞: 手绘背景图 ═══════ */
 #battle-arena.arena-mine {
-  background: linear-gradient(180deg, #0D0805 0%, #1A1008 30%, #2C1810 55%, #1A1008 80%, #0D0805 100%);
+  background-color: #1A1A2E;
+  background-image: url('background/bg_mine.png');
 }
-#battle-arena.arena-mine::before {
-  background:
-    linear-gradient(90deg, #1A1008 0%, #2C1810 5%, transparent 8%, transparent 92%, #2C1810 95%, #1A1008 100%),
-    /* 矿车车身(150×50) */
-    linear-gradient(#5D4037,#5D4037) 420px 70px/150px 50px no-repeat,
-    linear-gradient(#6D4C41,#6D4C41) 432px 76px/126px 38px no-repeat,
-    /* 矿石(2.5x) */
-    linear-gradient(#FFD54F,#FFD54F) 446px 76px/24px 20px no-repeat,
-    linear-gradient(#7C4DFF,#7C4DFF) 488px 76px/24px 20px no-repeat,
-    linear-gradient(#00E5FF,#00E5FF) 468px 82px/16px 10px no-repeat,
-    /* 车轮(2.5x) */
-    linear-gradient(#37474F,#37474F) 432px 120px/30px 22px no-repeat,
-    linear-gradient(#37474F,#37474F) 540px 120px/30px 22px no-repeat,
-    /* 水晶(左墙，2.5x) */
-    linear-gradient(#7C4DFF,#7C4DFF) 36px 38px/18px 40px no-repeat,
-    linear-gradient(#00E5FF,#00E5FF) 54px 20px/18px 56px no-repeat,
-    linear-gradient(#651FFF,#651FFF) 72px 50px/18px 18px no-repeat,
-    /* 铁轨 */
-    linear-gradient(#546E7A,#546E7A) 30px 156px/500px 6px no-repeat,
-    linear-gradient(#546E7A,#546E7A) 30px 168px/500px 6px no-repeat,
-    repeating-linear-gradient(90deg, transparent 30px, transparent 30px, #455A64 30px, #455A64 36px) 30px 156px/500px 12px no-repeat,
-    linear-gradient(180deg, transparent 84%, #2C1810 86%, #1A1008 92%, #0D0805 100%);
-}
+#battle-arena.arena-mine::before { background: none; }
 #battle-arena.arena-mine::after {
-  width:6px;height:6px;border-radius:50%;background:#7C4DFF;
-  box-shadow:60px 30px 0 #7C4DFF,190px 46px 0 #00E5FF,350px 25px 0 #7C4DFF,480px 42px 0 #00E5FF,120px 66px 0 #7C4DFF,280px 56px 0 #00E5FF,420px 70px 0 #7C4DFF,36px 78px 0 #00E5FF,330px 80px 0 #7C4DFF,510px 72px 0 #00E5FF;
+  width:5px;height:5px;border-radius:50%;background:#7C4DFF;
+  box-shadow:60px 30px 0 #7C4DFF,180px 42px 0 #00E5FF,330px 25px 0 #7C4DFF,460px 38px 0 #00E5FF,110px 60px 0 #7C4DFF,260px 52px 0 #00E5FF,400px 62px 0 #7C4DFF,38px 70px 0 #00E5FF,310px 72px 0 #7C4DFF;
   animation:crystalPulse 2s ease-in-out infinite;
 }
 
-/* ═══════ 4. 沙地: 金字塔(右,360×110)+沙丘+仙人掌(左) ═══════ */
+/* ═══════ 4. 沙漠: 手绘背景图 ═══════ */
 #battle-arena.arena-desert {
-  background: linear-gradient(180deg, #F4A460 0%, #E8B870 25%, #D2B48C 50%, #C4A060 72%, #A08050 100%);
+  background-color: #D4A574;
+  background-image: url('background/bg_desert.png');
 }
-#battle-arena.arena-desert::before {
-  background:
-    radial-gradient(circle at 72% 8%, #FFF 3%, #FFE082 4.5%, #FFD54F 6%, transparent 15%),
-    /* 金字塔(逐层矩形, 2.5x) */
-    linear-gradient(#B8860B,#B8860B) 490px 40px/40px 18px no-repeat,
-    linear-gradient(#B8860B,#B8860B) 450px 58px/120px 18px no-repeat,
-    linear-gradient(#B8860B,#B8860B) 410px 76px/200px 18px no-repeat,
-    linear-gradient(#B8860B,#B8860B) 370px 94px/280px 18px no-repeat,
-    linear-gradient(#B8860B,#B8860B) 330px 112px/360px 26px no-repeat,
-    /* 高光(左侧面) */
-    linear-gradient(rgba(218,165,32,0.35),rgba(218,165,32,0.35)) 490px 40px/20px 18px no-repeat,
-    linear-gradient(rgba(218,165,32,0.35),rgba(218,165,32,0.35)) 460px 58px/40px 18px no-repeat,
-    linear-gradient(rgba(218,165,32,0.35),rgba(218,165,32,0.35)) 430px 76px/60px 18px no-repeat,
-    linear-gradient(rgba(218,165,32,0.35),rgba(218,165,32,0.35)) 400px 94px/80px 18px no-repeat,
-    linear-gradient(rgba(218,165,32,0.35),rgba(218,165,32,0.35)) 370px 112px/100px 26px no-repeat,
-    /* 沙丘(2.5x) */
-    linear-gradient(#B8956A,#B8956A) 60px 145px/250px 14px no-repeat,
-    linear-gradient(#C4A060,#C4A060) 100px 160px/320px 14px no-repeat,
-    linear-gradient(#B8956A,#B8956A) 40px 176px/380px 18px no-repeat,
-    linear-gradient(#C4A060,#C4A060) 70px 194px/420px 20px no-repeat,
-    /* 仙人掌(左, 2.5x) */
-    linear-gradient(#6B8E23,#6B8E23) 100px 62px/30px 80px no-repeat,
-    linear-gradient(#558B2F,#558B2F) 70px 48px/30px 36px no-repeat,
-    linear-gradient(#6B8E23,#6B8E23) 132px 56px/30px 30px no-repeat,
-    linear-gradient(#558B2F,#558B2F) 80px 34px/18px 16px no-repeat,
-    linear-gradient(#6B8E23,#6B8E23) 144px 42px/18px 16px no-repeat,
-    linear-gradient(180deg, transparent 70%, #D2B48C 72%, #C4A060 90%, #A08050 100%);
-}
+#battle-arena.arena-desert::before { background: none; }
 #battle-arena.arena-desert::after {
-  background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255,200,120,0.07) 4px, rgba(255,200,120,0.07) 5px);
-  animation: heatShimmer 1.8s linear infinite;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,200,120,0.07) 3px, rgba(255,200,120,0.07) 4px);
+  animation:heatShimmer 1.8s linear infinite;
 }
 
-/* ═══════ 5. 火山: 火山锥(360×110)+熔岩河(右)+火星 ═══════ */
+/* ═══════ 5. 火山: 手绘背景图 ═══════ */
 #battle-arena.arena-volcano {
-  background: linear-gradient(180deg, #0D0202 0%, #1A0505 15%, #2D0A0A 35%, #1A0505 60%, #0D0202 100%);
+  background-color: #1A0A0A;
+  background-image: url('background/bg_volcano.png');
 }
-#battle-arena.arena-volcano::before {
-  background:
-    radial-gradient(ellipse 90px 30px at 28% 18%, rgba(50,25,25,0.45) 0%, transparent 55%),
-    radial-gradient(ellipse 75px 28px at 58% 14%, rgba(40,20,20,0.35) 0%, transparent 50%),
-    /* 火山锥(逐层, 2.5x) */
-    linear-gradient(#4A1806,#4A1806) 490px 44px/40px 18px no-repeat,
-    linear-gradient(#4A1806,#4A1806) 450px 62px/120px 18px no-repeat,
-    linear-gradient(#4A1806,#4A1806) 410px 80px/200px 18px no-repeat,
-    linear-gradient(#4A1806,#4A1806) 370px 98px/280px 18px no-repeat,
-    linear-gradient(#4A1806,#4A1806) 330px 116px/360px 26px no-repeat,
-    /* 火山口熔岩 */
-    linear-gradient(#FF6F00,#FF6F00) 490px 34px/40px 10px no-repeat,
-    linear-gradient(#D84315,#D84315) 470px 24px/80px 12px no-repeat,
-    linear-gradient(#FFAB00,#FFAB00) 490px 24px/30px 12px no-repeat,
-    linear-gradient(#D84315,#D84315) 480px 44px/60px 18px no-repeat,
-    /* 熔岩河(右, 2.5x) */
-    linear-gradient(#D84315,#D84315) 560px 60px/18px 80px no-repeat,
-    linear-gradient(#E65100,#E65100) 578px 48px/18px 92px no-repeat,
-    linear-gradient(#BF360C,#BF360C) 596px 70px/18px 66px no-repeat,
-    linear-gradient(#FF6F00,#FF6F00) 564px 56px/14px 14px no-repeat,
-    linear-gradient(#FF8F00,#FF8F00) 580px 44px/12px 10px no-repeat,
-    linear-gradient(180deg, transparent 56%, #1A0505 58%, #0D0202 100%);
-}
+#battle-arena.arena-volcano::before { background: none; }
 #battle-arena.arena-volcano::after {
-  width:4px;height:4px;border-radius:50%;background:#FF6F00;
-  box-shadow:90px 22px 0 #FF8F00,220px 34px 0 #FF6F00,340px 18px 0 #FFA000,480px 28px 0 #FF6F00,130px 56px 0 #FF8F00,280px 44px 0 #FF6F00,400px 62px 0 #FFA000,530px 38px 0 #FF8F00,70px 72px 0 #FF6F00,190px 78px 0 #FFA000,320px 68px 0 #FF8F00,460px 84px 0 #FF6F00;
+  width:3px;height:3px;border-radius:50%;background:#FF6F00;
+  box-shadow:80px 20px 0 #FF8F00,200px 30px 0 #FF6F00,320px 15px 0 #FFA000,450px 25px 0 #FF6F00,120px 50px 0 #FF8F00,260px 40px 0 #FF6F00,380px 55px 0 #FFA000,500px 35px 0 #FF8F00,60px 65px 0 #FF6F00,180px 70px 0 #FFA000,300px 62px 0 #FF8F00,430px 75px 0 #FF6F00;
   animation:emberRise 2s linear infinite;
 }
 
-/* ═══════ 6. 平原: 风车(右,35×150)+河流(底)+土坡(左) ═══════ */
+/* ═══════ 6. 平原: 手绘背景图 ═══════ */
 #battle-arena.arena-plain {
-  background: linear-gradient(180deg, #76B5D0 0%, #A8D8EA 28%, #B5E0C0 52%, #7CB342 55%, #558B2F 100%);
+  background-color: #4CAF50;
+  background-image: url('background/bg_plain.png');
 }
-#battle-arena.arena-plain::before {
-  background:
-    radial-gradient(ellipse 100px 28px at 28% 16%, rgba(255,255,255,0.33) 0%, transparent 55%),
-    radial-gradient(ellipse 80px 24px at 60% 12%, rgba(255,255,255,0.28) 0%, transparent 50%),
-    radial-gradient(circle at 78% 6%, #FFF9C4 3%, #FFE082 4.5%, transparent 12%),
-    /* 风车塔身(35×150) */
-    linear-gradient(#8D6E63,#8D6E63) 560px 30px/35px 150px no-repeat,
-    /* 风车叶片十字(2.5x, 画在60×60区域) */
-    linear-gradient(rgba(220,220,220,0.7),rgba(220,220,220,0.7)) 547px 16px/16px 48px no-repeat,
-    linear-gradient(rgba(200,200,200,0.6),rgba(200,200,200,0.6)) 547px 64px/16px 48px no-repeat,
-    linear-gradient(rgba(220,220,220,0.7),rgba(220,220,220,0.7)) 529px 30px/48px 16px no-repeat,
-    linear-gradient(rgba(200,200,200,0.6),rgba(200,200,200,0.6)) 529px 78px/48px 16px no-repeat,
-    /* 河流(底, 2.5x) */
-    linear-gradient(#64B5F6,#64B5F6) 150px 168px/440px 14px no-repeat,
-    linear-gradient(#42A5F5,#42A5F5) 120px 182px/480px 14px no-repeat,
-    linear-gradient(#90CAF9,#90CAF9) 100px 176px/500px 6px no-repeat,
-    /* 土坡(左, 2.5x) */
-    linear-gradient(#66BB6A,#66BB6A) 30px 130px/140px 16px no-repeat,
-    linear-gradient(#81C784,#81C784) 10px 146px/160px 16px no-repeat,
-    linear-gradient(#43A047,#43A047) 50px 162px/100px 14px no-repeat,
-    linear-gradient(#2E7D32,#2E7D32) 20px 120px/80px 10px no-repeat,
-    linear-gradient(180deg, transparent 58%, #7CB342 60%, #558B2F 100%);
-}
+#battle-arena.arena-plain::before { background: none; }
 #battle-arena.arena-plain::after {
-  width:5px;height:5px;border-radius:50%;background:#81C784;
-  box-shadow:110px 45px 0 #C8E6C9,260px 58px 0 #A5D6A7,420px 38px 0 #C8E6C9,170px 82px 0 #E8F5E9,340px 75px 0 #C8E6C9,500px 60px 0 #A5D6A7,90px 100px 0 #E8F5E9,380px 105px 0 #C8E6C9,540px 88px 0 #E8F5E9;
+  width:4px;height:4px;border-radius:50%;background:#81C784;
+  box-shadow:100px 40px 0 #C8E6C9,240px 52px 0 #A5D6A7,390px 35px 0 #C8E6C9,150px 72px 0 #E8F5E9,310px 65px 0 #C8E6C9,470px 55px 0 #A5D6A7,80px 85px 0 #E8F5E9,350px 90px 0 #C8E6C9,510px 75px 0 #E8F5E9;
   animation:fireflyBlink 3s ease-in-out 1s infinite;
 }
 
-/* ═══════ 7. 雪山: 雪人(左,70×150)+极光+飘雪 ═══════ */
+/* ═══════ 7. 雪原: 手绘背景图 ═══════ */
 #battle-arena.arena-snow {
-  background: linear-gradient(180deg, #0D1B3E 0%, #152D5E 25%, #1E3A6E 50%, #2C5A90 72%, #3A7BBF 100%);
+  background-color: #B0C4DE;
+  background-image: url('background/bg_snow.png');
 }
-#battle-arena.arena-snow::before {
-  background:
-    linear-gradient(105deg, transparent 30%, rgba(100,200,255,0.12) 32%, rgba(150,220,255,0.07) 37%, transparent 40%),
-    linear-gradient(75deg, transparent 50%, rgba(100,255,180,0.08) 52%, rgba(150,255,200,0.04) 57%, transparent 60%),
-    /* 雪峰(右, 2.5x) */
-    linear-gradient(#E8F5FD,#E8F5FD) 500px 54px/40px 18px no-repeat,
-    linear-gradient(#E8F5FD,#E8F5FD) 460px 72px/120px 18px no-repeat,
-    linear-gradient(#E8F5FD,#E8F5FD) 420px 90px/200px 24px no-repeat,
-    linear-gradient(#BBDEFB,#BBDEFB) 540px 72px/40px 18px no-repeat,
-    linear-gradient(#BBDEFB,#BBDEFB) 510px 90px/100px 20px no-repeat,
-    /* 雪人下身(70×40) */
-    linear-gradient(#F0F0F0,#F0F0F0) 70px 140px/70px 40px no-repeat,
-    /* 雪人中身(50×36) */
-    linear-gradient(#FAFAFA,#FAFAFA) 80px 104px/50px 36px no-repeat,
-    /* 雪人头(35×36) */
-    linear-gradient(#FFF,#FFF) 88px 68px/35px 36px no-repeat,
-    /* 帽子(头顶, 2.5x) */
-    linear-gradient(#1A1A1A,#1A1A1A) 88px 50px/35px 18px no-repeat,
-    linear-gradient(#333,#333) 76px 34px/60px 16px no-repeat,
-    /* 围巾 */
-    linear-gradient(#E53935,#E53935) 76px 100px/58px 8px no-repeat,
-    /* 眼睛(2孔) */
-    linear-gradient(#333,#333) 96px 78px/8px 8px no-repeat,
-    linear-gradient(#333,#333) 114px 78px/8px 8px no-repeat,
-    /* 纽扣(3颗) */
-    linear-gradient(#333,#333) 104px 110px/10px 10px no-repeat,
-    linear-gradient(#333,#333) 104px 126px/10px 10px no-repeat,
-    /* 鼻子(橙色) */
-    linear-gradient(#FF6F00,#FF6F00) 122px 82px/12px 8px no-repeat,
-    /* 雪地 */
-    linear-gradient(180deg, transparent 72%, #E8F5FD 74%, #BBDEFB 88%, #90CAF9 100%);
-  animation: auroraShift 6s ease-in-out infinite;
-}
+#battle-arena.arena-snow::before { background: none; }
 #battle-arena.arena-snow::after {
-  width:4px;height:4px;border-radius:50%;background:#FFF;
-  box-shadow:40px 12px 0 #FFF,130px 26px 0 #E3F2FD,220px 10px 0 #FFF,320px 22px 0 #E3F2FD,410px 16px 0 #FFF,500px 30px 0 #E3F2FD,70px 50px 0 #FFF,180px 60px 0 #E3F2FD,270px 44px 0 #FFF,370px 54px 0 #E3F2FD,470px 48px 0 #FFF,540px 60px 0 #E3F2FD,100px 78px 0 #FFF,210px 88px 0 #E3F2FD,340px 80px 0 #FFF;
+  width:3px;height:3px;border-radius:50%;background:#FFF;
+  box-shadow:40px 10px 0 #FFF,120px 22px 0 #E3F2FD,200px 8px 0 #FFF,300px 18px 0 #E3F2FD,380px 14px 0 #FFF,470px 26px 0 #E3F2FD,60px 42px 0 #FFF,160px 50px 0 #E3F2FD,250px 36px 0 #FFF,350px 46px 0 #E3F2FD,440px 40px 0 #FFF,510px 52px 0 #E3F2FD,90px 66px 0 #FFF,190px 75px 0 #E3F2FD,310px 68px 0 #FFF;
   animation:snowFall 4s linear infinite;
 }
 
-/* ═══════ 8. 墓地: 墓碑(右,55×90each)+枯树(左)+迷雾 ═══════ */
+/* ═══════ 8. 墓园: 手绘背景图 ═══════ */
 #battle-arena.arena-graveyard {
-  background: linear-gradient(180deg, #080810 0%, #0D0D1A 20%, #15152A 50%, #1A1A30 70%, #0F0F1F 100%);
+  background-color: #0D0D1A;
+  background-image: url('background/bg_graveyard.png');
 }
-#battle-arena.arena-graveyard::before {
-  background:
-    radial-gradient(circle at 72% 10%, #FFFEF5 3%, #E8E0C8 4.5%, rgba(200,200,180,0.2) 7%, transparent 13%),
-    /* 枯树干(左, 25×130) */
-    linear-gradient(#151520,#151520) 70px 40px/25px 130px no-repeat,
-    /* 枯枝(4条, 2.5x) */
-    linear-gradient(48deg, transparent 50%, #151520 50%, #151520 54%, transparent 54%) 60px 50px/30px 10px no-repeat,
-    linear-gradient(-32deg, transparent 50%, #151520 50%, #151520 54%, transparent 54%) 82px 58px/30px 10px no-repeat,
-    linear-gradient(105deg, transparent 50%, #151520 50%, #151520 54%, transparent 54%) 58px 68px/30px 10px no-repeat,
-    linear-gradient(25deg, transparent 50%, #151520 50%, #151520 54%, transparent 54%) 86px 70px/30px 10px no-repeat,
-    /* 墓碑1(55×90) */
-    linear-gradient(#555,#555) 480px 70px/55px 90px no-repeat,
-    linear-gradient(#555,#555) 466px 56px/82px 16px no-repeat,
-    /* 墓碑2(50×80) */
-    linear-gradient(#666,#666) 552px 76px/50px 84px no-repeat,
-    linear-gradient(#666,#666) 540px 62px/74px 16px no-repeat,
-    /* 墓碑3(45×70) */
-    linear-gradient(#4A4A4A,#4A4A4A) 618px 82px/45px 78px no-repeat,
-    linear-gradient(#4A4A4A,#4A4A4A) 608px 70px/66px 14px no-repeat,
-    /* 土堆 */
-    linear-gradient(#1E1E2E,#1E1E2E) 476px 160px/60px 10px no-repeat,
-    linear-gradient(#1A1A30,#1A1A30) 548px 164px/58px 10px no-repeat,
-    linear-gradient(#151525,#151525) 614px 168px/50px 10px no-repeat,
-    linear-gradient(180deg, transparent 70%, #151525 72%, #1A1A30 84%, #0F0F1F 100%);
-}
+#battle-arena.arena-graveyard::before { background: none; }
 #battle-arena.arena-graveyard::after {
   background:
-    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(160,160,180,0.05) 40px, rgba(160,160,180,0.05) 41px),
-    radial-gradient(ellipse 70px 28px at 30% 80%, rgba(180,180,200,0.05) 0%, transparent 58%);
+    repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(160,160,180,0.05) 35px, rgba(160,160,180,0.05) 36px),
+    radial-gradient(ellipse 50px 20px at 30% 72%, rgba(180,180,200,0.05) 0%, transparent 55%);
   animation:mistDrift 8s linear infinite;
 }
 
-/* ═══════ 9. 深渊: 恶魔之门(中,35×180双柱+265×20门楣)+熔岩裂隙(底)+火星 ═══════ */
+/* ═══════ 9. 深渊: 手绘背景图 ═══════ */
 #battle-arena.arena-abyss {
-  background: linear-gradient(180deg, #050000 0%, #080000 15%, #0D0000 35%, #1A0000 55%, #0D0000 80%, #050000 100%);
+  background-color: #0A0008;
+  background-image: url('background/bg_abyss.png');
 }
-#battle-arena.arena-abyss::before {
-  background:
-    /* 门柱左(35×180) */
-    linear-gradient(#1A1A1A,#1A1A1A) 390px 20px/35px 180px no-repeat,
-    /* 门柱右(35×180) */
-    linear-gradient(#1A1A1A,#1A1A1A) 540px 20px/35px 180px no-repeat,
-    /* 门楣下层(265×20) */
-    linear-gradient(#1A1A1A,#1A1A1A) 372px 8px/265px 12px no-repeat,
-    /* 门楣上层(300×16) */
-    linear-gradient(#1A1A1A,#1A1A1A) 355px -4px/300px 14px no-repeat,
-    /* 门内火光(三层) */
-    linear-gradient(#8B0000,#8B0000) 425px 20px/150px 180px no-repeat,
-    linear-gradient(#CC0000,#CC0000) 440px 36px/120px 120px no-repeat,
-    linear-gradient(#FF4500,#FF4500) 458px 56px/84px 80px no-repeat,
-    /* 符文(2.5x) */
-    linear-gradient(rgba(220,0,0,0.7),rgba(220,0,0,0.7)) 420px 2px/18px 8px no-repeat,
-    linear-gradient(rgba(220,0,0,0.7),rgba(220,0,0,0.7)) 570px 2px/18px 8px no-repeat,
-    /* 门眼(2.5x) */
-    linear-gradient(rgba(255,100,0,0.85),rgba(255,100,0,0.85)) 500px 2px/20px 10px no-repeat,
-    /* 熔岩裂隙(底, 2.5x) */
-    linear-gradient(#D50000,#D50000) 120px 168px/280px 8px no-repeat,
-    linear-gradient(#FF3D00,#FF3D00) 280px 162px/240px 8px no-repeat,
-    linear-gradient(#CC0000,#CC0000) 200px 176px/300px 8px no-repeat,
-    radial-gradient(circle at 50% 16%, rgba(180,0,0,0.15) 0%, transparent 48%),
-    linear-gradient(180deg, transparent 74%, #0D0000 78%, #1A0000 90%, #080000 100%);
-  animation:lavaFlicker 1.5s ease-in-out infinite;
-}
+#battle-arena.arena-abyss::before { background: none; }
 #battle-arena.arena-abyss::after {
-  width:4px;height:4px;border-radius:50%;background:#FF3D00;
-  box-shadow:80px 28px 0 #FF6F00,180px 44px 0 #FF3D00,300px 20px 0 #FF8F00,430px 36px 0 #FF3D00,120px 58px 0 #FF6F00,240px 50px 0 #FF3D00,360px 68px 0 #FF8F00,500px 40px 0 #FF6F00,60px 74px 0 #FF3D00,190px 80px 0 #FF8F00,330px 64px 0 #FF6F00,460px 82px 0 #FF3D00;
+  width:3px;height:3px;border-radius:50%;background:#FF3D00;
+  box-shadow:70px 26px 0 #FF6F00,160px 40px 0 #FF3D00,280px 18px 0 #FF8F00,400px 32px 0 #FF3D00,110px 52px 0 #FF6F00,220px 46px 0 #FF3D00,330px 60px 0 #FF8F00,470px 36px 0 #FF6F00,50px 66px 0 #FF3D00,170px 70px 0 #FF8F00,300px 56px 0 #FF6F00,420px 72px 0 #FF3D00;
   animation:emberRise 1.8s linear .3s infinite;
 }
 
-/* --- 微动效关键帧 --- */
-@keyframes fireflyBlink{0%,100%{opacity:.5;transform:translateY(0)}25%{opacity:1;transform:translateY(-4px)}50%{opacity:.3;transform:translateY(2px)}75%{opacity:.9;transform:translateY(-3px)}}
-@keyframes crystalPulse{0%,100%{opacity:.4}50%{opacity:1}}
-@keyframes heatShimmer{0%{opacity:.4;transform:translateY(0)}50%{opacity:.9;transform:translateY(-2px)}100%{opacity:.4;transform:translateY(0)}}
-@keyframes emberRise{0%{opacity:.8;transform:translateY(0) scale(1)}50%{opacity:.5;transform:translateY(-15px) scale(.8)}100%{opacity:0;transform:translateY(-30px) scale(.5)}}
-@keyframes snowFall{0%{opacity:.9;transform:translateY(0)}50%{opacity:.5;transform:translateY(10px)}100%{opacity:.2;transform:translateY(20px)}}
-@keyframes mistDrift{0%{opacity:.3;transform:translateX(0)}50%{opacity:.6;transform:translateX(5px)}100%{opacity:.3;transform:translateX(0)}}
-@keyframes auroraShift{0%,100%{opacity:.5}50%{opacity:.8}}
-@keyframes lavaFlicker{0%,100%{opacity:.7}33%{opacity:1}66%{opacity:.5}}
-
-
-@keyframes bossGlow {
-  0%, 100% { filter: drop-shadow(0 0 22px rgba(255,0,0,0.7)); }
-  50% { filter: drop-shadow(0 0 40px rgba(255,50,50,0.95)); }
-}
-
-#death-overlay {
-  display: none; position: absolute; top:0; left:0; right:0; bottom:0;
-  background: rgba(0,0,0,0.85); flex-direction: column; align-items: center; justify-content: center;
-  border-radius: 6px; z-index: 10;
-}
-#death-overlay.show { display: flex; }
-#death-overlay .death-icon { font-size: 40px; margin-bottom: 6px; }
-#death-overlay .death-msg { color: var(--red); font-size: 16px; font-weight: bold; }
-#death-overlay .death-countdown { color: var(--gold); font-size: 13px; margin-top: 4px; }
-
-/* BATTLE ACTIONS */
-#battle-actions { display: flex; gap: 4px; justify-content: center; margin-top: 4px; flex-wrap: wrap; }
-
-/* COMBAT LOG */
-#combat-log-compact {
-  font-size: 11px;
-  font-family: 'Consolas', 'Courier New', monospace; color: #c0b8d0;
-  background: #0d0d1a; border-radius: 5px; border: 1px solid #2a1a4e;
-  padding: 4px 6px; margin-top: 2px;
-}
-#combat-log-compact.collapsed { display: none; }
-.log-line { padding: 1px 0; font-size: 11px; }
-.log-damage { color: #ff6666; }
-.log-gold { color: var(--gold); }
-.log-level { color: var(--green); font-weight: bold; }
-.log-loot { color: #e6cc80; }
-.log-rare { color: #ff8000; font-weight: bold; }
-.log-info { color: var(--text-dim); }
-.log-heal { color: #66ff66; }
 .log-boss { color: var(--red); font-weight: bold; }
 .log-skill { color: #9b4fff; font-weight: bold; }
 
@@ -2713,7 +2462,7 @@ function rollLoot(isBoss) {
   if (isBoss) {
     // BOSS: 100% chest
     addChest(rollChestType());
-    if (Math.random() < DROP_RATES.boss.stone) GameState.materials.stones += 3 + Math.floor(Math.random() * 3);
+    if (Math.random() < DROP_RATES.boss.stone) { GameState.materials.stones += 3 + Math.floor(Math.random() * 3); capStones(); }
     if (Math.random() < DROP_RATES.boss.gem) addGemToBag(2); // boss drops Lv2 gems
     if (Math.random() < DROP_RATES.boss.card) addCardToBag(1); // boss drops Lv1 cards
     if (Math.random() < DROP_RATES.boss.rune) {
@@ -2723,7 +2472,7 @@ function rollLoot(isBoss) {
   } else {
     // Normal: 15% chest
     if (Math.random() < DROP_RATES.normal.chest) addChest(rollChestType());
-    if (Math.random() < DROP_RATES.normal.stone) { const n = 1 + Math.floor(Math.random() * 2); GameState.materials.stones += n; }
+    if (Math.random() < DROP_RATES.normal.stone) { const n = 1 + Math.floor(Math.random() * 2); GameState.materials.stones += n; capStones(); }
     if (Math.random() < DROP_RATES.normal.gem) addGemToBag(1); // normal mobs drop Lv1 gems
   }
 }
@@ -2882,10 +2631,17 @@ function shuffleArray(arr) {
 }
 
 // --- Inventory Management ---
+function capStones() { GameState.materials.stones = Math.min(GameState.materials.stones, 9999); }
+
 function addToInventory(equipment) {
   if (shouldAutoBreak(equipment)) {
     GameState.gold += 5;
-    GameState.materials.stones += 1;
+    GameState.materials.stones += 1; capStones();
+    return;
+  }
+  if (GameState.inventory.length >= 999) {
+    const sellPrice = Math.floor(getSellPrice(equipment) * 0.5);
+    GameState.gold = (GameState.gold || 0) + Math.max(1, sellPrice);
     return;
   }
   GameState.inventory.push(equipment);
@@ -3212,7 +2968,7 @@ function batchBreak() {
     stones += sc[eq.quality] || 1;
   }
   GameState.inventory = GameState.inventory.filter(e => !BREAK_CHECKS[e.quality] || e.locked);
-  GameState.materials.stones += stones;
+  GameState.materials.stones += stones; capStones();
   if (GameState.selectedInvItem && toBreak.some(e => e.id === GameState.selectedInvItem)) GameState.selectedInvItem = null;
   addLog('一键分解: ' + toBreak.length + '件 → +' + stones + '强化石', 'loot');
   saveGame(); renderAll();
@@ -3459,7 +3215,7 @@ function buyShopItem(itemId) {
   GameState.gold-=item.price;
   if(item.type==='equip'){ const eq=rollEquipment(item.areaIdx,2,item.quality); if(eq)GameState.inventory.push(eq); }
   else if(item.type==='gem'){ GameState.gemInventory.push(makeGem(item.gemType, item.level)); }
-  else if(item.type==='stone'){ GameState.materials.stones+=item.qty; }
+  else if(item.type==='stone'){ GameState.materials.stones+=item.qty; capStones(); }
   else if(item.type==='chest'){ addChest(item.chestType); }
   else if(item.type==='rune'){ GameState.materials.runes=(GameState.materials.runes||0)+1; }
   if(!GameState._purchased) GameState._purchased = {};
@@ -3825,7 +3581,7 @@ function loadGame() {
     const offlineMs = Math.min(now - (data.lastSaveTime || now), MAX_OFFLINE_HOURS * 3600 * 1000);
     const offlineHours = offlineMs / 3600000;
 
-    GameState.currentArea = data.currentArea || 0;
+    GameState.currentArea = Math.min(data.currentArea || 0, AREAS.length - 1);
     GameState.currentSubArea = data.currentSubArea || 0;
     // FIX 9: Ensure areaKills loaded correctly
     GameState.areaKills = typeof data.areaKills === 'number' ? data.areaKills : 0;
@@ -3969,7 +3725,7 @@ function loadGame() {
         GameState.areaKills = Math.min(KILLS_TO_UNLOCK_BOSS, GameState.areaKills + Math.floor(offlineKills * 0.5));
         if (GameState.areaKills >= KILLS_TO_UNLOCK_BOSS) GameState.bossUnlocked = true;
         for (let i = 0; i < offlineChests; i++) addChest('copper');
-        GameState.materials.stones += Math.floor(offlineKills * 0.05);  // v2.09: 离线强化石
+        GameState.materials.stones += Math.floor(offlineKills * 0.05); capStones();  // v2.09: 离线强化石
       }
     }
     return true;
@@ -4664,6 +4420,26 @@ function renderBattlePanel() {
   nextBtn.style.display = 'inline-block';
   nextBtn.disabled = !canNext;
   nextBtn.style.opacity = canNext ? '1' : '0.4';
+
+  alignBattleEntities();
+}
+
+function alignBattleEntities() {
+  const arena = document.getElementById('battle-arena');
+  const playerHP = document.getElementById('vs-player-hp-fill').parentElement; // .vs-hp-wrap
+  const monsterHP = document.getElementById('vs-monster-hp-fill').parentElement;
+  const playerEl = document.getElementById('player-entity');
+  const monsterEl = document.getElementById('monster-entity');
+  if (!arena || !playerHP || !monsterHP || !playerEl || !monsterEl) return;
+  const aRect = arena.getBoundingClientRect();
+  const pHpRect = playerHP.getBoundingClientRect();
+  const mHpRect = monsterHP.getBoundingClientRect();
+  // Center of HP bar relative to arena
+  const playerCenter = pHpRect.left + pHpRect.width / 2 - aRect.left;
+  const monsterCenter = mHpRect.left + mHpRect.width / 2 - aRect.left;
+  playerEl.style.left = (playerCenter - 32) + 'px'; // 32 = half of 64px icon
+  monsterEl.style.left = (monsterCenter - 32) + 'px';
+  monsterEl.style.right = 'auto'; // override CSS right:0
 }
 
 // --- Class Panel ---
@@ -4752,7 +4528,7 @@ function endDummyMode(showResult) {
   // Restore to highest area
   if (GameState.savedArea) {
     const maxP = GameState.maxProgress || 0;
-    const maxArea = Math.max(0, Math.floor(maxP / 100));
+    const maxArea = Math.min(Math.max(0, Math.floor(maxP / 100)), AREAS.length - 1);
     const savedP = GameState.savedArea.area * 100 + GameState.savedArea.subArea;
     if (maxP > savedP) {
       GameState.currentArea = maxArea;
@@ -5678,6 +5454,13 @@ function init() {
   }
   updateClock();
   setInterval(updateClock, 30000);
+
+  // Align battle entities on resize
+  window.addEventListener('resize', () => alignBattleEntities());
+
+  // Preload all background images to avoid lag on area switch
+  const bgNames = ['bg_village.png','bg_forest.png','bg_mine.png','bg_desert.png','bg_volcano.png','bg_plain.png','bg_snow.png','bg_graveyard.png','bg_abyss.png'];
+  bgNames.forEach(src => { const img = new Image(); img.src = src; });
 }
 
 document.addEventListener('DOMContentLoaded', init);
