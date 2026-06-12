@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.31</title>
+<title>来挂机鸭 v2.33</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.31 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
+   来挂机鸭 v2.33 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -501,6 +501,7 @@ body {
   border-radius: 5px; padding: 4px 6px; font-size: 13px;
   transition: all 0.2s; cursor: pointer; min-height: 48px;
   display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px;
+  position: relative; overflow: visible;
 }
 .skill-slot-mini.filled { border-style: solid; border-color: var(--purple); }
 .skill-slot-mini.ready { border-color: #ffd700 !important; box-shadow: 0 0 12px rgba(255,215,0,0.6), 0 0 24px rgba(255,215,0,0.2); animation: readyPulse 1.5s ease-in-out infinite; }
@@ -508,8 +509,9 @@ body {
 .skill-slot-mini:not(.ready):hover { border-color: var(--purple); background: var(--hover-bright); }
 .skill-slot-mini.on-cooldown { opacity: 0.55; border-color: #3a2a5a; box-shadow: none; animation: none; }
 @keyframes readyPulse { 0%,100%{box-shadow:0 0 10px rgba(255,215,0,0.5),0 0 20px rgba(255,215,0,0.15)} 50%{box-shadow:0 0 20px rgba(255,215,0,0.9),0 0 36px rgba(255,215,0,0.4)} }
-.skill-slot-mini .skm-icon { font-size: 22px; position: relative; flex-shrink: 0; }
-.skm-num { position: absolute; top: -8px; left: -8px; font-size: 8px; color: var(--purple); background: #0d0d1a; border: 1px solid var(--purple); border-radius: 50%; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.skill-slot-mini .skm-icon { font-size: 22px; flex-shrink: 0; }
+.skm-num { position: absolute; top: 2px; left: 4px; font-size: 9px; color: #ffd700; background: #0d0d1a; border: 1px solid #ffd700; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; line-height: 1; z-index: 2; }
+.skm-num-empty { position: static; font-size: 9px; color: var(--text-dim); }
 .skill-slot-mini .skm-name { font-size: 14px; font-weight: bold; }
 .skill-slot-mini .skm-desc { font-size: 9px; color: var(--text-dim); }
 .skill-cd-bar-wrap { width: 100%; height: 2px; background: #1a0a1a; border-radius: 1px; overflow: hidden; margin-top: 1px; }
@@ -983,7 +985,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.31</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.33</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1362,7 +1364,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.31';
+const GAME_VERSION = '2.33';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -1881,8 +1883,8 @@ function getEffectiveStats() {
   for (const pId of GameState.equippedPassives) {
     const [clsId, pidx] = pId.split('_p');
     const clsData = CLASSES[clsId];
-    if (clsData && clsData.passives[parseInt(pidx)]) {
-      const eff = clsData.passives[parseInt(pidx)].effect;
+    if (clsData && clsData.passives[parseInt(pidx, 10)]) {
+      const eff = clsData.passives[parseInt(pidx, 10)].effect;
       for (const [k, v] of Object.entries(eff)) {
         if (k === 'atkPercent') atk = Math.floor(atk * (1 + v));
         else if (k === 'hpPercent') hp = Math.floor(hp * (1 + v));
@@ -1904,7 +1906,7 @@ function getEffectiveStats() {
       const hpRatio = GameState.playerMaxHP > 0 ? GameState.playerHP / GameState.playerMaxHP : 1;
       const triggerMatch = t.trigger && t.trigger.match(/^hp<(\d+)%$/);
       if (t.trigger === 'always' ||
-          (triggerMatch && hpRatio < (parseInt(triggerMatch[1]) / 100))) {
+          (triggerMatch && hpRatio < (parseInt(triggerMatch[1], 10) / 100))) {
         for (const [k, v] of Object.entries(t.effects)) {
           if (k === 'regen') continue;
           if (k === 'execute10') { acc.execute10 = true; continue; }
@@ -2074,6 +2076,22 @@ function getEffectiveStats() {
 }
 
 // --- Damage Formula ---
+// v2.32: 护盾吸收伤害辅助函数
+function applyDamageToPlayer(dmg, floatType) {
+  if (dmg <= 0) return;
+  const shield = GameState.playerShield || 0;
+  if (shield > 0) {
+    const absorbed = Math.min(shield, dmg);
+    GameState.playerShield = shield - absorbed;
+    const overflow = dmg - absorbed;
+    if (overflow > 0) GameState.playerHP -= overflow;
+    if (absorbed > 0) showDmgFloat(absorbed, 'heal', 'player-entity');
+  } else {
+    GameState.playerHP -= dmg;
+  }
+  if (floatType && dmg > 0) showDmgFloat(dmg, floatType, 'player-entity');
+}
+
 // v2.03 伤害公式 (兼容旧签名)
 function calcDamageToMonster(eStats) {
   let dmg = eStats.atk;
@@ -2201,7 +2219,7 @@ function calcMonsterDamage(eStats) {
     }
   }
 
-  if ((eStats.reflect || 0) > 0) {
+  if ((eStats.reflect || 0) > 0 && !(GameState.inTowerMode && Date.now() < GameState.jefferyInvincibleUntil)) {
     const rDmg = Math.ceil(Math.max(1, GameState.monsterStats.atk - eStats.def) * Math.min(eStats.reflect, 99) * 0.05);
     GameState.monsterHP -= rDmg;
     if (rDmg > 0) { addLog('反伤 ' + rDmg + ' 点', 'damage'); showDmgFloat(rDmg, 'reflect', 'monster-entity'); addDummyStat('reflect', '反伤', rDmg); }
@@ -2256,7 +2274,7 @@ function startCombat() {
   for (const [name, pts] of Object.entries(skillPoints)) {
     if (pts >= 4) {
       if (name === '岿然不动') { GameState.playerShield = eStats2.hp; addLog('岿然不动! ' + eStats2.hp + ' 护盾', 'skill'); }
-      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); GameState.monsterHP -= od; addLog('强而有力! ' + od + ' 点伤害', 'skill'); showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
+      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); applySkillDamage(od); addLog('强而有力! ' + od + ' 点伤害', 'skill'); showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
       if (name === '不死金身') { GameState.immortalReady = true; }
     }
   }
@@ -2365,17 +2383,17 @@ function tick() {
     totalDmg += atkDmg;
     playerAtks++;
     const ls = eStats.lifeSteal || 0;
-    if (ls > 0) { const h = Math.floor(atkDmg * ls * 0.007); if (h > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + h); showDmgFloat(h, 'heal', 'player-entity'); } }
+    if (ls > 0) { const h = Math.floor(atkDmg * ls * 0.07); if (h > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + h); showDmgFloat(h, 'heal', 'player-entity'); } }
     // Jeffery reflect (100): reflect 5% of damage back to player
     if (GameState.inTowerMode && GameState.towerCounter >= 100 && GameState.monsterStats.reflect) {
       const rDmg = Math.ceil(atkDmg * GameState.monsterStats.reflect * 0.5);
-      if (rDmg > 0) { GameState.playerHP -= rDmg; showDmgFloat(rDmg, 'reflect', 'player-entity'); }
+      if (rDmg > 0) { applyDamageToPlayer(rDmg, 'reflect'); }
     }
     // Jeffery counter (500): chance to counter when hit
     if (GameState.inTowerMode && GameState.towerCounter >= 500 && GameState.monsterStats.counter && Math.random() < 0.10) {
       const cDmg = calcMonsterDamage(eStats);
       if (!(Date.now() < (GameState.invincibleUntil || 0))) {
-        GameState.playerHP -= cDmg; showDmgFloat(cDmg, 'monster', 'player-entity');
+        applyDamageToPlayer(cDmg, 'monster');
       }
       addLog('杰弗里反击!', 'info');
     }
@@ -2429,7 +2447,7 @@ function tick() {
     } else if (Date.now() < (GameState.invincibleUntil || 0)) {
       // 无敌期间不受伤
     } else {
-      GameState.playerHP -= md;
+      applyDamageToPlayer(md, 'monster');
     }
     totalMonsterDmg += md;
     monsterAtks++;
@@ -2442,7 +2460,7 @@ function tick() {
     if (GameState.inTowerMode && GameState.towerCounter >= 300 && GameState.monsterStats.multiHit && Math.random() < 0.10) {
       const md2 = calcMonsterDamage(eStats);
       if (!(Date.now() < (GameState.invincibleUntil || 0))) {
-        GameState.playerHP -= md2;
+        applyDamageToPlayer(md2, 'monster');
       }
       totalMonsterDmg += md2;
       addLog('杰弗里连击!', 'info');
@@ -2500,7 +2518,7 @@ function castSkill(skillId) {
   const parts = skillId.split('_');
   const clsId = parts[0];
   const type = parts[1];
-  const idx = parseInt(parts[2]);
+  const idx = parseInt(parts[2], 10);
   const clsData = CLASSES[clsId];
   if (!clsData || !clsData.actives[idx]) return;
 
@@ -2561,7 +2579,7 @@ function castSkill(skillId) {
       if (copySkillId) {
         const parts2 = copySkillId.split('_');
         const copyClsData = CLASSES[parts2[0]];
-        const copySkill = copyClsData && copyClsData.actives[parseInt(parts2[2])];
+        const copySkill = copyClsData && copyClsData.actives[parseInt(parts2[2], 10)];
         if (copySkill && copySkill.effect === 'damage') {
           const copies = skill.copies || 5;
           let totalDmg = 0;
@@ -3494,14 +3512,17 @@ function goToNextSubArea() {
 }
 
 // --- Death & Respawn (FIX 9: never reset areaKills) ---
+let _deathTimer = null; // v2.32: 跟踪死亡倒计时以支持清理
+
 function startDeathCountdown() {
+  if (_deathTimer) clearInterval(_deathTimer); // 清理旧timer
   let remaining = Math.ceil(DEATH_RESPAWN_DELAY / 1000);
   GameState.deathCountdown = remaining;
   renderDeathCountdown(remaining);
-  const timer = setInterval(() => {
+  _deathTimer = setInterval(() => {
     remaining--;
     GameState.deathCountdown = remaining;
-    if (remaining <= 0) { clearInterval(timer); autoRespawn(); }
+    if (remaining <= 0) { clearInterval(_deathTimer); _deathTimer = null; autoRespawn(); }
     else { renderDeathCountdown(remaining); }
   }, 1000);
 }
@@ -3603,7 +3624,7 @@ function generateShopItems(ai) {
   const maxQ = ['rare','epic','epic','epic','legendary','legendary','ancient','ancient','mythic'][ai] || 'rare';
   const maxIdx = QUALITY_ORDER.indexOf(maxQ);
   const allowedQs = QUALITY_ORDER.filter((q, i) => i >= maxIdx && q !== 'mythic');
-  for (let i=0;i<3;i++) { const q=allowedQs[Math.floor(Math.random()*allowedQs.length)]; const s=Object.keys(EQUIP_SLOTS)[Math.floor(Math.random()*8)]; const p=Math.floor((2000+ai*500)*{common:0.5,fine:1,rare:2,epic:5,legendary:12,ancient:30}[q]||1);     if (q==='fine'&&s==='offhand') slotsuffix='副手'; else slotsuffix=EQUIP_SLOTS[s].name;
+  for (let i=0;i<3;i++) { const q=allowedQs[Math.floor(Math.random()*allowedQs.length)]; const s=Object.keys(EQUIP_SLOTS)[Math.floor(Math.random()*8)]; const p=Math.floor((2000+ai*500)*{common:0.5,fine:1,rare:2,epic:5,legendary:12,ancient:30}[q]||1); const slotsuffix=(q==='fine'&&s==='offhand')?'副手':EQUIP_SLOTS[s].name;
     items.push({type:'equip',id:'eq'+i,quality:q,slot:s,price:p,areaIdx:ai,desc:'随机' + QUALITIES[q].name + slotsuffix}); }
   // Gem: LvN price = 2000×3^(N-1)
   for (let i=0;i<2;i++) {
@@ -3975,6 +3996,7 @@ function saveGame() {
     rampUpStacks: GameState.rampUpStacks,
     immortalReady: GameState.immortalReady,
     invincibleUntil: GameState.invincibleUntil,
+    playerShield: GameState.playerShield || 0,
     pierceStacks: GameState.pierceStacks,
     blockDmgStacks: GameState.blockDmgStacks,
     counterStacks: GameState.counterStacks,
@@ -3999,6 +4021,7 @@ function saveGame() {
 }
 
 function loadGame() {
+  if (_deathTimer) { clearInterval(_deathTimer); _deathTimer = null; }
   try {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return false;
@@ -4048,6 +4071,7 @@ function loadGame() {
     GameState.rampUpStacks = data.rampUpStacks || 0;
     GameState.immortalReady = data.immortalReady || false;
     GameState.invincibleUntil = data.invincibleUntil || 0;
+    GameState.playerShield = data.playerShield || 0;
     GameState.pierceStacks = data.pierceStacks || 0;
     GameState.blockDmgStacks = data.blockDmgStacks || 0;
     GameState.counterStacks = data.counterStacks || 0;
@@ -4186,7 +4210,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.31_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.33_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4359,6 +4383,7 @@ function onLogoClick() {
 }
 
 function resetGame() {
+  if (_deathTimer) { clearInterval(_deathTimer); _deathTimer = null; }
   localStorage.removeItem(SAVE_KEY);
 
   // Full state reset
@@ -5085,7 +5110,7 @@ function startDummyMode() {
   for (const [name, pts] of Object.entries(skillPoints)) {
     if (pts >= 4) {
       if (name === '岿然不动') { GameState.playerShield = eStats2.hp; addLog('岿然不动! ' + eStats2.hp + ' 护盾', 'skill'); }
-      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); GameState.monsterHP -= od; addLog('强而有力! ' + od + ' 点伤害', 'skill'); showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
+      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); applySkillDamage(od); addLog('强而有力! ' + od + ' 点伤害', 'skill'); showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
       if (name === '不死金身') { GameState.immortalReady = true; }
     }
   }
@@ -5261,7 +5286,7 @@ function startTowerMode() {
   for (const [name, pts] of Object.entries(skillPoints)) {
     if (pts >= 4) {
       if (name === '岿然不动') { GameState.playerShield = eStats2.hp; }
-      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); GameState.monsterHP -= od; showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
+      if (name === '强而有力') { const od = Math.floor(eStats2.atk * 10); applySkillDamage(od); showDmgFloat(od, 'skill', 'monster-entity'); addDummyStat('godSkill', '强而有力', od); if ((skillPoints['越战越勇']||0) >= 4) GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1; }
       if (name === '不死金身') { GameState.immortalReady = true; }
     }
   }
@@ -5293,7 +5318,7 @@ function endTowerMode() {
 function applyTowerMilestones(counter) {
   const stats = GameState.monsterStats;
   for (const [level, info] of Object.entries(TOWER_MILESTONES)) {
-    if (counter >= parseInt(level)) {
+    if (counter >= parseInt(level, 10)) {
       if (!stats._milestones) stats._milestones = {};
       if (!stats._milestones[info.key]) {
         stats._milestones[info.key] = true;
@@ -5493,7 +5518,7 @@ function renderSkillSlots() {
   document.getElementById('trait-slots').innerHTML = traitHtml;
 
   // Active skill slots (4, 2 rows)
-  const skillNums = ['①','②','③','④'];
+  const skillNums = ['1','2','3','4'];
   let activeRow0 = '', activeRow1 = '';
   for (let i = 0; i < 4; i++) {
     const skillId = GameState.equippedActives[i];
@@ -5501,7 +5526,7 @@ function renderSkillSlots() {
     if (skillId) {
       const parts = skillId.split('_');
       const clsId2 = parts[0];
-      const aIdx2 = parseInt(parts[2]);
+      const aIdx2 = parseInt(parts[2], 10);
       const clsData2 = CLASSES[clsId2];
       const skill = clsData2?.actives[aIdx2];
       const cd = GameState.skillCooldowns[skillId] || 0;
@@ -5514,15 +5539,16 @@ function renderSkillSlots() {
         const onCD = start && !readyGlow;
         const titleStr = skill.name + '&#10;CD:' + skill.cd + 's · ' + skill.desc;
         slotHtml = '<div class="skill-slot-mini filled' + (onCD ? ' on-cooldown' : '') + (readyGlow ? ' ready' : '') + '" title="' + titleStr + '&#10;点击卸下" onclick="equipActive(\'' + clsId2 + '\',' + aIdx2 + ')">';
+        slotHtml += '<span class="skm-num">' + skillNums[i] + '</span>';
         slotHtml += '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex:1;">';
-        slotHtml += '<div style="display:flex;align-items:center;gap:4px;"><span class="skm-num" style="position:static;font-size:10px;">' + skillNums[i] + '</span><span class="skm-icon" style="font-size:22px;position:static;">' + skill.icon + '</span><span class="skm-name">' + skill.name + '</span></div>';
+        slotHtml += '<div style="display:flex;align-items:center;gap:4px;"><span class="skm-icon">' + skill.icon + '</span><span class="skm-name">' + skill.name + '</span></div>';
         slotHtml += '<div style="font-size:8px;color:' + (!start ? '#1eff00' : '#ff6666') + ';">' + (!start ? '就绪' : 'CD:' + Math.ceil(cdRemain) + 's') + '</div>';
         slotHtml += '<div class="skill-cd-bar-wrap"><div class="skill-cd-bar-fill" data-cd-start="' + start + '" data-cd-dur="' + (skill.cd * 1000) + '"></div></div>';
         slotHtml += '</div></div>';
         slotHtml += '</div>';
       }
     } else {
-      slotHtml = '<div class="skill-slot-mini" style="cursor:default;"><span class="skm-num">' + skillNums[i] + '</span></div>';
+      slotHtml = '<div class="skill-slot-mini" style="cursor:default;"><span class="skm-num-empty">' + skillNums[i] + '</span></div>';
     }
     if (i < 2) activeRow0 += slotHtml; else activeRow1 += slotHtml;
   }
@@ -5537,7 +5563,7 @@ function renderSkillSlots() {
     if (passId) {
       const pparts = passId.split('_');
       const pclsId = pparts[0];
-      const pIdx = parseInt(pparts[2]);
+      const pIdx = parseInt(pparts[2], 10);
       const pclsData = CLASSES[pclsId];
       const passive = pclsData?.passives[pIdx];
       if (passive) {
@@ -6253,7 +6279,8 @@ function init() {
     addLog('9区域·9职业·5神技·等你探索', 'info');
     addLog('v1.20: 24列紧凑格子(图标12px/间距1px)', 'info');
   }
-  GameState.selectedClass = null; // 每次打开默认折叠技能树
+  // v2.32: 只有新游戏才折叠技能树，加载存档保留状态
+  if (!hasSave) GameState.selectedClass = null;
 
   startCombat();
   renderAll();
@@ -6336,8 +6363,8 @@ function init() {
     const bars = document.querySelectorAll('.skill-cd-bar-fill');
     const now = Date.now();
     bars.forEach(bar => {
-      const start = parseInt(bar.getAttribute('data-cd-start')) || 0;
-      const dur = parseInt(bar.getAttribute('data-cd-dur')) || 0;
+      const start = parseInt(bar.getAttribute('data-cd-start'), 10) || 0;
+      const dur = parseInt(bar.getAttribute('data-cd-dur'), 10) || 0;
       if (start && dur) {
         const elapsed = now - start;
         const pct = Math.min(100, Math.max(0, (elapsed / dur) * 100));
