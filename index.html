@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.33</title>
+<title>来挂机鸭 v2.41</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.33 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
+   来挂机鸭 v2.41 - 9大区域+12职业+5神技+爬塔+木桩+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -147,8 +147,8 @@ body {
 .forge-attr-row.selectable:hover { background:var(--hover-bright); }
 .forge-attr-row.selected { background:var(--purple); color:#fff; }
 /* v2.10: Merge modal checkboxes */
-.merge-check-row { display:flex; align-items:center; gap:4px; padding:2px 0; font-size:11px; cursor:pointer; }
-.merge-check-row input { accent-color:var(--purple); }
+.merge-check-row { display:flex; align-items:center; gap:6px; padding:4px 0; font-size:15px; cursor:pointer; min-height:26px; white-space:nowrap; }
+.merge-check-row input { accent-color:var(--purple); width:15px; height:15px; flex-shrink:0; }
 .merge-count { color:var(--text-dim); font-size:12px; margin-left:auto; }
 .equip-slot-mini {
   width: 100%; background: var(--card-bg); border: 2px dashed #3a2a5e;
@@ -474,6 +474,8 @@ body {
 .class-tab.active { border-color: var(--purple); color: var(--purple-light); background: var(--hover-bright); }
 .class-tab.equipped { border-color: #4CAF50; color: #4CAF50; }
 .class-tab:hover { border-color: var(--purple); }
+.class-tab.placeholder { border-color: #333; color: #ff4444; }
+.class-tab.placeholder:hover { border-color: #555; }
 
 .unlock-node {
   display: flex; align-items: center; justify-content: space-between;
@@ -985,7 +987,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.33</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:18px;">来挂机鸭</span> <span class="ver-badge">v2.41</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1100,6 +1102,8 @@ body.light-mode .panel-header {
             <label style="color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="chk-silver" checked onchange="saveCheckState()">银</label>
             <label style="color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="chk-gold" checked onchange="saveCheckState()">金</label>
             <button class="btn btn-sm" onclick="batchOpen()" style="font-size:14px;padding:2px 7px;font-weight:bold;background:var(--purple);color:#fff;border-color:var(--purple-light);">📦开箱</button>
+            <span id="sell-qs" style="display:flex;gap:2px;margin-left:4px;"></span>
+            <button class="btn btn-sm" onclick="batchSell()" style="font-size:14px;padding:2px 7px;">💰出售</button>
             <span id="break-qs" style="display:flex;gap:1px;"></span>
             <button class="btn btn-sm" onclick="batchBreak()" style="font-size:14px;padding:2px 7px;">🗑️分解</button>
             <button class="btn btn-sm" onclick="openMergeModal()" style="font-size:14px;padding:2px 7px;">🔀合成</button>
@@ -1268,23 +1272,23 @@ body.light-mode .panel-header {
 
 <!-- v2.10: Merge Modal -->
 <div class="modal-overlay" id="merge-modal">
-  <div class="modal-box" style="position:relative;">
+  <div class="modal-box" style="position:relative;max-width:520px;padding:20px 24px;">
     <button class="modal-close" onclick="closeMergeModal()">✕</button>
-    <h2>🔀 一键合成</h2>
-    <p style="text-align:center;color:var(--text-dim);font-size:11px;">勾选类型后点击合成，自动将 3个同等级 → 1个更高等级(最高Ⅴ级)</p>
-    <div style="display:flex;gap:8px;">
+    <h2 style="font-size:19px;margin-bottom:8px;">🔀 宝石 & 卡片合成</h2>
+    <p style="text-align:center;color:var(--text-dim);font-size:14px;margin-bottom:12px;">勾选类型后点击合成，自动将 3个同等级 → 1个更高等级(最高Ⅴ级)</p>
+    <div style="display:flex;gap:16px;">
       <div style="flex:1;">
-        <div style="font-size:12px;font-weight:bold;color:var(--purple-light);margin-bottom:4px;">💎 宝石合成</div>
-        <div id="merge-gem-checks"></div>
-        <button class="btn btn-sm" style="width:100%;margin-top:6px;background:var(--purple);" onclick="batchMergeGems()">🔀 一键合成宝石</button>
+        <div style="font-size:16px;font-weight:bold;color:var(--purple-light);margin-bottom:6px;">💎 宝石合成</div>
+        <div id="merge-gem-checks" style="font-size:15px;line-height:2;"></div>
+        <button class="btn" style="width:100%;margin-top:8px;padding:9px;font-size:15px;background:var(--purple);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="batchMergeGems()">🔀 合成宝石</button>
       </div>
       <div style="flex:1;">
-        <div style="font-size:12px;font-weight:bold;color:var(--purple-light);margin-bottom:4px;">🃏 卡片合成</div>
-        <div id="merge-card-checks"></div>
-        <button class="btn btn-sm" style="width:100%;margin-top:6px;background:var(--purple);" onclick="batchMergeCards()">🔀 一键合成卡片</button>
+        <div style="font-size:16px;font-weight:bold;color:var(--purple-light);margin-bottom:6px;">🃏 卡片合成</div>
+        <div id="merge-card-checks" style="font-size:15px;line-height:2;"></div>
+        <button class="btn" style="width:100%;margin-top:8px;padding:9px;font-size:15px;background:var(--purple);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;" onclick="batchMergeCards()">🔀 合成卡片</button>
       </div>
     </div>
-    <div id="merge-result" style="margin-top:6px;font-size:12px;color:var(--gold);text-align:center;"></div>
+    <div id="merge-result" style="margin-top:10px;font-size:15px;color:var(--gold);text-align:center;"></div>
   </div>
 </div>
 
@@ -1364,7 +1368,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.33';
+const GAME_VERSION = '2.41';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -1634,7 +1638,7 @@ const CHEST_DROP_BOSS = [{ type:'silver', rate:0.80 }, { type:'gold', rate:0.20 
 
 // --- A11 - Class System ---
 const CLASSES = {
-  mortal:{id:'mortal',name:'凡人',icon:'🐤',trait:{name:'凡人意志',desc:'全属性+等级/2%(Lv100=+50%)',trigger:'always',effects:{allStatsByLevel:true}},unlockCosts:[0,10000,50000,200000,'rune2','rune3'],
+  mortal:{id:'mortal',name:'凡人',icon:'🐤',trait:{name:'凡人意志',desc:'全属性+等级/2%(Lv100=+50%)',trigger:'always',effects:{allStatsByLevel:true}},unlockCosts:[0,0,0,0,'rune2','rune3'],
     passives:[{name:'挂机达人',icon:'📖',desc:'经验+10% 金币+15% 掉落+5%',effect:{expBonus:0.10,goldBonus:0.15,dropBonus:0.05}},{name:'坚韧',icon:'💚',desc:'HP每降10%全属性+2%',effect:{scalingAllStats:0.02}}],
     actives:[{name:'均衡斩',icon:'⚔️',cd:5,effect:'damage',value:1.0,desc:'100%ATK'},{name:'治愈术',icon:'💚',cd:20,effect:'heal',value:0.10,desc:'恢复10%HP'},{name:'凡人逆天',icon:'💪',cd:60,effect:'ignoreDef',value:4.0,desc:'400%ATK无视防御'}]},
   berserker:{id:'berserker',name:'狂战',icon:'💢',trait:{name:'嗜血狂暴',desc:'HP<50%时: ATK+20% 吸血+15%',trigger:'hp<50%',effects:{atkBase:0.20,lifeSteal:0.15}},unlockCosts:[0,10000,50000,200000,'rune2','rune3'],
@@ -1661,10 +1665,30 @@ const CLASSES = {
   ninja:{id:'ninja',name:'忍者',icon:'🗡️',trait:{name:'急速修炼',desc:'每次普攻 +1%SPD (持续本场战斗)',trigger:'always',effects:{spdPerHit:0.01}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
     passives:[{name:'忍术精通',icon:'⚡',desc:'连击+15% SPD+10%',effect:{multiHit:0.15,spdPercent:0.10}},{name:'暗劲',icon:'👊',desc:'普攻附带50%ATK伤害',effect:{atkBonusDmg:0.50}}],
     actives:[{name:'手里剑',icon:'⚔️',cd:5,effect:'damage',value:2.0,desc:'200%ATK'},{name:'影分身之术',icon:'🔥',cd:15,effect:'buff',value:'ninja_buff',duration:10,desc:'连击+30% ATK+20% 10s'},{name:'实体分身',icon:'👤',cd:60,effect:'summonClone',duration:10,desc:'召唤分身 普攻10s'}]},
+  hunter:{id:'hunter',name:'猎人',icon:'🏹',trait:{name:'猎手本能',desc:'HP≥100%时攻击必定暴击',trigger:'hp>=100%',effects:{fullHpCrit:true}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
+    passives:[{name:'鹰眼',icon:'👁️',desc:'闪避+15% 暴击+15%',effect:{dodge:0.15,crit:0.15}},{name:'追猎',icon:'🎯',desc:'每次暴击爆伤+10% 叠10层',effect:{critCdmgStack:0.10}}],
+    actives:[{name:'速射',icon:'🏹',cd:4,effect:'damage',value:0.8,desc:'80%ATK'},{name:'狙击',icon:'🔭',cd:12,effect:'critDodge',value:2.5,dodgeBuff:0.50,dodgeDur:3,desc:'250%ATK 暴击则闪避+50% 3s'},{name:'追踪箭',icon:'💥',cd:70,effect:'executeLoop',value:8.0,maxLoop:33,desc:'800%ATK 未击杀继续 最多33次'}]},
+  bard:{id:'bard',name:'诗人',icon:'🎵',trait:{name:'战歌护盾',desc:'每20次攻击获得30%HP护盾',trigger:'atkCount',effects:{shieldOnAtk:0.30,atkInterval:20}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
+    passives:[{name:'坚韧之歌',icon:'💪',desc:'防御+20% 血量+15%',effect:{defPercent:0.20,hpPercent:0.15}},{name:'不屈之歌',icon:'🛡️',desc:'护盾击破时减伤+3% 叠10层',effect:{shieldBreakDmgReduc:0.03}}],
+    actives:[{name:'战歌',icon:'🎶',cd:15,effect:'buff',value:'atk_crit',duration:10,desc:'ATK+15% 暴击+10% 10s'},{name:'守护之歌',icon:'🛡️',cd:18,effect:'shieldSelf',value:0.20,duration:10,desc:'获得20%HP护盾 10s'},{name:'凯旋之歌',icon:'🎺',cd:50,effect:'buff',value:'pierce_cdmg',duration:10,desc:'穿甲+15%增伤+15%爆伤+50% 10s'}]},
+  hero:{id:'hero',name:'勇者',icon:'⚔️',trait:{name:'勇者之力',desc:'ATK+总击杀/40',trigger:'always',effects:{atkFromKills:true}},unlockCosts:[0,30000,100000,500000,'rune3','rune4'],
+    passives:[{name:'绝杀',icon:'💀',desc:'每次伤害0.1%概率秒杀(杰弗里除外)',effect:{oneshotChance:0.001}},{name:'不屈意志',icon:'✨',desc:'每100次攻击无敌1秒',effect:{atkInvincible:true,invInterval:100}}],
+    actives:[{name:'勇者斩',icon:'⚔️',cd:8,effect:'pureDmg',value:3.0,desc:'300%ATK'},{name:'勇者印记',icon:'⭐',cd:25,effect:'markTriple',desc:'下次伤害技能×3'},{name:'勇者裁决',icon:'⚡',cd:60,effect:'trueDmgKills',desc:'真实伤害=总击杀/20'}]},
 };
 
-// --- Combined Class Names (36 combos from 2 equipped traits) ---
+// --- Combined Class Names (66 combos from 2 equipped traits) ---
 const CLASS_COMBOS = {};
+
+// v2.40: 职业解锁 — 通关对应区域BOSS后解锁，用 areaIndex 映射
+const CLASS_UNLOCK_AREA = {
+  mortal: -1,                            // 初始
+  hunter: 1, priest: 1,                  // 村庄BOSS
+  thief: 2, berserker: 3,                // 森林/矿洞
+  shieldguard: 4, killer: 5,             // 沙地/火山
+  mage: 6, bard: 7, ninja: 8,            // 平原/雪原/墓地
+  warlock: 9,                            // 深渊
+  hero: 9                                // 深渊+木桩(特殊条件)
+};
 function setC(a, b, n) { CLASS_COMBOS[([a,b].sort().join('_'))] = n; }
 setC('mortal','berserker','匹夫'); setC('mortal','shieldguard','铁卫'); setC('mortal','mage','贤者');
 setC('mortal','priest','圣徒'); setC('mortal','warlock','异端'); setC('mortal','thief','浪人');
@@ -1680,6 +1704,18 @@ setC('priest','warlock','邪教徒'); setC('priest','thief','神偷'); setC('pri
 setC('priest','ninja','隐修者');
 setC('warlock','thief','咒盗'); setC('warlock','killer','杀手'); setC('warlock','ninja','影术士');
 setC('thief','killer','暗影'); setC('thief','ninja','影舞者'); setC('killer','ninja','影忍');
+// v2.40: hunter/bard/hero combos
+setC('hunter','mortal','猎户'); setC('hunter','berserker','战猎'); setC('hunter','shieldguard','兽王');
+setC('hunter','mage','元素射手'); setC('hunter','priest','德鲁伊'); setC('hunter','warlock','恶魔猎手');
+setC('hunter','thief','陷阱师'); setC('hunter','killer','捕食者'); setC('hunter','ninja','暗哨');
+setC('hunter','bard','巡猎者'); setC('hunter','hero','传说猎手');
+setC('bard','mortal','吟游诗人'); setC('bard','berserker','战歌手'); setC('bard','shieldguard','战歌骑士');
+setC('bard','mage','魔笛手'); setC('bard','priest','圣咏者'); setC('bard','warlock','咒歌者');
+setC('bard','thief','摘星手'); setC('bard','killer','冥歌者'); setC('bard','ninja','暗谣');
+setC('bard','hero','传颂者');
+setC('hero','mortal','冒险王'); setC('hero','berserker','狂王'); setC('hero','shieldguard','守护者');
+setC('hero','mage','贤王'); setC('hero','priest','圣骑士王'); setC('hero','warlock','魔王');
+setC('hero','thief','侠盗'); setC('hero','killer','裁决者'); setC('hero','ninja','影雄');
 
 function getClassName() {
   const t = (GameState.equippedTraits || []).filter(x => x);
@@ -1783,6 +1819,12 @@ const GameState = {
   skillCastTimer: 0,     // 技能释放间隔计时器(秒)
   mageDmgIncStacks: 0,   // 法师: 普攻增伤叠层
   inDummyMode: false,     // 木桩训练模式
+  combatAtkCount: 0,      // v2.40: 本场战斗攻击次数(诗人/勇者用)
+  bardShieldBreakStacks: 0, // v2.40: 诗人护盾击破叠层
+  hunterCritCdmgStacks: 0,  // v2.40: 猎人暴击叠爆伤
+  heroMarkActive: false,    // v2.40: 勇者3倍印记
+  playerShield: 0,          // v2.32: 护盾值
+  dummyKilled: false,        // v2.40: 击杀木桩标记(勇者解锁条件)
   dummyStartTime: 0,      // 木桩开始时间
   dummyStats: null,       // {skill1,skill2,skill3,normal,reflect}
   savedArea: null,        // 进入木桩前的区域
@@ -1953,6 +1995,17 @@ function getEffectiveStats() {
     acc.multiHit = (acc.multiHit || 0) + 0.30;
     atk = Math.floor(atk * 1.2);
   }
+  // v2.40: 诗人战歌 ATK+15% 暴击+10%
+  if (GameState.activeBuffs['atk_crit'] && GameState.activeBuffs['atk_crit'] > 0) {
+    atk = Math.floor(atk * 1.15);
+    acc.critExtra = (acc.critExtra || 0) + 10;
+  }
+  // v2.40: 诗人凯旋之歌 穿甲+15%增伤+15%爆伤+50%
+  if (GameState.activeBuffs['pierce_cdmg'] && GameState.activeBuffs['pierce_cdmg'] > 0) {
+    acc.pierce = (acc.pierce || 0) + 0.15;
+    acc.dmgInc = (acc.dmgInc || 0) + 0.15;
+    cdmgExtra += 50;
+  }
 
   const caps = { dmgReduc:0.75, dodge:0.60, block:0.75, lifeSteal:0.25, reflect:0.50, pierce:0.50, cdReduc:0.60, counter:0.50, multiHit:0.30 };
   for (const [k, cap] of Object.entries(caps)) {
@@ -2072,6 +2125,21 @@ function getEffectiveStats() {
     acc.critHeal = 0.20;
   }
 
+  // v2.40: 猎人被动2 暴击叠爆伤
+  const hunterStacks = Math.min(GameState.hunterCritCdmgStacks || 0, 10);
+  if (equipP.includes('hunter_p_1') && hunterStacks > 0) {
+    cdmgExtra += hunterStacks * 10;
+  }
+  // v2.40: 诗人被动2 护盾击破叠减伤
+  const bardStacks = Math.min(GameState.bardShieldBreakStacks || 0, 10);
+  if (equipP.includes('bard_p_1') && bardStacks > 0) {
+    acc.dmgReduc = (acc.dmgReduc || 0) + bardStacks * 0.03;
+  }
+  // v2.40: 勇者 trait ATK+总击杀/40
+  if (equipT.includes('hero')) {
+    atk += Math.floor(GameState.totalKills / 40);
+  }
+
   return { atk, hp, def, spd, ...acc };
 }
 
@@ -2079,13 +2147,18 @@ function getEffectiveStats() {
 // v2.32: 护盾吸收伤害辅助函数
 function applyDamageToPlayer(dmg, floatType) {
   if (dmg <= 0) return;
-  const shield = GameState.playerShield || 0;
+  const shieldBefore = GameState.playerShield || 0;
+  const shield = shieldBefore;
   if (shield > 0) {
     const absorbed = Math.min(shield, dmg);
     GameState.playerShield = shield - absorbed;
     const overflow = dmg - absorbed;
     if (overflow > 0) GameState.playerHP -= overflow;
     if (absorbed > 0) showDmgFloat(absorbed, 'heal', 'player-entity');
+    // v2.40: 诗人被动2 - 护盾击破叠减伤
+    if (shieldBefore > 0 && GameState.playerShield === 0 && (GameState.equippedPassives || []).includes('bard_p_1')) {
+      GameState.bardShieldBreakStacks = Math.min((GameState.bardShieldBreakStacks || 0) + 1, 10);
+    }
   } else {
     GameState.playerHP -= dmg;
   }
@@ -2101,7 +2174,10 @@ function calcDamageToMonster(eStats) {
   dmg = dmg * (1 + (eStats.dmgInc || 0));
 
   let dmgType = 'normal';
-  if (Math.random() * 100 < Math.min(eStats.crit || 0, 100)) {
+  // v2.40: 猎人 trait - HP≥100%必暴
+  const hpFull = GameState.playerMaxHP > 0 && GameState.playerHP >= GameState.playerMaxHP;
+  const hunterFullCrit = hpFull && (GameState.equippedTraits || []).includes('hunter');
+  if (Math.random() * 100 < Math.min(eStats.crit || 0, 100) || hunterFullCrit) {
     dmg = dmg * (1 + (eStats.cdmg || 50) / 100);
     addLog('暴击!', 'rare'); dmgType = 'crit';
     // 刺客 trait: 暴击时穿甲+20%
@@ -2112,6 +2188,10 @@ function calcDamageToMonster(eStats) {
     if (eStats.critHeal && GameState.playerMaxHP > 0) {
       const critH = Math.floor(dmg * eStats.critHeal);
       if (critH > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + critH); showDmgFloat(critH, 'heal', 'player-entity'); }
+    }
+    // v2.40: 猎人 passive2 - 暴击叠爆伤
+    if ((GameState.equippedPassives || []).includes('hunter_p_1')) {
+      GameState.hunterCritCdmgStacks = Math.min((GameState.hunterCritCdmgStacks || 0) + 1, 10);
     }
   }
 
@@ -2142,7 +2222,7 @@ function calcDamageToMonster(eStats) {
   // 忍者被动2: 普攻附带50%ATK
   const atkBonus = (GameState.equippedPassives.includes('ninja_p_1') ? eStats.atk * 0.50 : 0);
 
-  const finalDmg = Math.max(1, Math.floor(dmg + hpPctDmg + defBonus + hpBonus + atkBonus));
+  let finalDmg = Math.max(1, Math.floor(dmg + hpPctDmg + defBonus + hpBonus + atkBonus));
   showDmgFloat(finalDmg, dmgType, 'monster-entity');
 
   // 忍者 trait: 每次普攻+1%速度
@@ -2196,10 +2276,19 @@ function calcDamageToMonster(eStats) {
     finalDmg = Math.floor(finalDmg * 0.90);
   }
 
+  // v2.40: 勇者被动1 - 0.1%秒杀(杰弗里除外)
+  if (!GameState.inTowerMode && (GameState.equippedPassives || []).includes('hero_p_0') && Math.random() < 0.001) {
+    addLog('绝杀!', 'skill');
+    return GameState.monsterMaxHP;
+  }
+
   return finalDmg;
 }
 
 function calcMonsterDamage(eStats) {
+  // v2.40: 神圣庇护免疫检查
+  if (Date.now() < (GameState.invincibleUntil || 0)) return 0;
+  if ((GameState.activeBuffs['immune_buff'] || 0) > 0) return 0;
   let dmg = GameState.monsterStats.atk;
   dmg = Math.max(1, dmg - eStats.def);
   dmg = dmg * (1 - (eStats.dmgReduc || 0));
@@ -2304,6 +2393,9 @@ function spawnMonster() {
   GameState.mageDmgIncStacks = 0;
   GameState.dodgeFirstAttack = true;
   GameState.combatStartTime = Date.now();
+  GameState.combatAtkCount = 0; // v2.40
+  GameState.hunterCritCdmgStacks = 0; // v2.40
+  GameState.playerShield = 0; // v2.40: 护盾不跨战残留
   GameState.ninjaSpdStacks = 0;
   GameState.counterStacks = 0;
   GameState.pierceStacks = 0;
@@ -2331,7 +2423,7 @@ function tick() {
   }
   for (const key in GameState.activeBuffs) {
     if (GameState.activeBuffs[key] > 0) GameState.activeBuffs[key]--;
-    else delete GameState.activeBuffs[key];
+    else { delete GameState.activeBuffs[key]; if (key === 'shield_dur') GameState.playerShield = 0; }
   }
 
   // Clone timer
@@ -2382,6 +2474,18 @@ function tick() {
     GameState.monsterHP -= atkDmg;
     totalDmg += atkDmg;
     playerAtks++;
+    GameState.combatAtkCount++; // v2.40
+    // v2.40: bard trait - 每20次攻击获得护盾
+    if (GameState.equippedTraits.includes('bard') && GameState.combatAtkCount % 20 === 0) {
+      const sAmt = Math.floor(GameState.playerMaxHP * 0.30);
+      GameState.playerShield = (GameState.playerShield || 0) + sAmt;
+      showDmgFloat(sAmt, 'heal', 'player-entity');
+    }
+    // v2.40: hero passive2 - 每100次攻击无敌1秒
+    if (GameState.equippedPassives.includes('hero_p_1') && GameState.combatAtkCount % 100 === 0) {
+      GameState.invincibleUntil = Date.now() + 1000;
+      addLog('不屈意志! 无敌1秒', 'skill');
+    }
     const ls = eStats.lifeSteal || 0;
     if (ls > 0) { const h = Math.floor(atkDmg * ls * 0.07); if (h > 0) { GameState.playerHP = Math.min(GameState.playerMaxHP, GameState.playerHP + h); showDmgFloat(h, 'heal', 'player-entity'); } }
     // Jeffery reflect (100): reflect 5% of damage back to player
@@ -2400,6 +2504,7 @@ function tick() {
 
     if (GameState.monsterHP <= 0) {
       if (GameState.inTowerMode) { towerReviveJeffery(); } else {
+        if (GameState.inDummyMode) GameState.dummyKilled = true; // v2.40: 勇者解锁条件
         triggerMonsterDeathAnimation();
         monsterKilled();
         killsThisTick++;
@@ -2527,10 +2632,10 @@ function castSkill(skillId) {
   let dmg, heal;
 
   switch (skill.effect) {
-    case 'damage':
+    case 'damage': {
       dmg = Math.floor(eStats.atk * skill.value);
       // 法师标记: 消耗型1.5倍
-      if (clsId === 'mage' && GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; addLog('魔力标记! 伤害×1.5', 'skill'); }
+      if (GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); const tag = GameState.nextSkillMult === 3 ? '勇者印记!' : '魔力标记!'; addLog(tag + ' 伤害×' + GameState.nextSkillMult, 'skill'); GameState.nextSkillMult = 0; }
       // 术士真伤: 每层100
       let trueDmgSkill = 0;
       if (GameState.equippedTraits.includes('warlock') && GameState.trueDmgStacks > 0) { trueDmgSkill = GameState.trueDmgStacks * 100; dmg += trueDmgSkill; addLog('咒术叠加! +' + trueDmgSkill + ' 真伤', 'skill'); }
@@ -2541,11 +2646,12 @@ function castSkill(skillId) {
       addDummyStat('skill', skill.name, Math.floor(dmg - trueDmgSkill));
       if (trueDmgSkill > 0) addDummyStat('trait', '咒术叠加', trueDmgSkill);
       break;
+    }
 
     case 'mark':
       // 法师: 造成伤害+设置下次伤害标记
       dmg = Math.floor(eStats.atk * skill.value);
-      if (clsId === 'mage' && GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
+      if (GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
       applySkillDamage(dmg);
       GameState.nextSkillMult = skill.mult || 1.5;
       showDmgFloat(dmg, 'skill', 'monster-entity');
@@ -2558,7 +2664,7 @@ function castSkill(skillId) {
       dmg = Math.floor(eStats.atk * skill.value);
       const mHpPct = GameState.monsterMaxHP > 0 ? GameState.monsterHP / GameState.monsterMaxHP : 1;
       if (mHpPct < (skill.threshold || 0.30)) { dmg = dmg * 2; addLog('目标HP<30% 伤害翻倍!', 'rare'); }
-      if (clsId === 'mage' && GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
+      if (GameState.nextSkillMult > 0) { dmg = Math.floor(dmg * GameState.nextSkillMult); GameState.nextSkillMult = 0; }
       applySkillDamage(dmg);
       showDmgFloat(dmg, 'skill', 'monster-entity');
       addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
@@ -2655,6 +2761,8 @@ function castSkill(skillId) {
       else if (skill.value === 'zerk') { GameState.activeBuffs['zerk_buff'] = skill.duration; addLog(skill.icon + ' ' + skill.name + '! ATK+15% DEF-20% 持续' + skill.duration + '秒', 'skill'); }
       else if (skill.value === 'guard') { GameState.activeBuffs['guard_buff'] = skill.duration; addLog(skill.icon + ' ' + skill.name + '! 格挡+30% 反击+30% 持续' + skill.duration + '秒', 'skill'); }
       else if (skill.value === 'ninja_buff') { GameState.activeBuffs['ninja_buff'] = skill.duration; addLog(skill.icon + ' ' + skill.name + '! 连击+30% ATK+20% 持续' + skill.duration + '秒', 'skill'); }
+      else if (skill.value === 'atk_crit') { GameState.activeBuffs['atk_crit'] = skill.duration; addLog(skill.icon + ' ' + skill.name + '! ATK+15% 暴击+10% 持续' + skill.duration + '秒', 'skill'); }
+      else if (skill.value === 'pierce_cdmg') { GameState.activeBuffs['pierce_cdmg'] = skill.duration; addLog(skill.icon + ' ' + skill.name + '! 穿甲+15%增伤+15%爆伤+50% 持续' + skill.duration + '秒', 'skill'); }
       else addLog(skill.icon + ' ' + skill.name + '! 效果持续 ' + skill.duration + '秒', 'skill');
       break;
 
@@ -2676,15 +2784,15 @@ function castSkill(skillId) {
       addDummyStat('skill', skill.name, dmg);
       break;
 
-    case 'execute':
-      const hpPctMon = GameState.monsterHP / GameState.monsterMaxHP;
-      if (hpPctMon < (skill.threshold || 0.2)) {
-        dmg = Math.floor(eStats.atk * skill.value);
-        applySkillDamage(dmg);
-        addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
-        addDummyStat('skill', skill.name, dmg);
-      }
+    case 'execute': {
+      const hpPctMon = GameState.monsterMaxHP > 0 ? GameState.monsterHP / GameState.monsterMaxHP : 1;
+      if (hpPctMon >= (skill.threshold || 0.2)) { addLog('目标HP过高，斩杀未触发', 'info'); break; }
+      dmg = Math.floor(eStats.atk * skill.value);
+      applySkillDamage(dmg);
+      addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
+      addDummyStat('skill', skill.name, dmg);
       break;
+    }
 
     case 'heal':
       heal = Math.floor(GameState.playerMaxHP * skill.value);
@@ -2764,6 +2872,68 @@ function castSkill(skillId) {
       addLog(skill.icon + ' ' + skill.name + '! 召唤分身 ' + skill.duration + 's', 'skill');
       break;
 
+    case 'trueDmgKills':
+      // 勇者: 真伤 = 总击杀/20
+      dmg = Math.floor(GameState.totalKills / 20);
+      applySkillDamage(dmg);
+      showDmgFloat(dmg, 'skill', 'monster-entity');
+      addLog(skill.icon + ' ' + skill.name + '! ' + dmg + ' 真伤 (累计' + GameState.totalKills.toLocaleString() + '击杀)', 'skill');
+      addDummyStat('skill', skill.name, dmg);
+      break;
+
+    case 'markTriple':
+      // 勇者: 下次伤害技能×3 (消耗型)
+      GameState.nextSkillMult = 3;
+      addLog(skill.icon + ' ' + skill.name + '! 下次伤害技能×3', 'skill');
+      break;
+
+    case 'critDodge':
+      // 猎人: 250%ATK 暴击则闪避+50% 3s
+      dmg = Math.floor(eStats.atk * skill.value);
+      const isCrit = Math.random() < Math.min((eStats.crit || 0)/100, 1.0);
+      if (isCrit) { dmg = Math.floor(dmg * (1 + (eStats.cdmg||50)/100)); GameState.activeBuffs['dodge_buff'] = skill.dodgeDur; addLog('狙击暴击! 闪避+50% 持续' + skill.dodgeDur + '秒', 'skill'); }
+      applySkillDamage(dmg);
+      showDmgFloat(dmg, 'skill', 'monster-entity');
+      addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
+      addDummyStat('skill', skill.name, dmg);
+      break;
+
+    case 'executeLoop':
+      // 猎人: 800%ATK 重复直到击杀(最多33次)
+      let loopCount = 0;
+      const maxLoop = skill.maxLoop || 33;
+      let totalLoopDmg = 0;
+      while (loopCount < maxLoop && GameState.monsterHP > 0) {
+        dmg = Math.floor(eStats.atk * skill.value);
+        if (Math.random() < Math.min((eStats.crit || 0)/100, 1.0)) dmg = Math.floor(dmg * (1 + (eStats.cdmg||50)/100));
+        applySkillDamage(dmg);
+        totalLoopDmg += dmg;
+        loopCount++;
+        // 杰弗里复活触发
+        if (GameState.inTowerMode && GameState.monsterHP <= 0 && GameState.monsterMaxHP > 0) towerReviveJeffery();
+      }
+      showDmgFloat(totalLoopDmg, 'skill', 'monster-entity');
+      addLog(skill.icon + ' ' + skill.name + '! ' + loopCount + '次 ×' + (skill.value) + ' = ' + totalLoopDmg + ' 点伤害', 'skill');
+      addDummyStat('skill', skill.name, totalLoopDmg);
+      break;
+
+    case 'shieldSelf':
+      // 诗人: 获得护盾
+      const shieldAmt = Math.floor(GameState.playerMaxHP * skill.value);
+      GameState.playerShield = (GameState.playerShield || 0) + shieldAmt;
+      GameState.activeBuffs['shield_dur'] = skill.duration;
+      addLog(skill.icon + ' ' + skill.name + '! +' + shieldAmt + ' 护盾 持续' + skill.duration + '秒', 'skill');
+      break;
+
+    case 'pureDmg':
+      // 勇者: 300%ATK纯伤害
+      dmg = Math.floor(eStats.atk * skill.value);
+      applySkillDamage(dmg);
+      showDmgFloat(dmg, 'skill', 'monster-entity');
+      addLog(skill.icon + ' ' + skill.name + '! 造成 ' + dmg + ' 点伤害', 'skill');
+      addDummyStat('skill', skill.name, dmg);
+      break;
+
     case 'immune':
       GameState.activeBuffs['immune_buff'] = skill.value;
       addLog(skill.icon + ' ' + skill.name + '! ' + skill.value + '秒免疫伤害', 'skill');
@@ -2771,12 +2941,14 @@ function castSkill(skillId) {
   }
 
   // 狂战被动2: 技能伤害→穿甲叠层
-  if (clsData.id === 'berserker' && (skill.effect === 'damage' || skill.effect === 'hpCost' || skill.effect === 'ignoreDef' || skill.effect === 'multi' || skill.effect === 'execute')) {
+  const dmgEffects = ['damage','hpCost','ignoreDef','multi','execute','executeSkill','critDodge','executeLoop','pureDmg','trueDmgKills','critSkill','critRepeat','defDamage','spdDamage','healReflect','mark'];
+  if (clsData.id === 'berserker' && dmgEffects.includes(skill.effect)) {
     GameState.pierceStacks = Math.min((GameState.pierceStacks || 0) + 1, 10);
   }
 
   // 术士 trait: 每次释放技能→真伤叠层
-  if (GameState.equippedTraits.includes('warlock') && skill.effect !== 'resetCd' && skill.effect !== 'copySkill') {
+  const nonSkillExclude = ['resetCd','copySkill'];
+  if (GameState.equippedTraits.includes('warlock') && !nonSkillExclude.includes(skill.effect)) {
     GameState.trueDmgStacks = (GameState.trueDmgStacks || 0) + 1;
   }
   // 术士 passive2: 急速咏唱层数
@@ -2786,7 +2958,7 @@ function castSkill(skillId) {
 
   // 越战越勇：技能伤害也触发 (仅神技点满4生效)
   const rampSkill = (GameState._godSkillPts && GameState._godSkillPts['rampUp'] >= 4);
-  if (rampSkill && (skill.effect === 'damage' || skill.effect === 'ignoreDef' || skill.effect === 'hpCost' || skill.effect === 'defDamage' || skill.effect === 'multi' || skill.effect === 'execute' || skill.effect === 'mark' || skill.effect === 'executeSkill')) {
+  if (rampSkill && dmgEffects.includes(skill.effect)) {
     GameState.rampUpStacks = (GameState.rampUpStacks || 0) + 1;
   }
 
@@ -3329,6 +3501,7 @@ function sellItem(equipId) {
 
 // v2.09: batch operations
 const CK_STATE = { copper: true, silver: true, gold: true };
+// v2.40: 出售/分解勾选记忆化 — 从存档加载，运行时通过 GameState 读写
 const SELL_CHECKS = { common: true, fine: false, rare: false, epic: false, legendary: false, ancient: false, mythic: false };
 const BREAK_CHECKS = { common: true, fine: false, rare: false, epic: false, legendary: false, ancient: false, mythic: false };
 function saveCheckState() { CK_STATE.copper = document.getElementById('chk-copper').checked; CK_STATE.silver = document.getElementById('chk-silver').checked; CK_STATE.gold = document.getElementById('chk-gold').checked; }
@@ -3985,6 +4158,7 @@ function saveGame() {
     selectedClass: GameState.selectedClass,
     shopRefreshTimers: GameState.shopRefreshTimers,
     shopManualRefreshCount: GameState.shopManualRefreshCount,
+    subBossKilled: GameState.subBossKilled,
     areaCleared: GameState.areaCleared,
     areaKillCounts: GameState.areaKillCounts,
     maxProgress: GameState.maxProgress,
@@ -4007,6 +4181,15 @@ function saveGame() {
     cloneTimer: GameState.cloneTimer,
     cloneAtkProgress: GameState.cloneAtkProgress,
     warlockCdStacks: GameState.warlockCdStacks,
+    // v2.40
+    combatAtkCount: GameState.combatAtkCount,
+    bardShieldBreakStacks: GameState.bardShieldBreakStacks,
+    hunterCritCdmgStacks: GameState.hunterCritCdmgStacks,
+    heroMarkActive: GameState.heroMarkActive,
+    dummyKilled: GameState.dummyKilled,
+    // v2.40: 勾选记忆化
+    sellChecks: { ...SELL_CHECKS },
+    breakChecks: { ...BREAK_CHECKS },
     playerName: GameState.playerName,
     welcomed: GameState.welcomed,
     // v2.10
@@ -4039,6 +4222,7 @@ function loadGame() {
     GameState.bossEverKilled = data.bossEverKilled || false;
     GameState.fightingBoss = data.fightingBoss || false;
     GameState.bossKillCount = data.bossKillCount || 0;
+    GameState.subBossKilled = data.subBossKilled || {};
     GameState.playerLevel = data.playerLevel || 1;
     GameState.playerExp = data.playerExp || 0;
     GameState.playerHP = data.playerHP || 500;
@@ -4072,6 +4256,14 @@ function loadGame() {
     GameState.immortalReady = data.immortalReady || false;
     GameState.invincibleUntil = data.invincibleUntil || 0;
     GameState.playerShield = data.playerShield || 0;
+    GameState.dummyKilled = data.dummyKilled || false;
+    GameState.combatAtkCount = data.combatAtkCount || 0;
+    GameState.bardShieldBreakStacks = data.bardShieldBreakStacks || 0;
+    GameState.hunterCritCdmgStacks = data.hunterCritCdmgStacks || 0;
+    GameState.heroMarkActive = data.heroMarkActive || false;
+    // v2.40: 恢复勾选状态
+    if (data.sellChecks) Object.assign(SELL_CHECKS, data.sellChecks);
+    if (data.breakChecks) Object.assign(BREAK_CHECKS, data.breakChecks);
     GameState.pierceStacks = data.pierceStacks || 0;
     GameState.blockDmgStacks = data.blockDmgStacks || 0;
     GameState.counterStacks = data.counterStacks || 0;
@@ -4210,7 +4402,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.33_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.41_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4415,7 +4607,7 @@ function resetGame() {
   GameState.inventory = [];
   GameState.chestInventory = [];
   GameState.enhanceLevels = {};
-  GameState.classUnlocks = { mortal: [true, true] };
+  GameState.classUnlocks = { mortal: [true, true, true, true, false, false] };
   GameState.equippedTraits = [];
   GameState.equippedActives = [];
   GameState.equippedPassives = [];
@@ -4451,6 +4643,17 @@ function resetGame() {
   GameState.cloneTimer = 0;
   GameState.cloneAtkProgress = 0;
   GameState.warlockCdStacks = 0;
+  // v2.40: 宝石/卡片/勇者/新状态重置
+  GameState.gems = { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
+  GameState.cards = { s1:null,s2:null,s3:null,s4:null,s5:null,s6:null,s7:null,s8:null };
+  GameState.gemInventory = [];
+  GameState.cardInventory = [];
+  GameState.dummyKilled = false;
+  GameState.playerShield = 0;
+  GameState.combatAtkCount = 0;
+  GameState.bardShieldBreakStacks = 0;
+  GameState.hunterCritCdmgStacks = 0;
+  GameState.heroMarkActive = false;
   GameState.welcomed = false;
   GameState._shopItems = null;
   GameState._purchased = {};
@@ -4920,8 +5123,9 @@ function renderBattlePanel() {
     document.getElementById('vs-player-name').textContent = GameState.playerName || '小黄鸭';
     document.getElementById('vs-player-hp-fill').style.width = '100%';
     document.getElementById('vs-player-hp-text').textContent = Math.floor(GameState.playerHP).toLocaleString() + '/' + GameState.playerMaxHP.toLocaleString();
-    document.getElementById('vs-monster-hp-fill').style.width = (GameState.monsterHP / GameState.monsterMaxHP * 100) + '%';
-    document.getElementById('vs-monster-hp-text').textContent = Math.floor(GameState.monsterHP).toLocaleString() + '/1,000,000';
+    const mHpPctD = GameState.monsterMaxHP > 0 ? Math.max(0, (GameState.monsterHP / GameState.monsterMaxHP) * 100) : 0;
+    document.getElementById('vs-monster-hp-fill').style.width = mHpPctD + '%';
+    document.getElementById('vs-monster-hp-text').textContent = Math.floor(GameState.monsterHP).toLocaleString() + '/' + GameState.monsterMaxHP.toLocaleString();
     document.getElementById('vs-monster-name').textContent = '训练木桩';
     document.getElementById('monster-sprite').textContent = '🗿';
     document.getElementById('monster-sprite').className = 'entity-sprite monster-sprite';
@@ -4948,7 +5152,8 @@ function renderBattlePanel() {
     document.getElementById('vs-player-name').textContent = GameState.playerName || '小黄鸭';
     document.getElementById('vs-player-hp-fill').style.width = (GameState.playerHP / GameState.playerMaxHP * 100) + '%';
     document.getElementById('vs-player-hp-text').textContent = Math.floor(GameState.playerHP).toLocaleString() + '/' + GameState.playerMaxHP.toLocaleString();
-    document.getElementById('vs-monster-hp-fill').style.width = (GameState.monsterHP / GameState.monsterMaxHP * 100) + '%';
+    const mHpPctT = GameState.monsterMaxHP > 0 ? Math.max(0, (GameState.monsterHP / GameState.monsterMaxHP) * 100) : 0;
+    document.getElementById('vs-monster-hp-fill').style.width = mHpPctT + '%';
     document.getElementById('vs-monster-hp-text').textContent = Math.floor(GameState.monsterHP).toLocaleString() + '/' + Math.floor(GameState.monsterMaxHP).toLocaleString();
     document.getElementById('vs-monster-name').textContent = '杰弗里';
     document.getElementById('monster-sprite').textContent = '🐢';
@@ -5223,13 +5428,19 @@ function showDummyResult() {
 /* ===== 🗼 无尽之塔 v2.21 ===== */
 function applySkillDamage(amount) {
   if (GameState.inTowerMode && Date.now() < GameState.jefferyInvincibleUntil) return;
+  // v2.40: 通用印记消耗 - 对所有技能伤害生效
+  let finalAmount = amount;
+  if (GameState.nextSkillMult > 0 && amount > 0) {
+    finalAmount = Math.floor(amount * GameState.nextSkillMult);
+    GameState.nextSkillMult = 0;
+  }
   if (GameState.inTowerMode && GameState.towerCounter >= 900 && Math.random() < 0.10) {
     addLog('杰弗里净化了技能伤害!', 'info');
     showDmgFloat(1, 'reflect', 'monster-entity');
     GameState.monsterHP -= 1;
     return;
   }
-  GameState.monsterHP -= amount;
+  GameState.monsterHP -= finalAmount;
 }
 const TOWER_BASE_STATS = (() => { const raw = 660 * (1 + 4 * 0.15); return { hp: Math.floor(raw * 5), atk: Math.floor(raw * 1.6), def: Math.floor(raw * 0.45), spd: 108, gold: 0, exp: 0, isBoss: true }; })();
 const TOWER_MILESTONES = {
@@ -5272,6 +5483,7 @@ function startTowerMode() {
   GameState.playerAtkProgress = 0;
   // Reset per-fight state
   GameState.trueDmgStacks = 0; GameState.nextSkillMult = 0; GameState.mageDmgIncStacks = 0;
+  GameState.dummyKilled = false;
   GameState.dodgeFirstAttack = true; GameState.ninjaSpdStacks = 0;
   GameState.counterStacks = 0; GameState.pierceStacks = 0;
   GameState.warlockCdStacks = 0; GameState.rampUpStacks = 0;
@@ -5481,7 +5693,8 @@ function renderClassPanel() {
   const fp = GameState.selectedClass + '|' +
     (GameState.equippedTraits || []).join(',') + '|' +
     (GameState.equippedActives || []).join(',') + '|' +
-    (GameState.equippedPassives || []).join(',');
+    (GameState.equippedPassives || []).join(',') + '|' +
+    GameState.maxProgress;
   if (fp === tabsContainer.dataset.fingerprint) {
     renderClassTree();
     renderSkillSlots();
@@ -5489,14 +5702,30 @@ function renderClassPanel() {
   }
   tabsContainer.dataset.fingerprint = fp;
 
-  tabsContainer.innerHTML = Object.values(CLASSES).map(cls => {
+  // v2.40: 固定 3×4 布局 + 区域解锁
+  const classOrder = ['mortal','hunter','priest','thief','berserker','shieldguard','killer','mage','bard','ninja','warlock','hero'];
+
+  tabsContainer.innerHTML = classOrder.map(clsId => {
+    const cls = CLASSES[clsId];
+    if (!cls) return '';
+    // 检查是否解锁
+    const unlockArea = CLASS_UNLOCK_AREA[clsId];
+    const areaUnlocked = unlockArea < 0 || unlockArea <= Math.floor((GameState.maxProgress || 0) / 100);
+    // v2.40: 勇者特殊条件 — 击杀木桩
+    const unlocked = clsId === 'hero' ? GameState.dummyKilled : areaUnlocked;
+    if (!unlocked) {
+      // v2.41: 勇者特殊条件提示为???，玩家自行摸索
+      const tip = (clsId === 'hero') ? '???' : '通关后续区域解锁';
+      return '<button class="class-tab placeholder" onclick="showNotification(\'' + tip + '\')" style="color:#ff4444;">???</button>';
+    }
+    // 已解锁：正常渲染
     const isActive = GameState.selectedClass === cls.id;
     const isEquipped = (GameState.equippedTraits || []).includes(cls.id) ||
       (GameState.equippedActives || []).some(s => s && s.startsWith(cls.id + '_a_')) ||
       (GameState.equippedPassives || []).some(s => s && s.startsWith(cls.id + '_p_'));
     const clsExtra = (isActive ? ' active' : '') + (isEquipped && !isActive ? ' equipped' : '');
     return '<button class="class-tab' + clsExtra + '" onclick="selectClass(\'' + cls.id + '\')">' + cls.icon + ' ' + cls.name + '</button>';
-  }).join('') + '<button class="class-tab" style="opacity:0.4;" onclick="showNotification(\'该职业待实装\')">❓ ???</button>'.repeat(6);
+  }).join('');
 
   renderClassTree();
   renderSkillSlots();
@@ -5857,6 +6086,7 @@ function renderInventoryGrid() {
     const qs = [{k:'common',n:'白'},{k:'fine',n:'绿'},{k:'rare',n:'蓝'},{k:'epic',n:'紫'},{k:'legendary',n:'橙'},{k:'ancient',n:'红'},{k:'mythic',n:'彩'}];
     el.innerHTML = qs.map(q => '<label style="color:' + QUALITIES[q.k].color + ';cursor:pointer;font-size:13px;"><input type="checkbox" ' + (stateObj[q.k]?'checked':'') + ' onchange="this.blur();' + (containerId==='sell-qs'?'SELL_CHECKS':'BREAK_CHECKS') + '[\'' + q.k + '\']=this.checked;">' + q.n + '</label>').join('');
   }
+  renderQCheckboxes('sell-qs', SELL_CHECKS);
   renderQCheckboxes('break-qs', BREAK_CHECKS);
 
   const bar = document.getElementById('inventory-grid');
@@ -6054,8 +6284,8 @@ function showEquipFixedDetail(equipId) {
 
   if (equip.baseStatName) {
     const statLabels = { atk:'攻击力', hp:'生命值', def:'防御力', spd:'速度', crit:'暴击率', cdmg:'暴击伤害' };
-    const enhanceMulti = 1 + lv * 0.02;
-    const val = Math.floor(equip.baseStatValue * enhanceMulti);
+    const enhanceBoost = getEnhanceBoost(lv);
+    const val = Math.floor(equip.baseStatValue * (1 + enhanceBoost));
     html += '<div style="font-size:11px;color:var(--purple-light);">' + (statLabels[equip.baseStatName] || equip.baseStatName) + ' +' + val + (lv > 0 ? ' <span style="color:#ffd700;font-size:12px;">(强化+' + lv + ')</span>' : '') + '</div>';
   }
   if (equip.subStatKey && equip.subStatValue) {
@@ -6274,9 +6504,9 @@ function init() {
 
   if (!hasSave) {
     GameState.selectedClass = null;
-    GameState.classUnlocks['mortal'] = [true, true];
+    GameState.classUnlocks['mortal'] = [true, true, true, true, false, false];
     addLog('欢迎来到来挂机鸭 v2.14!', 'level');
-    addLog('9区域·9职业·5神技·等你探索', 'info');
+    addLog('9区域·12职业·5神技·等你探索', 'info');
     addLog('v1.20: 24列紧凑格子(图标12px/间距1px)', 'info');
   }
   // v2.32: 只有新游戏才折叠技能树，加载存档保留状态
