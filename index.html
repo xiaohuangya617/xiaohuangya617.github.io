@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.41</title>
+<title>来挂机鸭 v2.43</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.41 - 9大区域+12职业+5神技+爬塔+木桩+欢迎
+   来挂机鸭 v2.43 - 9大区域+12职业+5神技+爬塔+木桩+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -561,6 +561,8 @@ body {
 .btn-next:hover { background: linear-gradient(135deg, #9b4fff, #6a20f0); }
 .btn-save { background: #162a4e; color: #88bbff; border: 1px solid #2a4a6e; }
 .btn-save:hover { background: #2a4a6e; border-color: #4a7aae; }
+#toggle-auto { background: var(--purple); color: #fff; border: 1px solid var(--purple-light); font-weight: bold; }
+#toggle-auto:hover { background: var(--purple-light); box-shadow: 0 0 10px rgba(120,80,255,0.5); }
 .btn-modal-btn {
   width: 100%; padding: 6px 10px; background: var(--purple); border: none;
   border-radius: 4px; color: #fff; cursor: pointer; font-size: 12px; font-family: inherit;
@@ -987,16 +989,16 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:18px;">来挂机鸭</span> <span class="ver-badge">v2.41</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:18px;">来挂机鸭</span> <span class="ver-badge">v2.43</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
       <button class="btn btn-sm" id="toggle-dmg" onclick="toggleDmg()" title="伤害数字开关" style="color:#1eff00;">💥 伤害数字：开</button>
       <button class="btn btn-sm" id="toggle-fx" onclick="toggleFx()" title="微动效开关" style="color:#1eff00;">✨ 微动效：开</button>
-      <button class="btn btn-sm" onclick="exportSave()">📤 导出</button>
-      <button class="btn btn-sm" onclick="document.getElementById('import-input').click()">📥 导入</button>
+      <button class="btn btn-sm" onclick="exportSave()">📤 导出存档</button>
+      <button class="btn btn-sm" onclick="document.getElementById('import-input').click()">📥 导入存档</button>
       <input type="file" id="import-input" style="display:none;" accept=".json" onchange="importSave(event)">
-      <button class="btn btn-sm btn-danger" onclick="if(confirm('确定重置所有数据？')){resetGame();}">🗑️ 重置</button>
+      <button class="btn btn-sm btn-danger" onclick="if(confirm('确定初始化所有数据？')){resetGame();}">🗑️ 数据初始化</button>
     </div>
   </div>
 
@@ -1112,18 +1114,18 @@ body.light-mode .panel-header {
         </div>
         <div id="inv-tabs-wrap">
           <div style="display:flex;gap:1px;flex-wrap:wrap;padding:1px 5px;" id="inv-tabs">
-            <button class="inv-tab-btn active" data-filter="all" onclick="setInvFilter('all', this)">全部</button>
-            <button class="inv-tab-btn" data-filter="items" onclick="setInvFilter('items', this)">物品</button>
-            <button class="inv-tab-btn" data-filter="weapon" onclick="setInvFilter('weapon', this)">武器</button>
-            <button class="inv-tab-btn" data-filter="offhand" onclick="setInvFilter('offhand', this)">副手</button>
-            <button class="inv-tab-btn" data-filter="helmet" onclick="setInvFilter('helmet', this)">头盔</button>
-            <button class="inv-tab-btn" data-filter="gloves" onclick="setInvFilter('gloves', this)">手套</button>
-            <button class="inv-tab-btn" data-filter="armor" onclick="setInvFilter('armor', this)">护甲</button>
-            <button class="inv-tab-btn" data-filter="shoes" onclick="setInvFilter('shoes', this)">鞋子</button>
-            <button class="inv-tab-btn" data-filter="ring" onclick="setInvFilter('ring', this)">戒指</button>
-            <button class="inv-tab-btn" data-filter="necklace" onclick="setInvFilter('necklace', this)">项链</button>
-            <button class="inv-tab-btn" data-filter="gem" onclick="setInvFilter('gem', this)">宝石</button>
-            <button class="inv-tab-btn" data-filter="card" onclick="setInvFilter('card', this)">卡片</button>
+        <button class="inv-tab-btn active" data-filter="all" onclick="setInvFilter('all', this)">全部</button>
+        <button class="inv-tab-btn" data-filter="items" onclick="setInvFilter('items', this)">物品</button>
+        <button class="inv-tab-btn" data-filter="weapon" onclick="setInvFilter('weapon', this)">武器</button>
+        <button class="inv-tab-btn" data-filter="offhand" onclick="setInvFilter('offhand', this)">副手</button>
+        <button class="inv-tab-btn" data-filter="helmet" onclick="setInvFilter('helmet', this)">头盔</button>
+        <button class="inv-tab-btn" data-filter="armor" onclick="setInvFilter('armor', this)">护甲</button>
+        <button class="inv-tab-btn" data-filter="gloves" onclick="setInvFilter('gloves', this)">手套</button>
+        <button class="inv-tab-btn" data-filter="shoes" onclick="setInvFilter('shoes', this)">鞋子</button>
+        <button class="inv-tab-btn" data-filter="necklace" onclick="setInvFilter('necklace', this)">项链</button>
+        <button class="inv-tab-btn" data-filter="ring" onclick="setInvFilter('ring', this)">戒指</button>
+        <button class="inv-tab-btn" data-filter="gem" onclick="setInvFilter('gem', this)">宝石</button>
+        <button class="inv-tab-btn" data-filter="card" onclick="setInvFilter('card', this)">卡片</button>
           </div>
         </div>
         <div id="inventory-grid"><div id="inv-grid-inner"></div></div>
@@ -1368,7 +1370,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.41';
+const GAME_VERSION = '2.43';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -4402,7 +4404,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.41_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.43_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4511,7 +4513,7 @@ function updateGoldBoostToggle() {
 }
 
 // v2.16: Header toggle buttons + triple-click settings
-GameState.autoBattle = false;
+GameState.autoBattle = true;  // v2.43: 默认开启，死亡自动关闭
 GameState.showDmgNums = true;
 GameState.showEffects = true;
 
@@ -4540,7 +4542,7 @@ function toggleFx() {
 }
 function updateAutoToggle() {
   const el = document.getElementById('toggle-auto');
-  if (el) { el.style.color = GameState.autoBattle ? '#1eff00' : ''; el.textContent = '⚡ 自动连战：' + (GameState.autoBattle ? '开' : '关'); }
+  if (el) { el.style.color = '#fff'; el.textContent = '⚡ 自动连战：' + (GameState.autoBattle ? '开' : '关'); }
 }
 function updateLightToggle() {
   const el = document.getElementById('toggle-light');
@@ -5714,7 +5716,7 @@ function renderClassPanel() {
     // v2.40: 勇者特殊条件 — 击杀木桩
     const unlocked = clsId === 'hero' ? GameState.dummyKilled : areaUnlocked;
     if (!unlocked) {
-      // v2.41: 勇者特殊条件提示为???，玩家自行摸索
+      // v2.43: 勇者特殊条件提示为???，玩家自行摸索
       const tip = (clsId === 'hero') ? '???' : '通关后续区域解锁';
       return '<button class="class-tab placeholder" onclick="showNotification(\'' + tip + '\')" style="color:#ff4444;">???</button>';
     }
@@ -6514,6 +6516,7 @@ function init() {
 
   startCombat();
   renderAll();
+  updateAutoToggle();  // v2.43: 同步按钮状态(默认开启)
 
   // v2.24: 首次欢迎
   if (!GameState.welcomed) {
