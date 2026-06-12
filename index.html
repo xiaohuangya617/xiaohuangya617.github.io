@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.28</title>
+<title>来挂机鸭 v2.31</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.28 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
+   来挂机鸭 v2.31 - 9大区域+9职业+5神技+完整掉落+木桩伤害细分+手绘背景+爬塔+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -175,7 +175,7 @@ body {
   margin-top: 4px;
 }
 .func-btn {
-  padding: 8px 6px; font-size: 17px; font-weight: bold; font-family: inherit;
+  padding: 8px 6px; font-size: 16px; font-weight: bold; font-family: inherit;
   background: var(--card-bg); border: 1px solid #2a1a4e;
   border-radius: 5px; color: var(--text-dim); cursor: pointer;
   transition: all 0.15s; display: flex; align-items: center;
@@ -467,11 +467,12 @@ body {
 .right-tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); background: rgba(123,47,247,0.1); }
 .right-tab-btn:hover { color: #fff; }
 .class-tab {
-  padding: 5px 4px; font-size: 13px; text-align: center;
+  padding: 5px 4px; font-size: 14px; text-align: center;
   background: var(--btn-bg); border: 1px solid #2a1a4e; border-radius: 4px;
   color: var(--text-dim); cursor: pointer; transition: all 0.2s; overflow: hidden; white-space: nowrap;
 }
 .class-tab.active { border-color: var(--purple); color: var(--purple-light); background: var(--hover-bright); }
+.class-tab.equipped { border-color: #4CAF50; color: #4CAF50; }
 .class-tab:hover { border-color: var(--purple); }
 
 .unlock-node {
@@ -497,19 +498,22 @@ body {
 /* FIX v1.17: 空槽位不显示任何文字 */
 .skill-slot-mini {
   flex: 1; background: var(--card-bg); border: 2px dashed #3a2a5e;
-  border-radius: 5px; padding: 4px 5px; text-align: center; font-size: 11px;
-  transition: all 0.2s; cursor: pointer; min-height: 56px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 5px; padding: 4px 6px; font-size: 13px;
+  transition: all 0.2s; cursor: pointer; min-height: 48px;
+  display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px;
 }
 .skill-slot-mini.filled { border-style: solid; border-color: var(--purple); }
-.skill-slot-mini:hover { border-color: var(--purple); background: var(--hover-bright); }
-.skill-slot-mini.on-cooldown { opacity: 0.55; border-color: #3a2a5a; }
-.skill-slot-mini .skm-icon { font-size: 20px; position: relative; }
+.skill-slot-mini.ready { border-color: #ffd700 !important; box-shadow: 0 0 12px rgba(255,215,0,0.6), 0 0 24px rgba(255,215,0,0.2); animation: readyPulse 1.5s ease-in-out infinite; }
+.skill-slot-mini.ready:hover { border-color: #ffed80 !important; box-shadow: 0 0 20px rgba(255,215,0,0.9), 0 0 36px rgba(255,215,0,0.4); }
+.skill-slot-mini:not(.ready):hover { border-color: var(--purple); background: var(--hover-bright); }
+.skill-slot-mini.on-cooldown { opacity: 0.55; border-color: #3a2a5a; box-shadow: none; animation: none; }
+@keyframes readyPulse { 0%,100%{box-shadow:0 0 10px rgba(255,215,0,0.5),0 0 20px rgba(255,215,0,0.15)} 50%{box-shadow:0 0 20px rgba(255,215,0,0.9),0 0 36px rgba(255,215,0,0.4)} }
+.skill-slot-mini .skm-icon { font-size: 22px; position: relative; flex-shrink: 0; }
 .skm-num { position: absolute; top: -8px; left: -8px; font-size: 8px; color: var(--purple); background: #0d0d1a; border: 1px solid var(--purple); border-radius: 50%; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; line-height: 1; }
-.skill-slot-mini .skm-name { font-size: 11px; font-weight: bold; margin: 1px 0; }
+.skill-slot-mini .skm-name { font-size: 14px; font-weight: bold; }
 .skill-slot-mini .skm-desc { font-size: 9px; color: var(--text-dim); }
 .skill-cd-bar-wrap { width: 100%; height: 2px; background: #1a0a1a; border-radius: 1px; overflow: hidden; margin-top: 1px; }
-.skill-cd-bar-fill { height: 100%; background: var(--purple); border-radius: 1px; transition: width 0.5s linear; }
+.skill-cd-bar-fill { height: 100%; background: var(--purple); border-radius: 1px; transition: width 1s linear; }
 
 /* FIX v1.17: 空特质槽静默 */
 .trait-slot {
@@ -518,16 +522,20 @@ body {
   border-radius: 5px;
   padding: 5px 6px;
   background: var(--card-bg);
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text-dim);
-  min-height: 56px;
-  display: flex; align-items: center; gap: 4px;
+  min-height: 48px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
   cursor: pointer; transition: all 0.2s;
 }
 .trait-slot.filled {
   border-style: solid;
   border-color: #ff8000;
-  color: var(--gold);
+}
+.trait-slot.filled span:last-child {
+  background: linear-gradient(90deg,#ff6b6b,#ffd93d,#6bcb77,#4d96ff,#ff6b6b);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  background-size: 200% 100%; animation: rainbowText 2s linear infinite;
 }
 .trait-slot:hover { border-color: var(--purple); background: var(--hover-bright); }
 
@@ -639,20 +647,20 @@ body {
 .shop-item {
   display: flex; align-items: center; gap: 8px;
   padding: 6px 8px; background: var(--card-bg); border: 1px solid #2a1a4e;
-  border-radius: 4px; margin-bottom: 3px; font-size: 12px;
+  border-radius: 4px; margin-bottom: 3px; font-size: 13px;
 }
 .shop-item-icon { font-size: 22px; width:28px; text-align:center; flex-shrink:0; }
 .shop-item-info { flex: 1; overflow: hidden; display:flex; flex-direction:column; gap:1px; }
-.shop-item-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height:1.3; }
-.shop-item-price { font-size: 10px; color: var(--gold); line-height:1.2; }
+.shop-item-name { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height:1.3; }
+.shop-item-price { font-size: 11px; color: var(--gold); line-height:1.2; }
 .shop-item-action { flex-shrink: 0; }
 .shop-item-action button {
-  padding: 4px 12px; font-size: 12px; cursor: pointer; background: var(--purple);
+  padding: 4px 12px; font-size: 13px; cursor: pointer; background: var(--purple);
   border: none; border-radius: 3px; color: #fff; font-family: inherit; transition: all 0.2s;
   min-width: 44px;
 }
 .shop-item-action button:hover { background: var(--purple-light); }
-.shop-timer { font-size: 11px; color: var(--text-dim); text-align: center; margin: 3px 0; }
+.shop-timer { font-size: 12px; color: var(--text-dim); text-align: center; margin: 3px 0; }
 
 /* NOTIFICATION */
 #notification {
@@ -890,6 +898,9 @@ body.light-mode .skill-slot-mini {
 body.light-mode .skill-slot-mini.on-cooldown {
   border-color: #d0c8b8;
 }
+body.light-mode .skill-slot-mini.ready {
+  border-color: #e6a800; box-shadow: 0 0 10px rgba(230,168,0,0.5);
+}
 
 /* Entity filters on light bg */
 body.light-mode .entity-sprite.player-sprite {
@@ -972,7 +983,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.28</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:17px;">来挂机鸭</span> <span class="ver-badge">v2.31</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1031,10 +1042,8 @@ body.light-mode .panel-header {
         <div id="func-bar">
           <button class="func-btn" onclick="openShopModal()">🏪 商店</button>
           <button class="func-btn" onclick="openForgeModal()">🔧 打造</button>
-          <button class="func-btn" onclick="showNotification('副本开发中...')" style="opacity:0.5;">📊 统计</button>
-          <button class="func-btn" onclick="startDummyMode()">🎯 木桩</button>
-          <button class="func-btn" onclick="showNotification('图鉴开发中...')" style="opacity:0.5;">📖 图鉴</button>
           <button class="func-btn" onclick="showNotification('副本开发中...')" style="opacity:0.5;">🏰 副本</button>
+          <button class="func-btn" onclick="startDummyMode()">🎯 木桩</button>
           <button class="func-btn" onclick="showNotification('帮助开发中...')" style="opacity:0.5;">❓ 帮助</button>
           <button class="func-btn" onclick="startTowerMode()">🗼 爬塔</button>
         </div>
@@ -1133,18 +1142,18 @@ body.light-mode .panel-header {
 
           <!-- FIX 4+5: Trait slots -->
           <div style="margin-top:2px;">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:2px;">🏆 特性槽 (2个)</div>
+            <div style="font-size:13px;color:var(--text-dim);margin-bottom:2px;">🏆 特性槽 (2个)</div>
             <div class="skill-slot-row" id="trait-slots"></div>
           </div>
           <!-- FIX 5: Active slots -->
           <div style="margin-top:4px;">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:2px;">⚡ 主动技能 (4个)</div>
+            <div style="font-size:13px;color:var(--text-dim);margin-bottom:2px;">⚡ 主动技能 (4个)</div>
             <div class="skill-slot-row" id="active-slots-0"></div>
             <div class="skill-slot-row" id="active-slots-1"></div>
           </div>
-          <!-- FIX 5: Passive slots -->
+          <!-- Passive slots (4, 2x2) -->
           <div style="margin-top:4px;">
-            <div style="font-size:11px;color:var(--text-dim);margin-bottom:2px;">⭐ 被动技能 (4个)</div>
+            <div style="font-size:13px;color:var(--text-dim);margin-bottom:2px;">⭐ 被动技能 (4个)</div>
             <div class="skill-slot-row" id="passive-slots-0"></div>
             <div class="skill-slot-row" id="passive-slots-1"></div>
           </div>
@@ -1289,14 +1298,15 @@ body.light-mode .panel-header {
 
 <!-- Offline Modal -->
 <div class="modal-overlay" id="offline-modal">
-  <div class="modal-box">
-    <h2>👻 离线收益</h2>
-    <p>你离开了 <span class="highlight" id="offline-time">0</span></p>
-    <p>获得了:</p>
-    <p>💰 金币 ×<span class="highlight" id="offline-gold">0</span></p>
-    <p>✨ EXP ×<span class="highlight" id="offline-exp">0</span></p>
-    <p>📦 宝箱 ×<span class="highlight" id="offline-chests">0</span></p>
-    <button class="btn btn-primary" onclick="closeOfflineModal()">领取奖励</button>
+  <div class="modal-box" style="max-width:360px;padding:20px 24px;">
+    <h2 style="font-size:18px;margin-bottom:6px;">👻 离线收益</h2>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">你离开了 <span id="offline-time">0</span></p>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-size:15px;">
+      <div>💰 金币 ×<span class="highlight" id="offline-gold">0</span></div>
+      <div>✨ EXP ×<span class="highlight" id="offline-exp">0</span></div>
+    </div>
+    <div id="offline-chests-area" style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;margin-bottom:14px;display:flex;flex-direction:column;gap:3px;"></div>
+    <button class="btn btn-primary" onclick="closeOfflineModal()" style="width:100%;">领取奖励</button>
   </div>
 </div>
 
@@ -1352,7 +1362,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.28';
+const GAME_VERSION = '2.31';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -1749,8 +1759,9 @@ const GameState = {
   equippedActives: [],
   equippedPassives: [],
   skillCooldowns: {},
+  skillCooldownStart: {}, // 技能CD开始时间戳(ms),
   activeBuffs: {},
-  selectedClass: 'mortal',
+  selectedClass: null,  // 默认不展开技能树
 
   shopRefreshTimers: {},
   shopManualRefreshCount: 0,
@@ -2762,6 +2773,7 @@ function castSkill(skillId) {
   }
 
   GameState.skillCooldowns[skillId] = skill.cd;
+  GameState.skillCooldownStart[skillId] = Date.now();
 }
 
 // --- Monster Killed ---
@@ -3587,23 +3599,25 @@ function getDynamicShopItems() {
 }
 function generateShopItems(ai) {
   const items = [];
+  const AREA_NAME = AREAS[ai].name;
   const maxQ = ['rare','epic','epic','epic','legendary','legendary','ancient','ancient','mythic'][ai] || 'rare';
   const maxIdx = QUALITY_ORDER.indexOf(maxQ);
   const allowedQs = QUALITY_ORDER.filter((q, i) => i >= maxIdx && q !== 'mythic');
-  for (let i=0;i<3;i++) { const q=allowedQs[Math.floor(Math.random()*allowedQs.length)]; const s=Object.keys(EQUIP_SLOTS)[Math.floor(Math.random()*8)]; const p=Math.floor((2000+ai*500)*{common:0.5,fine:1,rare:2,epic:5,legendary:12,ancient:30}[q]||1); items.push({type:'equip',id:'eq'+i,quality:q,slot:s,price:p,areaIdx:ai,desc:QUALITIES[q].name + EQUIP_SLOTS[s].name}); }
-  // Gem: 3合1 → LvN价格 = 2000×3^(N-1)
+  for (let i=0;i<3;i++) { const q=allowedQs[Math.floor(Math.random()*allowedQs.length)]; const s=Object.keys(EQUIP_SLOTS)[Math.floor(Math.random()*8)]; const p=Math.floor((2000+ai*500)*{common:0.5,fine:1,rare:2,epic:5,legendary:12,ancient:30}[q]||1);     if (q==='fine'&&s==='offhand') slotsuffix='副手'; else slotsuffix=EQUIP_SLOTS[s].name;
+    items.push({type:'equip',id:'eq'+i,quality:q,slot:s,price:p,areaIdx:ai,desc:'随机' + QUALITIES[q].name + slotsuffix}); }
+  // Gem: LvN price = 2000×3^(N-1)
   for (let i=0;i<2;i++) {
     const t = GEM_STATS[Math.floor(Math.random()*GEM_STATS.length)];
     const lv = 1 + Math.floor(Math.random()*Math.min(ai+2, 5));
     const p = Math.floor(2000 * Math.pow(3, lv-1));
     const g = makeGem(t, lv);
-    items.push({type:'gem', id:'g'+i, gemType:t, level:lv, price:p, desc:g.name+' ('+p.toLocaleString()+'金)'});
+    items.push({type:'gem', id:'g'+i, gemType:t, level:lv, price:p, desc:g.name});
   }
   const sq=[5,10]; for(let i=0;i<2;i++){ const q=sq[i]; const p=q*(100+ai*50); items.push({type:'stone',id:'s'+i,qty:q,price:p,desc:'强化石×'+q}); }
-  const ct=['copper','silver','gold']; for(let i=0;i<2;i++){ const t=ct[i<1?0:(Math.random()<0.7?1:2)]; const p=Math.floor({copper:300,silver:800,gold:2000}[t]*(1+ai*0.2)); items.push({type:'chest',id:'c'+i,chestType:t,price:p,desc:CHEST_TYPES[t].name}); }
-  // Rune: price scales with area level
+  const ct=['copper','silver','gold']; for(let i=0;i<2;i++){ const t=ct[i<1?0:(Math.random()<0.7?1:2)]; const p=Math.floor({copper:300,silver:800,gold:2000}[t]*(1+ai*0.2)); items.push({type:'chest',id:'c'+i,chestType:t,price:p,desc:AREA_NAME + CHEST_TYPES[t].name}); }
+  // Rune
   const runePrice = 20000 + getAreaLevel(ai, 0) * 1500;
-  items.push({type:'rune',id:'r1',price:runePrice,desc:'神秘符文 (' + runePrice.toLocaleString() + '金)'});
+  items.push({type:'rune',id:'r1',price:runePrice,desc:'神秘符文'});
   return items;
 }
 function buyShopItem(itemId) {
@@ -4020,7 +4034,7 @@ function loadGame() {
     GameState.equippedTraits = data.equippedTraits || [];
     GameState.equippedActives = data.equippedActives || [];
     GameState.equippedPassives = data.equippedPassives || [];
-    GameState.selectedClass = data.selectedClass || 'mortal';
+    GameState.selectedClass = data.selectedClass || null;
     GameState.shopRefreshTimers = data.shopRefreshTimers || {};
     GameState.shopManualRefreshCount = data.shopManualRefreshCount || 0;
     GameState.areaCleared = data.areaCleared || {};
@@ -4132,15 +4146,21 @@ function loadGame() {
       const offlineChests = Math.floor(offlineKills * DROP_RATES.normal.chest);
 
       if (offlineGold > 0 || offlineExp > 0) {
-        showOfflineModal(offlineHours, offlineGold, offlineExp, offlineChests);
         GameState.gold = (GameState.gold || 0) + offlineGold;
         GameState.totalGoldEarned += offlineGold;
         addExp(offlineExp);
         GameState.totalKills += offlineKills;
         GameState.areaKills = Math.min(KILLS_TO_UNLOCK_BOSS, GameState.areaKills + Math.floor(offlineKills * 0.5));
         if (GameState.areaKills >= KILLS_TO_UNLOCK_BOSS) GameState.bossUnlocked = true;
-        for (let i = 0; i < offlineChests; i++) addChest('copper');
-        GameState.materials.stones += Math.floor(offlineKills * 0.05); capStones();  // v2.09: 离线强化石
+        let cCopper = 0, cSilver = 0, cGold = 0;
+        for (let i = 0; i < offlineChests; i++) {
+          const r = Math.random();
+          if (r < 0.10) { addChest('gold'); cGold++; }
+          else if (r < 0.45) { addChest('silver'); cSilver++; }
+          else { addChest('copper'); cCopper++; }
+        }
+        GameState.materials.stones += Math.floor(offlineKills * 0.05); capStones();
+        showOfflineModal(offlineHours, offlineGold, offlineExp, cCopper, cSilver, cGold);
       }
     }
     return true;
@@ -4166,7 +4186,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.28_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.31_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4195,11 +4215,19 @@ function importSave(event) {
   event.target.value = '';
 }
 
-function showOfflineModal(hours, gold, exp, chests) {
-  document.getElementById('offline-time').textContent = hours.toFixed(1) + ' 小时';
+function showOfflineModal(hours, gold, exp, cCor, cSil, cGol) {
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+  const timeStr = h > 0 ? (h + '小时' + (m > 0 ? m + '分钟' : '')) : (m + '分钟');
+  document.getElementById('offline-time').textContent = timeStr;
   document.getElementById('offline-gold').textContent = gold.toLocaleString();
   document.getElementById('offline-exp').textContent = exp.toLocaleString();
-  document.getElementById('offline-chests').textContent = chests;
+  const areaName = AREAS[GameState.currentArea]?.name || '村庄';
+  let chestsHtml = '';
+  if (cGol > 0) chestsHtml += '<div style="font-size:14px;">🎁 <span style="color:#ffd700;">' + areaName + '：金宝箱 ×' + cGol + '</span></div>';
+  if (cSil > 0) chestsHtml += '<div style="font-size:14px;">🎁 <span style="color:#c0c0c0;">' + areaName + '：银宝箱 ×' + cSil + '</span></div>';
+  if (cCor > 0) chestsHtml += '<div style="font-size:14px;">🎁 <span style="color:#cd7f32;">' + areaName + '：铜宝箱 ×' + cCor + '</span></div>';
+  document.getElementById('offline-chests-area').innerHTML = chestsHtml;
   document.getElementById('offline-modal').classList.add('show');
 }
 
@@ -4366,7 +4394,7 @@ function resetGame() {
   GameState.equippedTraits = [];
   GameState.equippedActives = [];
   GameState.equippedPassives = [];
-  GameState.selectedClass = 'mortal';
+  GameState.selectedClass = null;
   GameState.selectedInvItem = null;
   GameState.invFilter = 'all';
   GameState.shopRefreshTimers = {};
@@ -4375,6 +4403,7 @@ function resetGame() {
   GameState.lastSaveTime = Date.now();
   GameState.materials = { stones: 0, gems: {}, cards: {}, runes: 0 };
   GameState.skillCooldowns = {};
+  GameState.skillCooldownStart = {};
   GameState.activeBuffs = {};
   GameState.debugChestBoost = false;
   GameState.debugExpBoost = false;
@@ -4751,18 +4780,18 @@ function renderLeftPanel() {
 
   document.getElementById('atk-stats-grid').innerHTML =
     '<div class="stat-mini" title="基础伤害来源，决定普攻和技能的基础伤害值"><span class="sm-label">攻击力</span><span class="sm-val">' + fmtVal(eStats.atk) + '</span></div>' +
+    '<div class="stat-mini" title="决定攻击频率，SPD越高攻击间隔越短"><span class="sm-label">速度</span><span class="sm-val">' + fmtVal(eStats.spd) + '</span></div>' +
     '<div class="stat-mini" title="攻击时触发暴击的概率，上限80%"><span class="sm-label">暴击率</span><span class="sm-val">' + (eStats.crit || 0).toFixed(1) + '%</span></div>' +
     '<div class="stat-mini" title="暴击时的伤害倍率，基础50%即造成150%伤害"><span class="sm-label">暴击伤害</span><span class="sm-val">' + (eStats.cdmg || 50) + '%</span></div>' +
-    '<div class="stat-mini" title="无视目标一定比例的防御值，上限50%"><span class="sm-label">穿甲</span><span class="sm-val">' + fmtPct(eStats.pierce) + '</span></div>' +
     '<div class="stat-mini" title="最终伤害的独立乘区加成"><span class="sm-label">增伤</span><span class="sm-val">' + fmtPct(eStats.dmgInc) + '</span></div>' +
     '<div class="stat-mini" title="减少主动技能的冷却时间，上限60%"><span class="sm-label">冷缩</span><span class="sm-val">' + fmtPct(eStats.cdReduc) + '</span></div>' +
+    '<div class="stat-mini" title="攻击时额外触发一次伤害的概率，上限30%"><span class="sm-label">连击</span><span class="sm-val">' + fmtPct(eStats.multiHit) + '</span></div>' +
     '<div class="stat-mini" title="受到攻击时反击的概率，上限50%"><span class="sm-label">反击</span><span class="sm-val">' + fmtPct(eStats.counter) + '</span></div>' +
-    '<div class="stat-mini" title="攻击时额外触发一次伤害的概率，上限30%"><span class="sm-label">连击</span><span class="sm-val">' + fmtPct(eStats.multiHit) + '</span></div>';
+    '<div class="stat-mini" title="无视目标一定比例的防御值，上限50%"><span class="sm-label">穿甲</span><span class="sm-val">' + fmtPct(eStats.pierce) + '</span></div>';
 
   document.getElementById('def-stats-grid').innerHTML =
-    '<div class="stat-mini" title="决定攻击频率，SPD越高攻击间隔越短"><span class="sm-label">速度</span><span class="sm-val">' + fmtVal(eStats.spd) + '</span></div>' +
-    '<div class="stat-mini" title="归零则战斗失败，需等待重生"><span class="sm-label">血量</span><span class="sm-val">' + fmtVal(eStats.hp) + '</span></div>' +
     '<div class="stat-mini" title="减少受到的物理伤害，通过减伤公式计算"><span class="sm-label">防御</span><span class="sm-val">' + fmtVal(eStats.def) + '</span></div>' +
+    '<div class="stat-mini" title="归零则战斗失败，需等待重生"><span class="sm-label">血量</span><span class="sm-val">' + fmtVal(eStats.hp) + '</span></div>' +
     '<div class="stat-mini" title="格挡成功时伤害减半，上限75%"><span class="sm-label">格挡</span><span class="sm-val">' + fmtPct(eStats.block) + '</span></div>' +
     '<div class="stat-mini" title="最终受到的伤害减少一定比例，上限75%"><span class="sm-label">减伤</span><span class="sm-val">' + fmtPct(eStats.dmgReduc) + '</span></div>' +
     '<div class="stat-mini" title="概率完全闪避本次攻击，上限60%"><span class="sm-label">闪避</span><span class="sm-val">' + fmtPct(eStats.dodge) + '</span></div>';
@@ -5088,6 +5117,7 @@ function endDummyMode(showResult) {
     GameState.savedArea = null;
   }
   GameState.skillCooldowns = {};
+  GameState.skillCooldownStart = {};
   if (!showResult) startCombat();
   renderAll();
 }
@@ -5255,6 +5285,7 @@ function endTowerMode() {
   GameState.jefferyInvincibleUntil = 0;
   GameState.towerStats = null;
   GameState.skillCooldowns = {};
+  GameState.skillCooldownStart = {};
   startCombat();
   renderAll();
 }
@@ -5329,6 +5360,7 @@ function endTowerModeShowResult(won) {
     GameState.savedArea = null;
   }
   GameState.skillCooldowns = {};
+  GameState.skillCooldownStart = {};
   GameState.playerHP = getEffectiveStats().hp;
   GameState.playerMaxHP = GameState.playerHP;
   startCombat();
@@ -5420,10 +5452,26 @@ function showTowerResult(won) {
 
 function renderClassPanel() {
   const tabsContainer = document.getElementById('class-tabs');
+  // 脏检查：职业按钮状态不变时跳过 innerHTML 重建，防止 hover 闪烁
+  const fp = GameState.selectedClass + '|' +
+    (GameState.equippedTraits || []).join(',') + '|' +
+    (GameState.equippedActives || []).join(',') + '|' +
+    (GameState.equippedPassives || []).join(',');
+  if (fp === tabsContainer.dataset.fingerprint) {
+    renderClassTree();
+    renderSkillSlots();
+    return;
+  }
+  tabsContainer.dataset.fingerprint = fp;
+
   tabsContainer.innerHTML = Object.values(CLASSES).map(cls => {
     const isActive = GameState.selectedClass === cls.id;
-    return '<button class="class-tab' + (isActive ? ' active' : '') + '" onclick="selectClass(\'' + cls.id + '\')">' + cls.icon + ' ' + cls.name + '</button>';
-  }).join('');
+    const isEquipped = (GameState.equippedTraits || []).includes(cls.id) ||
+      (GameState.equippedActives || []).some(s => s && s.startsWith(cls.id + '_a_')) ||
+      (GameState.equippedPassives || []).some(s => s && s.startsWith(cls.id + '_p_'));
+    const clsExtra = (isActive ? ' active' : '') + (isEquipped && !isActive ? ' equipped' : '');
+    return '<button class="class-tab' + clsExtra + '" onclick="selectClass(\'' + cls.id + '\')">' + cls.icon + ' ' + cls.name + '</button>';
+  }).join('') + '<button class="class-tab" style="opacity:0.4;" onclick="showNotification(\'该职业待实装\')">❓ ???</button>'.repeat(6);
 
   renderClassTree();
   renderSkillSlots();
@@ -5431,13 +5479,13 @@ function renderClassPanel() {
 
 // FIX 4+5: 技能槽匹配装备网格风格
 function renderSkillSlots() {
-  // Trait slots (2) - match equipment grid style
+  // Trait slots (2) - icon+name only, full desc on hover
   let traitHtml = '';
   for (let i = 0; i < 2; i++) {
     const tId = GameState.equippedTraits[i];
     if (tId && CLASSES[tId]) {
       const cls = CLASSES[tId];
-      traitHtml += '<div class="trait-slot filled" title="点击卸下" onclick="equipTrait(\'' + tId + '\')"><span style="font-size:18px;">' + cls.icon + '</span><div style="overflow:hidden;"><div style="font-weight:bold;font-size:11px;">' + cls.trait.name + '</div><div style="font-size:9px;color:var(--text-dim);">' + cls.trait.desc + '</div></div></div>';
+      traitHtml += '<div class="trait-slot filled" title="点击卸下&#10;' + cls.trait.name + '：' + cls.trait.desc + '" onclick="equipTrait(\'' + tId + '\')"><span style="font-size:20px;">' + cls.icon + '</span><span style="font-size:13px;font-weight:bold;">' + cls.trait.name + '</span></div>';
     } else {
       traitHtml += '<div class="trait-slot"></div>';
     }
@@ -5458,11 +5506,19 @@ function renderSkillSlots() {
       const skill = clsData2?.actives[aIdx2];
       const cd = GameState.skillCooldowns[skillId] || 0;
       if (skill) {
-        const cdPct = Math.max(0, (1 - cd / skill.cd) * 100);
-        slotHtml = '<div class="skill-slot-mini filled' + (cd > 0 ? ' on-cooldown' : '') + '" title="点击卸下" onclick="equipActive(\'' + clsId2 + '\',' + aIdx2 + ')">';
-        slotHtml += '<div class="skm-icon"><span class="skm-num">' + skillNums[i] + '</span>' + skill.icon + '</div><div class="skm-name">' + skill.name + '</div>';
-        slotHtml += '<div style="font-size:8px;color:' + (cd <= 0 ? '#1eff00' : '#ff6666') + ';">' + (cd <= 0 ? '就绪' : 'CD:' + Math.ceil(cd) + 's') + '</div>';
-        slotHtml += '<div class="skill-cd-bar-wrap"><div class="skill-cd-bar-fill" style="width:' + cdPct + '%;"></div></div>';
+        const start = GameState.skillCooldownStart[skillId] || 0;
+        const elapsed = start ? (Date.now() - start) / 1000 : 0;
+        const cdRemain = start ? Math.max(0, skill.cd - elapsed) : 0;
+        const cdPct = start ? Math.min(100, Math.max(0, (elapsed / skill.cd) * 100)) : 0;
+        const readyGlow = !start || (start && elapsed < 0.1);
+        const onCD = start && !readyGlow;
+        const titleStr = skill.name + '&#10;CD:' + skill.cd + 's · ' + skill.desc;
+        slotHtml = '<div class="skill-slot-mini filled' + (onCD ? ' on-cooldown' : '') + (readyGlow ? ' ready' : '') + '" title="' + titleStr + '&#10;点击卸下" onclick="equipActive(\'' + clsId2 + '\',' + aIdx2 + ')">';
+        slotHtml += '<div style="display:flex;flex-direction:column;align-items:center;gap:1px;flex:1;">';
+        slotHtml += '<div style="display:flex;align-items:center;gap:4px;"><span class="skm-num" style="position:static;font-size:10px;">' + skillNums[i] + '</span><span class="skm-icon" style="font-size:22px;position:static;">' + skill.icon + '</span><span class="skm-name">' + skill.name + '</span></div>';
+        slotHtml += '<div style="font-size:8px;color:' + (!start ? '#1eff00' : '#ff6666') + ';">' + (!start ? '就绪' : 'CD:' + Math.ceil(cdRemain) + 's') + '</div>';
+        slotHtml += '<div class="skill-cd-bar-wrap"><div class="skill-cd-bar-fill" data-cd-start="' + start + '" data-cd-dur="' + (skill.cd * 1000) + '"></div></div>';
+        slotHtml += '</div></div>';
         slotHtml += '</div>';
       }
     } else {
@@ -5473,7 +5529,7 @@ function renderSkillSlots() {
   document.getElementById('active-slots-0').innerHTML = activeRow0;
   document.getElementById('active-slots-1').innerHTML = activeRow1;
 
-  // Passive skill slots (4, 2 rows)
+  // Passive skill slots (4, 2x2) - icon+name only, desc on hover
   let passiveRow0 = '', passiveRow1 = '';
   for (let i = 0; i < 4; i++) {
     const passId = GameState.equippedPassives[i];
@@ -5485,9 +5541,8 @@ function renderSkillSlots() {
       const pclsData = CLASSES[pclsId];
       const passive = pclsData?.passives[pIdx];
       if (passive) {
-        slotHtml = '<div class="skill-slot-mini filled" title="点击卸下" onclick="equipPassive(\'' + pclsId + '\',' + pIdx + ')">';
-        slotHtml += '<div class="skm-icon">' + (passive.icon || '⭐') + '</div><div class="skm-name">' + passive.name + '</div>';
-        slotHtml += '<div class="skm-desc">' + passive.desc + '</div></div>';
+        slotHtml = '<div class="skill-slot-mini filled" title="' + passive.name + '：' + passive.desc + '&#10;点击卸下" onclick="equipPassive(\'' + pclsId + '\',' + pIdx + ')">';
+        slotHtml += '<span style="font-size:22px;">' + (passive.icon || '⭐') + '</span><span class="skm-name">' + passive.name + '</span></div>';
       }
     } else {
       slotHtml = '<div class="skill-slot-mini" style="cursor:default;"></div>';
@@ -5611,9 +5666,10 @@ function renderShopModal() {
 
   const items = getDynamicShopItems();
   const itemsHtml = items.map(item => {
-    const icon = item.type==='equip'?EQUIP_SLOTS[item.slot].icons[0]:item.type==='gem'?'💎':item.type==='stone'?'💠':item.type==='chest'?'🎁':'🔷';
+    const icon = item.type==='equip'?EQUIP_SLOTS[item.slot].icons[0]:(item.type==='gem'?getGemIcon(item.gemType,item.level):item.type==='stone'?'💠':item.type==='chest'?'🎁':'🔷');
+    const eqColor = item.type==='equip' ? QUALITIES[item.quality].color : '';
     const purchased = GameState._purchased && GameState._purchased[item.id];
-    return '<div class="shop-item"><span class="shop-item-icon">' + icon + '</span><div class="shop-item-info"><div class="shop-item-name">' + item.desc + '</div><div class="shop-item-price">' + item.price.toLocaleString() + '金</div></div><div class="shop-item-action"><button onclick="buyShopItem(\'' + item.id + '\')"' + (purchased ? ' disabled style="opacity:0.4;"' : '') + '>' + (purchased ? '已购' : '购买') + '</button></div></div>';
+    return '<div class="shop-item"><span class="shop-item-icon">' + icon + '</span><div class="shop-item-info"><div class="shop-item-name"' + (eqColor?' style="color:'+eqColor+'"':'') + '>' + item.desc + '</div><div class="shop-item-price">' + item.price.toLocaleString() + '金</div></div><div class="shop-item-action"><button onclick="buyShopItem(\'' + item.id + '\')"' + (purchased ? ' disabled style="opacity:0.4;"' : '') + '>' + (purchased ? '已购' : '购买') + '</button></div></div>';
   }).join('');
   document.getElementById('shop-modal-items').innerHTML = itemsHtml;
 
@@ -5769,6 +5825,9 @@ function renderInventoryGrid() {
   function renderQCheckboxes(containerId, stateObj) {
     const el = document.getElementById(containerId);
     if (!el) return;
+    const fp = Object.entries(stateObj).map(([k,v]) => k + ':' + v).join('|');
+    if (fp === el.dataset.fp) return;
+    el.dataset.fp = fp;
     const qs = [{k:'common',n:'白'},{k:'fine',n:'绿'},{k:'rare',n:'蓝'},{k:'epic',n:'紫'},{k:'legendary',n:'橙'},{k:'ancient',n:'红'},{k:'mythic',n:'彩'}];
     el.innerHTML = qs.map(q => '<label style="color:' + QUALITIES[q.k].color + ';cursor:pointer;font-size:13px;"><input type="checkbox" ' + (stateObj[q.k]?'checked':'') + ' onchange="this.blur();' + (containerId==='sell-qs'?'SELL_CHECKS':'BREAK_CHECKS') + '[\'' + q.k + '\']=this.checked;">' + q.n + '</label>').join('');
   }
@@ -5900,7 +5959,7 @@ function renderInventoryGrid() {
   for (const c of GameState.chestInventory) fpParts.push(c.type + ':' + (c.count || 1));
   for (const g of (GameState.gemInventory || [])) fpParts.push(g.type + ':' + g.level);
   for (const c of (GameState.cardInventory || [])) fpParts.push(c.type + ':' + c.level);
-  fpParts.push(GameState.materials.stones, GameState.materials.runes || 0);
+  fpParts.push(GameState.materials.stones, GameState.materials.runes || 0, GameState.selectedInvItem || '');
   const fingerprint = fpParts.join('|');
 
   if (fingerprint === barInner.dataset.fingerprint) return;
@@ -6188,12 +6247,13 @@ function init() {
   const hasSave = loadGame();
 
   if (!hasSave) {
-    GameState.selectedClass = 'mortal';
+    GameState.selectedClass = null;
     GameState.classUnlocks['mortal'] = [true, true];
     addLog('欢迎来到来挂机鸭 v2.14!', 'level');
     addLog('9区域·9职业·5神技·等你探索', 'info');
     addLog('v1.20: 24列紧凑格子(图标12px/间距1px)', 'info');
   }
+  GameState.selectedClass = null; // 每次打开默认折叠技能树
 
   startCombat();
   renderAll();
@@ -6270,6 +6330,24 @@ function init() {
       }
     }
   }, 1000);
+
+  // v2.29: 丝滑CD进度条动画 (RAF)
+  function animateCDBars() {
+    const bars = document.querySelectorAll('.skill-cd-bar-fill');
+    const now = Date.now();
+    bars.forEach(bar => {
+      const start = parseInt(bar.getAttribute('data-cd-start')) || 0;
+      const dur = parseInt(bar.getAttribute('data-cd-dur')) || 0;
+      if (start && dur) {
+        const elapsed = now - start;
+        const pct = Math.min(100, Math.max(0, (elapsed / dur) * 100));
+        bar.style.width = pct + '%';
+        if (pct >= 100) { bar.style.width = '100%'; bar.setAttribute('data-cd-start', '0'); }
+      }
+    });
+    requestAnimationFrame(animateCDBars);
+  }
+  requestAnimationFrame(animateCDBars);
 
   // Auto-save every 30s
   setInterval(() => { if (!GameState.isDead) saveGame(); }, 30000);
