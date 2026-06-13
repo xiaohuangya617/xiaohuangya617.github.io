@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>来挂机鸭 v2.49</title>
+<title>来挂机鸭 v2.52</title>
 <style>
 /* ==========================================
-   来挂机鸭 v2.49 - 9大区域+12职业+5神技+爬塔+木桩+欢迎
+   来挂机鸭 v2.52 - 9大区域+12职业+5神技+爬塔+木桩+欢迎
    ========================================== */
 :root {
   --bg-deep: #0a0a14;
@@ -266,7 +266,7 @@ body {
 
 /* ==========================================
    v2.16: 手绘背景(background/文件夹)+物品999上限+强化石9999上限+v2.15木桩报告伤害细分
-   v2.14: 9区域2.5x约束盒渐变背景
+   v2.14: 9区域2.52x约束盒渐变背景
    ========================================== */
 #battle-arena[class*="arena-"] { background-size: cover; background-position: center; overflow: hidden; }
 #battle-arena[class*="arena-"]::before,
@@ -286,7 +286,7 @@ body {
 #battle-arena.arena-village::after {
   width:4px;height:4px;border-radius:50%;background:#C8E6C9;
   box-shadow:50px 45px 0 #FFF9C4,140px 58px 0 #C8E6C9,240px 40px 0 #FFF9C4,340px 55px 0 #C8E6C9,440px 48px 0 #FFF9C4,520px 62px 0 #C8E6C9,90px 85px 0 #C8E6C9,280px 78px 0 #FFF9C4,380px 90px 0 #C8E6C9,480px 82px 0 #FFF9C4;
-  animation:fireflyBlink 2.5s ease-in-out infinite;
+  animation:fireflyBlink 2.52s ease-in-out infinite;
 }
 
 /* ═══════ 2. 森林: 手绘背景图 ═══════ */
@@ -989,7 +989,7 @@ body.light-mode .panel-header {
 <div id="game-container">
   <!-- HEADER -->
   <div id="header-bar">
-    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:18px;">来挂机鸭</span> <span class="ver-badge">v2.49</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
+    <div class="header-left" id="hdr-logo" onclick="onLogoClick()" style="cursor:pointer;">🐤 <span style="font-size:18px;">来挂机鸭</span> <span class="ver-badge">v2.52</span> <span id="hdr-clock" style="font-size:13px;color:var(--text-dim);">--</span></div>
     <div style="display:flex;gap:4px; flex:1; justify-content:flex-end; align-items:center; flex-wrap:wrap;">
       <button class="btn btn-sm" id="toggle-auto" onclick="toggleAuto()" title="自动连战：击杀满100自动打Boss并推进">⚡ 自动连战：关</button>
       <button class="btn btn-sm" id="toggle-light" onclick="toggleLight()" title="亮色/暗色模式切换">🌙 暗色模式</button>
@@ -1370,7 +1370,7 @@ body.light-mode .panel-header {
    ========================================== */
 
 // --- A1 - Constants ---
-const GAME_VERSION = '2.49';
+const GAME_VERSION = '2.52';
 const SAVE_KEY = 'guaji_idle_save_v209';
 const TICK_INTERVAL = 1000;
 const ATK_THRESHOLD = 100;   // progress=100 → 1 attack (SPD/100 = atks/sec)
@@ -1568,7 +1568,7 @@ const DEF_ATTR_LABELS = { block:'格挡', dmgReduc:'减伤', dodge:'闪避', cou
 const RARE_ATTR_POOL = ['lifeSteal','reflect','expBonus','goldBonus','dropBonus'];
 const RARE_ATTR_LABELS = { lifeSteal:'吸血', reflect:'反伤', expBonus:'经验加成', goldBonus:'金币加成', dropBonus:'掉落加成' };
 
-const AFFIX_BASE = { pierce:3.0, dmgInc:2.5, cdReduc:2.0, multiHit:2.5, crit:1.5, critDmg:7.0, block:2.5, dmgReduc:2.0, dodge:2.0, counter:3.0, lifeSteal:1.5, reflect:2.5, expBonus:2.0, goldBonus:2.0, dropBonus:1.0 };
+const AFFIX_BASE = { pierce:3.0, dmgInc:2.52, cdReduc:2.0, multiHit:2.52, crit:1.5, critDmg:7.0, block:2.52, dmgReduc:2.0, dodge:2.0, counter:3.0, lifeSteal:1.5, reflect:2.52, expBonus:2.0, goldBonus:2.0, dropBonus:1.0 };
 function getAffixValue(t, q) { const b = AFFIX_BASE[t]||2; return Math.round(b*QUALITIES[q].multi*10)/10; }
 function getRareAffixValue(t, area, q) { return Math.round((1+area*0.3)*QUALITIES[q].multi*10)/10; }
 
@@ -1603,7 +1603,7 @@ function getExpToLevel(level) {
 const CHEST_TYPES = {
   copper: { name:'铜宝箱', icon:'🎁', color:'#cd7f32', goldChance:0.75, tries:1, goldMult:1.0 },
   silver: { name:'银宝箱', icon:'🎁', color:'#c0c0c0', goldChance:0.50, tries:1, goldMult:1.5 },
-  gold:   { name:'金宝箱', icon:'🎁', color:'#ffd700', goldChance:0.25, tries:1, goldMult:2.5, doubleChance:0.20 },
+  gold:   { name:'金宝箱', icon:'🎁', color:'#ffd700', goldChance:0.25, tries:1, goldMult:2.52, doubleChance:0.20 },
 };
 
 function rollQuality(areaIdx) {
@@ -1651,7 +1651,7 @@ const CLASSES = {
     actives:[{name:'盾击',icon:'💢',cd:7,effect:'damage',value:2.0,desc:'200%ATK'},{name:'钢铁意志',icon:'🛡️',cd:14,effect:'buff',value:'guard',duration:10,desc:'格挡+30% 反击+30% 10s'},{name:'钢铁审判',icon:'⚔️',cd:50,effect:'defDamage',value:5.0,buffDef:2.0,buffDur:5,desc:'500%DEF DEF翻倍5s'}]},
   mage:{id:'mage',name:'法师',icon:'🧙',trait:{name:'元素穿透',desc:'穿甲+25% 敌方HP<10%直接斩杀',trigger:'always',effects:{pierce:0.25,execute:true}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
     passives:[{name:'魔力强化',icon:'📖',desc:'ATK+15% 增伤+10%',effect:{atkPercent:0.15,dmgInc:0.10}},{name:'越战越勇',icon:'🔥',desc:'每次普攻 +3%增伤 (最多叠加10层 持续本场战斗)',effect:{atkDmgInc:0.03}}],
-    actives:[{name:'奥术飞弹',icon:'💫',cd:7,effect:'damage',value:3.5,desc:'350%ATK'},{name:'魔力标记',icon:'🔮',cd:15,effect:'mark',value:2.5,mult:1.5,desc:'250%ATK 下次伤害×1.5'},{name:'星辰陨落',icon:'☄️',cd:50,effect:'executeSkill',value:6.0,threshold:0.30,desc:'600%ATK HP<30%翻倍'}]},
+    actives:[{name:'奥术飞弹',icon:'💫',cd:7,effect:'damage',value:3.5,desc:'350%ATK'},{name:'魔力标记',icon:'🔮',cd:15,effect:'mark',value:2.52,mult:1.5,desc:'250%ATK 下次伤害×1.5'},{name:'星辰陨落',icon:'☄️',cd:50,effect:'executeSkill',value:6.0,threshold:0.30,desc:'600%ATK HP<30%翻倍'}]},
   priest:{id:'priest',name:'牧师',icon:'✝️',trait:{name:'虔诚信仰',desc:'受到伤害时 回复3%最大HP',trigger:'onHit',effects:{onHitHeal:0.03}},unlockCosts:[0,10000,50000,200000,'rune2','rune3'],
     passives:[{name:'治疗强化',icon:'💚',desc:'治疗效果+20% HP+15%',effect:{healBonus:0.20,hpPercent:0.15}},{name:'圣光之力',icon:'✨',desc:'普攻附带3%最大HP伤害',effect:{hpBonusDmg:0.03}}],
     actives:[{name:'神圣治愈',icon:'💚',cd:14,effect:'healReflect',healPct:0.25,reflectPct:0.30,duration:4,desc:'回25%HP 反伤+30% 4s'},{name:'圣盾术',icon:'🛡️',cd:20,effect:'buff',value:'priest_guard',duration:10,desc:'HP+50% 反击+30% 10s'},{name:'神圣庇护',icon:'🌟',cd:60,effect:'immuneReflect',duration:4,desc:'无敌4s 反伤翻倍'}]},
@@ -1669,7 +1669,7 @@ const CLASSES = {
     actives:[{name:'手里剑',icon:'⚔️',cd:5,effect:'damage',value:2.0,desc:'200%ATK'},{name:'影分身之术',icon:'🔥',cd:15,effect:'buff',value:'ninja_buff',duration:10,desc:'连击+30% ATK+20% 10s'},{name:'实体分身',icon:'👤',cd:60,effect:'summonClone',duration:10,desc:'召唤分身 普攻10s'}]},
   hunter:{id:'hunter',name:'猎人',icon:'🏹',trait:{name:'猎手本能',desc:'HP≥100%时攻击必定暴击',trigger:'hp>=100%',effects:{fullHpCrit:true}},unlockCosts:[0,10000,50000,200000,'rune2','rune3'],
     passives:[{name:'鹰眼',icon:'👁️',desc:'闪避+15% 暴击+15%',effect:{dodge:0.15,crit:0.15}},{name:'追猎',icon:'🎯',desc:'每次暴击爆伤+10% 叠10层',effect:{critCdmgStack:0.10}}],
-    actives:[{name:'速射',icon:'🏹',cd:4,effect:'damage',value:0.8,desc:'80%ATK'},{name:'狙击',icon:'🔭',cd:12,effect:'critDodge',value:2.5,dodgeBuff:0.50,dodgeDur:3,desc:'250%ATK 暴击则闪避+50% 3s'},{name:'七星连珠',icon:'💥',cd:70,effect:'executeLoop',value:8.0,maxLoop:7,desc:'800%ATK×7连击 七星连环'}]},
+    actives:[{name:'速射',icon:'🏹',cd:4,effect:'damage',value:0.8,desc:'80%ATK'},{name:'狙击',icon:'🔭',cd:12,effect:'critDodge',value:2.52,dodgeBuff:0.50,dodgeDur:3,desc:'250%ATK 暴击则闪避+50% 3s'},{name:'七星连珠',icon:'💥',cd:70,effect:'executeLoop',value:1.0,maxLoop:7,desc:'7×100%ATK 未击杀追加700%ATK'}]},
   bard:{id:'bard',name:'诗人',icon:'🎵',trait:{name:'战歌护盾',desc:'每20次攻击获得30%HP护盾',trigger:'atkCount',effects:{shieldOnAtk:0.30,atkInterval:20}},unlockCosts:[0,20000,80000,300000,'rune2','rune3'],
     passives:[{name:'坚韧之歌',icon:'💪',desc:'防御+20% 血量+15%',effect:{defPercent:0.20,hpPercent:0.15}},{name:'不屈之歌',icon:'🛡️',desc:'护盾击破时减伤+3% 叠10层',effect:{shieldBreakDmgReduc:0.03}}],
     actives:[{name:'战歌',icon:'🎶',cd:15,effect:'buff',value:'atk_crit',duration:10,desc:'ATK+15% 暴击+10% 10s'},{name:'守护之歌',icon:'🛡️',cd:18,effect:'shieldSelf',value:0.20,duration:10,desc:'获得20%HP护盾 10s'},{name:'凯旋之歌',icon:'🎺',cd:50,effect:'buff',value:'pierce_cdmg',duration:10,desc:'穿甲+15%增伤+15%爆伤+50% 10s'}]},
@@ -1992,7 +1992,7 @@ function getEffectiveStats() {
     hp = Math.floor(hp * 1.5);
     acc.counter = (acc.counter || 0) + 0.30;
   }
-  // v2.49: 猎人狙击闪避buff
+  // v2.52: 猎人狙击闪避buff
   if (GameState.activeBuffs['dodge_buff'] && GameState.activeBuffs['dodge_buff'] > 0) {
     acc.dodge = (acc.dodge || 0) + 0.50;
   }
@@ -2620,7 +2620,7 @@ function tick() {
     }
   }
 
-  // v2.49: saveGame已从tick移除 — 关键事件(Boss/升级/死亡/装备变更)自行存档，不再每秒写localStorage
+  // v2.52: saveGame已从tick移除 — 关键事件(Boss/升级/死亡/装备变更)自行存档，不再每秒写localStorage
   renderAll();
 }
 
@@ -2911,7 +2911,7 @@ function castSkill(skillId) {
     }
 
     case 'executeLoop':
-      // 猎人七星连珠: 800%ATK 7连击
+      // 猎人七星连珠: 7×100%ATK + 未击杀追加700%ATK
       let loopCount = 0;
       const maxLoop = skill.maxLoop || 7;
       let totalLoopDmg = 0;
@@ -2921,15 +2921,22 @@ function castSkill(skillId) {
         applySkillDamage(dmg);
         totalLoopDmg += dmg;
         loopCount++;
-        // 塔模式: 触发一次复活立即结束
         if (GameState.inTowerMode && GameState.monsterHP <= 0 && GameState.monsterMaxHP > 0) {
           towerReviveJeffery();
           break;
         }
       }
+      // 7连击后仍未击杀 → 追加700%ATK
+      if (GameState.monsterHP > 0) {
+        const bonusDmg = Math.floor(eStats.atk * 7);
+        applySkillDamage(bonusDmg);
+        totalLoopDmg += bonusDmg;
+        addLog('七星未死! 追加700%ATK = ' + bonusDmg + ' 点', 'skill');
+      }
       showDmgFloat(totalLoopDmg, 'skill', 'monster-entity');
-      addLog(skill.icon + ' ' + skill.name + '! ' + loopCount + '次 ×' + (skill.value) + ' = ' + totalLoopDmg + ' 点伤害', 'skill');
+      addLog(skill.icon + ' ' + skill.name + '! ' + loopCount + '连击 = ' + totalLoopDmg + ' 点伤害', 'skill');
       addDummyStat('skill', skill.name, totalLoopDmg);
+      break;
       break;
 
     case 'shieldSelf':
@@ -4207,7 +4214,7 @@ function saveGame() {
     // v2.40: 勾选记忆化
     sellChecks: { ...SELL_CHECKS },
     breakChecks: { ...BREAK_CHECKS },
-    // v2.49: 设置开关持久化
+    // v2.52: 设置开关持久化
     autoBattle: GameState.autoBattle,
     showDmgNums: GameState.showDmgNums,
     showEffects: GameState.showEffects,
@@ -4297,7 +4304,7 @@ function loadGame() {
     GameState.warlockCdStacks = data.warlockCdStacks || 0;
     GameState.playerName = data.playerName || '小黄鸭';
     GameState.welcomed = data.welcomed !== undefined ? data.welcomed : true; // 旧存档默认已看过欢迎
-    // v2.49: 设置开关持久化
+    // v2.52: 设置开关持久化
     GameState.autoBattle = data.autoBattle ?? true;
     GameState.showDmgNums = data.showDmgNums ?? true;
     GameState.showEffects = data.showEffects ?? true;
@@ -4391,7 +4398,7 @@ function loadGame() {
         GameState.totalGoldEarned += offlineGold;
         addExp(offlineExp);
         GameState.totalKills += offlineKills;
-        GameState.areaKills = Math.min(KILLS_TO_UNLOCK_BOSS, GameState.areaKills + Math.floor(offlineKills * 0.5));
+        GameState.areaKills += Math.floor(offlineKills * 0.5); // v2.52: 移除硬上限，不再截断超100的值
         if (GameState.areaKills >= KILLS_TO_UNLOCK_BOSS) GameState.bossUnlocked = true;
         let cCopper = 0, cSilver = 0, cGold = 0;
         for (let i = 0; i < offlineChests; i++) {
@@ -4402,6 +4409,7 @@ function loadGame() {
         }
         GameState.materials.stones += Math.floor(offlineKills * 0.05); capStones();
         showOfflineModal(offlineHours, offlineGold, offlineExp, cCopper, cSilver, cGold);
+        saveGame(); // v2.521: 离线奖励立即持久化，防止重复计算
       }
     }
     return true;
@@ -4427,7 +4435,7 @@ function exportSave() {
   const blob = new Blob([JSON.stringify(saveData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = '来挂机鸭v2.49_save_' + new Date().toISOString().slice(0,10) + '.json';
+  a.href = url; a.download = '来挂机鸭v2.52_save_' + new Date().toISOString().slice(0,10) + '.json';
   a.click();
   URL.revokeObjectURL(url);
   showNotification('存档已导出');
@@ -4536,7 +4544,7 @@ function updateGoldBoostToggle() {
 }
 
 // v2.16: Header toggle buttons + triple-click settings
-GameState.autoBattle = true;  // v2.49: 默认开启，死亡自动关闭
+GameState.autoBattle = true;  // v2.52: 默认开启，死亡自动关闭
 GameState.showDmgNums = true;
 GameState.showEffects = true;
 
@@ -5319,7 +5327,7 @@ function startDummyMode() {
   GameState.playerMaxHP = getEffectiveStats().hp;
   GameState.monsterAtkProgress = 0;
   GameState.playerAtkProgress = 0;
-  // v2.49: 重置战斗计数变量，防止状态污染
+  // v2.52: 重置战斗计数变量，防止状态污染
   GameState.combatAtkCount = 0;
   GameState.bardShieldBreakStacks = 0;
   GameState.hunterCritCdmgStacks = 0;
@@ -5722,7 +5730,8 @@ function renderClassPanel() {
     (GameState.equippedTraits || []).join(',') + '|' +
     (GameState.equippedActives || []).join(',') + '|' +
     (GameState.equippedPassives || []).join(',') + '|' +
-    GameState.maxProgress;
+    GameState.maxProgress + '|' +
+    (GameState.dummyKilled ? '1' : '0');
   if (fp === tabsContainer.dataset.fingerprint) {
     renderClassTree();
     renderSkillSlots();
@@ -5742,7 +5751,7 @@ function renderClassPanel() {
     // v2.40: 勇者特殊条件 — 击杀木桩
     const unlocked = clsId === 'hero' ? GameState.dummyKilled : areaUnlocked;
     if (!unlocked) {
-      // v2.49: 勇者特殊条件提示为???，玩家自行摸索
+      // v2.52: 勇者特殊条件提示为???，玩家自行摸索
       const tip = (clsId === 'hero') ? '???' : '通关后续区域解锁';
       return '<button class="class-tab placeholder" onclick="showNotification(\'' + tip + '\')" style="color:#ff4444;">???</button>';
     }
@@ -6400,7 +6409,7 @@ function renderCombatLog() {
 function refreshLogPanel() {
   const panel = document.getElementById('right-panel-log');
   if (!panel || panel.style.display === 'none') return;
-  const allLogs = (GameState.combatLog || []);  // v2.49: combatLog已含全量，避免itemLog/systemLog重复
+  const allLogs = (GameState.combatLog || []);  // v2.52: combatLog已含全量，避免itemLog/systemLog重复
   allLogs.sort((a, b) => a.time - b.time);
   if (!allLogs.length) { panel.innerHTML = '<div class="log-line log-info">暂无日志</div>'; return; }
   const lastSz = panel.scrollHeight - panel.scrollTop;
@@ -6542,7 +6551,7 @@ function init() {
 
   startCombat();
   renderAll();
-  updateAutoToggle();  // v2.49: 同步按钮状态(默认开启)
+  updateAutoToggle();  // v2.52: 同步按钮状态(默认开启)
 
   // v2.24: 首次欢迎
   if (!GameState.welcomed) {
